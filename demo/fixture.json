@@ -1,0 +1,46 @@
+{
+  "synthetic": true,
+  "label": "DEMO / SYNTHETIC — not live bot data",
+  "generated_at": "2026-09-20T20:00:00Z",
+  "online": {
+    "status": "connected",
+    "uptime": "4h 12m",
+    "detail": "Process heartbeat OK (demo fixture)"
+  },
+  "posture": {
+    "mode": "observe-only",
+    "detail": "No live-send path armed — monitoring posture"
+  },
+  "doctor": {
+    "status": "ok",
+    "summary": "No blocking flags, no active faults",
+    "detail": "Hygiene checks passed · config exclusions applied"
+  },
+  "feeds": [
+    {
+      "name": "slot-stream",
+      "state": "ok",
+      "age": "1.2s"
+    },
+    {
+      "name": "account-delta",
+      "state": "ok",
+      "age": "0.8s"
+    },
+    {
+      "name": "price-oracle",
+      "state": "stale",
+      "age": "47s"
+    }
+  ],
+  "last_signal": {
+    "kind": "heartbeat",
+    "ago": "12s",
+    "detail": "Synthetic tick — no strategy payload"
+  },
+  "build": {
+    "version": "0.0.0-demo",
+    "commit": "fixture",
+    "detail": "Pre-1.0 grant demo build"
+  }
+}
