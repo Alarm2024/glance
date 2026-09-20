@@ -1,0 +1,11 @@
+# Rust
+lib/rust/glance-status/target/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+dist/
+build/

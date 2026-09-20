@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  rust:
+    name: Rust (glance-status)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: lib/rust/glance-status
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: cargo test
+        run: cargo test --all-features
+
+  python:
+    name: Python (glance_status)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: lib/python/glance_status
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install package + pytest
+        run: pip install -e ".[dev]"
+      - name: pytest
+        run: python -m pytest -q
