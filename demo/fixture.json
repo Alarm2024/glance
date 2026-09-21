@@ -8,8 +8,8 @@
     "detail": "Process heartbeat OK (demo fixture)"
   },
   "posture": {
-    "mode": "observe-only",
-    "detail": "No live-send path armed — monitoring posture"
+    "mode": "dry compose",
+    "detail": "Eyes + dry compose · no auto-send"
   },
   "doctor": {
     "status": "ok",
@@ -41,6 +41,6 @@
   "build": {
     "version": "0.1.0-demo",
     "commit": "fixture",
-    "detail": "Pre-1.0 grant demo build"
+    "detail": "Pre-1.0 demo build"
   }
 }
