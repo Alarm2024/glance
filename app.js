@@ -138,7 +138,7 @@
     container.className = 'cards cards--loading';
     container.textContent = 'Loading demo fixture…';
 
-    fetch('demo/fixture.json')
+    fetch('./demo/fixture.json', { cache: 'no-store' })
       .then(function (res) {
         if (!res.ok) throw new Error('Fixture unavailable');
         return res.json();

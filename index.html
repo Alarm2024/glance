@@ -1,111 +1,61 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="midnight">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Glance · 35 ElGhaly</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
-  <style>
-    .topbar{position:sticky;top:0;z-index:50;width:100%;display:flex;align-items:center;gap:8px;padding:10px 14px;background:rgba(11,18,20,.9);backdrop-filter:blur(14px);border-bottom:1px solid var(--line,rgba(46,230,199,.22))}
-    .topbar a.brand{display:flex;align-items:center;gap:8px;text-decoration:none;color:inherit}
-    .gmark{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;font:700 15px Outfit,sans-serif;color:#04110a;background:linear-gradient(135deg,#7ee8d4,#8a7cff)}
-    .g35{font-weight:700;font-size:22px;background:linear-gradient(135deg,#e8fff8,#6fe0c4 44%,#9b7dff);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
-    .gword{font-size:12px;letter-spacing:.2em;font-weight:600;color:var(--text,#e8fbf6)}
-    .header-right{margin-left:auto;display:flex;align-items:center;gap:6px}
-    .lang-switch{display:flex;gap:3px}
-    .lang-btn{background:transparent;border:1px solid var(--line,rgba(46,230,199,.22));color:var(--text-muted,#9ab3ad);padding:5px 6px;border-radius:6px;font-size:10px;cursor:pointer}
-    .lang-btn.on{color:var(--text,#e8fbf6);border-color:var(--gold,#2ee6c7)}
-    .house{width:min(720px,calc(100% - 32px));margin:18px auto 0;border-radius:22px;overflow:hidden;border:1px solid var(--line,rgba(46,230,199,.22));background:#050508}
-    .house img{display:block;width:100%;height:auto}
-    .theme-wrap{position:relative}
-    .theme-btn{display:flex;align-items:center;gap:6px;background:var(--ink-soft,#121a19);color:var(--text,#e8fbf6);border:1px solid var(--line,rgba(46,230,199,.22));border-radius:999px;padding:6px 10px;font:600 11px Outfit,sans-serif;cursor:pointer}
-    .theme-dot{width:10px;height:10px;border-radius:50%;background:#2ee6c7;display:inline-block}
-    .theme-panel{display:none;position:absolute;right:0;top:calc(100% + 8px);min-width:200px;background:#16181d;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:10px;z-index:80}
-    .theme-wrap.open .theme-panel{display:block}
-    .theme-panel p{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#8b93a0;margin:0 8px 8px}
-    .theme-item{display:flex;align-items:center;gap:10px;width:100%;border:0;background:transparent;color:#e8eef2;padding:10px;border-radius:12px;font:600 14px Outfit,sans-serif;cursor:pointer;text-align:left}
-    .theme-item.on{background:#14302c;color:#2ee6c7}
-    .theme-item i{width:14px;height:14px;border-radius:50%;display:block}
-    .theme-item .ck{margin-left:auto;opacity:0}
-    .theme-item.on .ck{opacity:1}
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Glance — open-source honest status for Solana bot operators. MIT." />
+  <meta name="theme-color" content="#0c0c10" />
+  <title>Glance — honest status for Solana bots</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
 </head>
 <body>
-  <div class="topbar">
-    <a class="brand" href="/">
-      <span class="gmark">G</span>
-      <span class="g35">35</span>
-      <span class="gword">GLANCE</span>
-    </a>
-    <div class="header-right">
-      <div class="lang-switch" id="langs">
-        <button class="lang-btn on" data-lang="en" type="button">EN</button>
-        <button class="lang-btn" data-lang="ar" type="button">AR</button>
-        <button class="lang-btn" data-lang="ru" type="button">RU</button>
-        <button class="lang-btn" data-lang="zh" type="button">ZH</button>
-        <button class="lang-btn" data-lang="de" type="button">DE</button>
-        <button class="lang-btn" data-lang="es" type="button">ES</button>
-      </div>
-    </div>
-  </div>
-
-  <figure class="house">
-    <img src="glance-card.jpg" alt="35 GLANCE ElGhaly"/>
-  </figure>
-
   <header class="hero">
-    <p class="hero__brand">35 · GLANCE · ElGhaly</p>
-    <h1 class="hero__title" id="g-title">Glance</h1>
-    <p class="hero__tag" id="g-tag">honest status for Solana bots</p>
+    <p class="eyebrow">Open source · Developer tooling</p>
+    <h1>Glance</h1>
+    <p class="lede">Honest status library and dashboard template for Solana bot operators. Fault-first health, redaction, anti-overclaim tests — MIT, free, no strategy included.</p>
+    <p class="actions">
+      <a class="btn" href="#demo">Demo</a>
+      <a class="btn btn--ghost" href="https://github.com/Alarm2024/glance">GitHub</a>
+      <a class="btn btn--ghost" href="#install">Install</a>
+    </p>
   </header>
 
   <main>
-    <section class="section what">
-      <h2 class="section__label">What</h2>
-      <p class="build__text" id="g-what">Fault-first doctor status, redaction, and anti-overclaim tests. Not a trading bot.</p>
-    </section>
-    <section class="section demo">
-      <h2 class="section__label">Demo</h2>
-      <p id="synthetic-banner" class="synthetic-banner" hidden>DEMO / SYNTHETIC — not live bot data</p>
+    <section id="demo" class="section">
+      <h2>Demo</h2>
+      <p id="synthetic-banner" class="banner" hidden></p>
       <div id="cards" class="cards cards--loading">Loading demo fixture…</div>
     </section>
-    <section class="section doors">
-      <h2 class="section__label">Doors</h2>
-      <div class="doors__grid">
-        <a class="door" href="https://35.elghaly.dev/"><span class="door__name">35</span><span class="door__arrow">→</span></a>
-        <a class="door" href="https://quay-35.elghaly.dev/"><span class="door__name">QUAY</span><span class="door__arrow">→</span></a>
-        <a class="door" href="https://plumb-35.elghaly.dev/"><span class="door__name">Plumb</span><span class="door__arrow">→</span></a>
-        <a class="door" href="https://elghaly.dev/"><span class="door__name">elghaly</span><span class="door__arrow">→</span></a>
-      </div>
+
+    <section id="install" class="section">
+      <h2>Install</h2>
+      <p class="muted">Pre-1.0 stubs. Publish to crates.io / PyPI is a grant milestone.</p>
+      <pre><code># Rust
+glance-status = "0.1.0"
+
+# Python
+pip install glance-status</code></pre>
     </section>
-    <section class="section contact">
-      <h2 class="section__label">Contact</h2>
-      <ul class="contact__list">
-        <li><a href="mailto:support@elghaly.dev">support@elghaly.dev</a></li>
-        <li><a href="mailto:35@elghaly.dev">35@elghaly.dev</a></li>
-      </ul>
+
+    <section class="section">
+      <h2>Repository</h2>
+      <p><a href="https://github.com/Alarm2024/glance">github.com/Alarm2024/glance</a></p>
+      <p class="muted">Rust + Python libraries · CI · MIT License</p>
+    </section>
+
+    <section class="section">
+      <h2>License</h2>
+      <p>MIT · free forever · no paid tier · synthetic demo data only</p>
+      <p class="muted">Contact: <a href="mailto:support@elghaly.dev">support@elghaly.dev</a></p>
     </section>
   </main>
-  <footer class="footer"><p>548 Market St, San Francisco, CA 94104</p></footer>
-  <script src="themes.js"></script>
+
+  <footer class="footer">
+    <p>Glance · MIT</p>
+  </footer>
   <script src="app.js"></script>
-  <script>
-  (function(){
-    var map={en:{t:'Glance',g:'honest status for Solana bots',w:'Fault-first doctor status. Not a trading bot.'},ar:{t:'غلانس',g:'حالة صادقة لبوتات سولانا',w:'مش بوت تداول.'},ru:{t:'Glance',g:'честный статус для Solana-ботов',w:'Не торговый бот.'},zh:{t:'Glance',g:'Solana 机器人的诚实状态',w:'不是交易机器人。'},de:{t:'Glance',g:'ehrlicher Status für Solana-Bots',w:'Kein Trading-Bot.'},es:{t:'Glance',g:'estado honesto para bots de Solana',w:'No es un bot de trading.'}};
-    document.getElementById('langs').addEventListener('click',function(e){
-      var b=e.target.closest('[data-lang]'); if(!b) return;
-      var k=b.getAttribute('data-lang'); var t=map[k]; if(!t) return;
-      document.querySelectorAll('.lang-btn').forEach(function(x){x.classList.toggle('on',x===b);});
-      document.getElementById('g-title').textContent=t.t;
-      document.getElementById('g-tag').textContent=t.g;
-      document.getElementById('g-what').textContent=t.w;
-      document.documentElement.lang=k;
-      document.documentElement.dir=k==='ar'?'rtl':'ltr';
-    });
-  })();
-  </script>
 </body>
 </html>
