@@ -24,7 +24,7 @@
       }
     })();
   </script>
-  <link rel="stylesheet" href="css/style.css?v=grant2">
+  <link rel="stylesheet" href="css/style.css?v=grant3">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -35,6 +35,9 @@
     .house{width:min(640px,calc(100% - 32px));margin:16px auto 0;border-radius:18px;overflow:hidden;border:1px solid var(--gold-dim)}
     .house img{display:block;width:100%;height:auto}
     .hero__title,.section__label,.card__name,.public-good__line,.footer p{font-family:var(--font-serif)}
+    .topbar{display:flex;align-items:center;gap:8px}
+    .header-right{margin-left:auto;display:flex;align-items:center;gap:6px;flex-wrap:nowrap}
+    .lang-switch{display:flex;gap:3px;flex-wrap:nowrap}
   </style>
 </head>
 <body>
@@ -43,6 +46,16 @@
       <span class="gmark" aria-hidden="true">G</span>
       <span class="gword">GLANCE</span>
     </a>
+    <div class="header-right">
+      <div class="lang-switch" id="langs" role="group" aria-label="Language">
+        <button class="lang-btn on" data-lang="en" type="button">EN</button>
+        <button class="lang-btn" data-lang="ar" type="button">AR</button>
+        <button class="lang-btn" data-lang="ru" type="button">RU</button>
+        <button class="lang-btn" data-lang="zh" type="button">ZH</button>
+        <button class="lang-btn" data-lang="de" type="button">DE</button>
+        <button class="lang-btn" data-lang="es" type="button">ES</button>
+      </div>
+    </div>
   </div>
 
   <figure class="house">
@@ -142,6 +155,7 @@
       <h2 class="section__label">Contact</h2>
       <ul class="contact__list">
         <li><a href="mailto:support@elghaly.dev">support@elghaly.dev</a></li>
+        <li><a href="mailto:admin@elghaly.dev">admin@elghaly.dev</a></li>
       </ul>
     </section>
   </main>
@@ -150,7 +164,8 @@
     <p>Glance · MIT</p>
   </footer>
 
-  <script src="themes.js?v=grant2"></script>
+  <script src="themes.js?v=grant3"></script>
+  <script src="i18n.js"></script>
   <script src="app.js?v=grant2"></script>
 </body>
 </html>
