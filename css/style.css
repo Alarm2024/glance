@@ -315,6 +315,46 @@ main {
   margin-bottom: var(--space-sm);
   background: rgba(46, 230, 199, 0.06);
 }
+.playground {
+  display: block;
+  margin-bottom: var(--space-sm);
+  text-align: left;
+  max-width: 28rem;
+  margin-inline: auto;
+}
+
+.playground__hint {
+  margin-bottom: var(--space-sm);
+}
+
+.playground__label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.playground__input {
+  width: 100%;
+  min-height: 8rem;
+  padding: var(--space-sm);
+  border-radius: 2px;
+  border: 1px solid var(--gold-dim);
+  background: var(--ink-soft);
+  color: var(--gold-warm);
+  font-family: ui-monospace, "Cascadia Code", "Source Code Pro", monospace;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  resize: vertical;
+}
+
+.playground__input:focus {
+  outline: 2px solid rgba(46, 230, 199, 0.45);
+  outline-offset: 2px;
+}
 
 .cards {
   display: flex;
@@ -554,6 +594,12 @@ main {
   color: var(--text-muted);
   font-style: italic;
   padding: var(--space-sm);
+}
+
+.cards--error {
+  color: var(--status-blocking);
+  font-family: ui-monospace, "Cascadia Code", "Source Code Pro", monospace;
+  font-style: normal;
 }
 
 html[dir="rtl"] .card:hover {

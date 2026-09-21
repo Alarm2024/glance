@@ -183,6 +183,21 @@
     }
   }
 
+  function showRenderError(container, message) {
+    container.className = 'cards cards--error';
+    container.textContent = message;
+  }
+
+  function parsePlaygroundInput(raw) {
+    var trimmed = (raw || '').trim();
+    if (!trimmed) return { ok: true, fixture: null };
+    try {
+      return { ok: true, fixture: JSON.parse(trimmed) };
+    } catch (err) {
+      return { ok: false, error: 'Invalid JSON — fix syntax or clear the field to use the demo fixture.' };
+    }
+  }
+
   function fetchWithTimeout(url, ms) {
     if (typeof AbortController === 'undefined') {
       return fetch(url, { cache: 'no-store' });
@@ -213,14 +228,45 @@
   function initDemo() {
     var container = document.getElementById('cards');
     var banner = document.getElementById('synthetic-banner');
+    var textarea = document.getElementById('playground-input');
     if (!container) return;
+
+    function isPlaygroundEmpty() {
+      return !textarea || !textarea.value.trim();
+    }
+
+    function applyFromPlayground() {
+      if (isPlaygroundEmpty()) {
+        showFixture(DEMO_FIXTURE, container, banner);
+        return;
+      }
+      var result = parsePlaygroundInput(textarea.value);
+      if (result.ok && result.fixture) {
+        showFixture(result.fixture, container, banner);
+      } else if (!result.ok) {
+        showRenderError(container, result.error);
+        if (banner) banner.hidden = true;
+      }
+    }
 
     /* Always paint inline fixture first — never leave cards--loading */
     showFixture(DEMO_FIXTURE, container, banner);
 
+    if (textarea) {
+      textarea.value = '';
+      textarea.placeholder = JSON.stringify(DEMO_FIXTURE, null, 2);
+      var debounceTimer;
+      textarea.addEventListener('input', function () {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(applyFromPlayground, 200);
+      });
+    }
+
     fetchFixture()
       .then(function (fixture) {
-        showFixture(fixture, container, banner);
+        if (isPlaygroundEmpty()) {
+          showFixture(fixture, container, banner);
+        }
       })
       .catch(function () {
         /* static HTML / DEMO_FIXTURE already rendered */

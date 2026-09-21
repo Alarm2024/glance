@@ -59,6 +59,32 @@ Synthetic only — see [`demo/fixture.schema.md`](demo/fixture.schema.md).
 
 Card order: **Online → Posture → Doctor → Feeds → Last signal → Build**
 
+The live demo includes a **playground**: paste your own status JSON in the textarea (or leave it empty for the synthetic fixture). Rendering is client-side only — no backend call.
+
+## Status badge
+
+Embed a shields.io-style SVG badge in your README (requires Netlify or compatible deploy with serverless functions):
+
+```markdown
+![glance status](https://glance.elghaly.dev/badge?status=ok)
+```
+
+Supported `status` values: `ok`, `warn`, `blocking`.
+
+## glance-check GitHub Action
+
+Fail CI when status strings contain banned overclaim phrases:
+
+```yaml
+- uses: Alarm2024/glance/.github/actions/glance-check@main
+  with:
+    paths: |
+      demo/fixture.json
+      status.json
+```
+
+See [`.github/actions/glance-check/README.md`](.github/actions/glance-check/README.md) for inputs and behavior.
+
 ## Tests & CI
 
 ```bash

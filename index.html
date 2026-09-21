@@ -81,6 +81,11 @@
 
     <section class="section demo" id="demo">
       <h2 class="section__label">Demo</h2>
+      <p class="build__text playground__hint">Live playground — paste your own status JSON below, or leave empty for the synthetic fixture. Renders client-side only.</p>
+      <label class="playground" for="playground-input">
+        <span class="playground__label">Status JSON</span>
+        <textarea id="playground-input" class="playground__input" rows="8" spellcheck="false"></textarea>
+      </label>
       <p id="synthetic-banner" class="synthetic-banner">DEMO / SYNTHETIC — not live bot data</p>
       <div id="cards" class="cards" aria-live="polite">
         <article class="card">
