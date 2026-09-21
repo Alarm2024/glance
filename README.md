@@ -6,27 +6,27 @@ Open-source honest status for Solana bot operators.
 
 ## Install
 
-| Language | Package | Registry |
-|----------|---------|----------|
-| Rust | `glance-status` | [crates.io/crates/glance-status](https://crates.io/crates/glance-status) |
-| Python | `glance-status` | [pypi.org/project/glance-status](https://pypi.org/project/glance-status/) |
+| Language | Package | Status |
+|----------|---------|--------|
+| Rust | `glance-status` | pre-1.0 · path install ([crates.io](https://crates.io/crates/glance-status) not yet published) |
+| Python | `glance-status` | pre-1.0 · editable install ([PyPI](https://pypi.org/project/glance-status/) not yet published) |
 
 ```bash
-# Rust — Cargo.toml
-glance-status = "0.1.0"
-
-# Python
-pip install glance-status
-```
-
-Local development:
-
-```bash
-# Rust path dependency
+# Rust — local path (until crates.io publish)
 glance-status = { path = "lib/rust/glance-status" }
 
-# Python editable
+# Python — editable install (until PyPI publish)
 pip install -e lib/python
+```
+
+Target registry install after M1 publish:
+
+```bash
+# Rust — Cargo.toml (not live yet)
+glance-status = "0.1.0"
+
+# Python (not live yet)
+pip install glance-status
 ```
 
 ## Usage
@@ -114,7 +114,7 @@ cd lib/python && pip install -e ".[dev]" && python -m pytest -v
 cd examples/rust-cli && cargo run -- demo
 ```
 
-GitHub Actions runs Rust + Python tests on every pull request. Releases publish to crates.io and PyPI.
+GitHub Actions runs Rust + Python tests on every pull request. crates.io / PyPI publish is a post-M1 milestone.
 
 ## License
 

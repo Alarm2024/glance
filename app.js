@@ -19,6 +19,38 @@
     build: 'Build'
   };
 
+  var DEMO_LOAD_TIMEOUT_MS = 3000;
+  var demoLoadTimeoutId = null;
+
+  function t(key, fallback) {
+    if (window.GlanceI18n && window.GlanceI18n.t) {
+      var value = window.GlanceI18n.t(key);
+      if (value && value !== key) return value;
+    }
+    return fallback;
+  }
+
+  function armDemoLoadTimeout(container) {
+    if (demoLoadTimeoutId) clearTimeout(demoLoadTimeoutId);
+    demoLoadTimeoutId = setTimeout(function () {
+      if (!container || !container.classList.contains('cards--loading')) return;
+      showRenderError(container, t('loadError', 'Demo fixture could not be loaded.'));
+    }, DEMO_LOAD_TIMEOUT_MS);
+  }
+
+  function clearDemoLoadTimeout() {
+    if (demoLoadTimeoutId) {
+      clearTimeout(demoLoadTimeoutId);
+      demoLoadTimeoutId = null;
+    }
+  }
+
+  function showLoading(container) {
+    container.className = 'cards cards--loading';
+    container.textContent = t('loading', 'Loading demo fixture…');
+    armDemoLoadTimeout(container);
+  }
+
   var DEMO_FIXTURE = {
     synthetic: true,
     label: 'DEMO / SYNTHETIC — not live bot data',
@@ -167,6 +199,7 @@
 
   function showFixture(fixture, container, banner) {
     if (!container) return;
+    clearDemoLoadTimeout();
     if (banner) {
       banner.textContent = fixture.label || 'DEMO / SYNTHETIC — not live bot data';
       banner.hidden = false;
@@ -247,6 +280,12 @@
         showRenderError(container, result.error);
         if (banner) banner.hidden = true;
       }
+    }
+
+    if (!container.querySelector('.card')) {
+      showLoading(container);
+    } else {
+      armDemoLoadTimeout(container);
     }
 
     /* Always paint inline fixture first — never leave cards--loading */

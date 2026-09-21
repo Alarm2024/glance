@@ -9,7 +9,7 @@ import sys
 from pathlib import Path
 from typing import Iterable
 
-from glance_status import OverclaimError, assert_no_overclaim
+from glance_status import assert_no_overclaim
 
 
 def _collect_strings(value: object, out: list[str]) -> None:
@@ -94,9 +94,9 @@ def main() -> int:
             checked += 1
             try:
                 assert_no_overclaim(status, banned)
-            except OverclaimError as exc:
+            except ValueError as exc:
                 preview = status if len(status) <= 80 else status[:77] + "..."
-                failures.append(f"{label}: banned phrase {exc.phrase!r} in {preview!r}")
+                failures.append(f"{label}: {exc} in {preview!r}")
 
     if failures:
         print("glance-check failed — banned overclaim phrase(s) found:", file=sys.stderr)

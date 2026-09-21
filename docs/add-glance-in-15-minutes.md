@@ -4,16 +4,16 @@ Quick path to honest status checks in your operator tooling.
 
 ## 1. Install
 
-**Rust**
+**Rust** (pre-1.0 path install — crates.io publish pending)
 
 ```toml
-glance-status = "0.1.0"
+glance-status = { path = "lib/rust/glance-status" }
 ```
 
-**Python**
+**Python** (pre-1.0 editable — PyPI publish pending)
 
 ```bash
-pip install glance-status
+pip install -e lib/python
 ```
 
 ## 2. Classify doctor messages
