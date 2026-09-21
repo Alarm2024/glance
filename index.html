@@ -1,22 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="midnight">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Glance — open-source honest status for Solana bot operators. MIT." />
-  <meta name="theme-color" content="#0c0c10" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Glance — open-source honest status for Solana bot operators. Fault-first health, redaction, anti-overclaim tests. MIT.">
+  <meta name="theme-color" content="#0b1214">
   <title>Glance — honest status for Solana bots</title>
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
+  <div class="topbar">
+    <a class="brand" href="/" aria-label="Glance home">
+      <span class="gmark" aria-hidden="true">G</span>
+      <span class="gword">GLANCE</span>
+    </a>
+    <div class="header-right">
+      <div class="lang-switch" id="langs" role="group" aria-label="Language">
+        <button class="lang-btn on" data-lang="en" type="button">EN</button>
+        <button class="lang-btn" data-lang="ar" type="button">AR</button>
+        <button class="lang-btn" data-lang="ru" type="button">RU</button>
+        <button class="lang-btn" data-lang="zh" type="button">ZH</button>
+        <button class="lang-btn" data-lang="de" type="button">DE</button>
+        <button class="lang-btn" data-lang="es" type="button">ES</button>
+      </div>
+    </div>
+  </div>
+
   <header class="hero">
-    <p class="eyebrow">Open source · Developer tooling</p>
-    <h1>Glance</h1>
-    <p class="lede">Honest status library and dashboard template for Solana bot operators. Fault-first health, redaction, anti-overclaim tests — MIT, free, no strategy included.</p>
-    <p class="actions">
+    <p class="hero__eyebrow">Open source · Developer tooling</p>
+    <h1 class="hero__title" data-i18n="title">Glance</h1>
+    <p class="hero__tag" data-i18n="tag">Honest status for Solana bots</p>
+    <p class="hero__actions">
       <a class="btn" href="#demo">Demo</a>
       <a class="btn btn--ghost" href="https://github.com/Alarm2024/glance">GitHub</a>
       <a class="btn btn--ghost" href="#install">Install</a>
@@ -24,38 +41,46 @@
   </header>
 
   <main>
-    <section id="demo" class="section">
-      <h2>Demo</h2>
-      <p id="synthetic-banner" class="banner" hidden></p>
-      <div id="cards" class="cards cards--loading">Loading demo fixture…</div>
+    <section class="section what" id="what">
+      <h2 class="section__label" data-i18n="sectionWhat">What</h2>
+      <p class="build__text" data-i18n="what">Fault-first doctor status, redaction, and anti-overclaim tests — open-source observability for Solana operators. Not a trading bot.</p>
     </section>
 
-    <section id="install" class="section">
-      <h2>Install</h2>
-      <p class="muted">Pre-1.0 stubs. Publish to crates.io / PyPI is a grant milestone.</p>
-      <pre><code># Rust
-glance-status = "0.1.0"
-
-# Python
-pip install glance-status</code></pre>
+    <section class="section demo" id="demo">
+      <h2 class="section__label" data-i18n="sectionDemo">Demo</h2>
+      <p id="synthetic-banner" class="synthetic-banner" hidden>DEMO / SYNTHETIC — not live bot data</p>
+      <div id="cards" class="cards cards--loading" aria-live="polite">Loading demo fixture…</div>
     </section>
 
-    <section class="section">
-      <h2>Repository</h2>
-      <p><a href="https://github.com/Alarm2024/glance">github.com/Alarm2024/glance</a></p>
-      <p class="muted">Rust + Python libraries · CI · MIT License</p>
+    <section class="section install" id="install">
+      <h2 class="section__label" data-i18n="sectionInstall">Install</h2>
+      <div class="install__blocks">
+        <div class="code-block"><span class="code-block__label">Rust · pre-1.0</span>glance-status = "0.1.0"</div>
+        <div class="code-block"><span class="code-block__label">Python · pre-1.0</span>pip install glance-status</div>
+      </div>
+      <p class="install__note" data-i18n="installNote">Pre-1.0 stubs. Publish to crates.io / PyPI is a grant milestone.</p>
+      <p class="install__repo"><a class="install__link" href="https://github.com/Alarm2024/glance" target="_blank" rel="noopener">github.com/Alarm2024/glance →</a></p>
     </section>
 
-    <section class="section">
-      <h2>License</h2>
-      <p>MIT · free forever · no paid tier · synthetic demo data only</p>
-      <p class="muted">Contact: <a href="mailto:support@elghaly.dev">support@elghaly.dev</a></p>
+    <section class="section license">
+      <h2 class="section__label" data-i18n="sectionLicense">License</h2>
+      <p class="public-good__line" data-i18n="licenseLine">MIT · free forever · no paid tier · synthetic demo data only</p>
+    </section>
+
+    <section class="section contact">
+      <h2 class="section__label" data-i18n="contact">Contact</h2>
+      <ul class="contact__list">
+        <li><a href="mailto:support@elghaly.dev">support@elghaly.dev</a></li>
+      </ul>
     </section>
   </main>
 
   <footer class="footer">
-    <p>Glance · MIT</p>
+    <p data-i18n="footer">Glance · MIT</p>
   </footer>
+
+  <script src="themes.js"></script>
+  <script src="i18n.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
