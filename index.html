@@ -3,25 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Glance — honest status for Solana bots.">
-  <meta name="theme-color" content="#0c0c10">
-  <title>Glance · honest status for Solana bots</title>
+  <title>Glance · 35 ElGhaly</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
-    .topbar{position:sticky;top:0;z-index:50;width:100%;display:flex;align-items:center;gap:8px;padding:10px 14px;background:rgba(12,12,16,.9);backdrop-filter:blur(14px);border-bottom:1px solid var(--gold-dim,#3a3428)}
+    .topbar{position:sticky;top:0;z-index:50;width:100%;display:flex;align-items:center;gap:8px;padding:10px 14px;background:rgba(11,18,20,.9);backdrop-filter:blur(14px);border-bottom:1px solid var(--line,rgba(46,230,199,.22))}
     .topbar a.brand{display:flex;align-items:center;gap:8px;text-decoration:none;color:inherit}
     .gmark{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;font:700 15px Outfit,sans-serif;color:#04110a;background:linear-gradient(135deg,#7ee8d4,#8a7cff)}
     .g35{font-weight:700;font-size:22px;background:linear-gradient(135deg,#e8fff8,#6fe0c4 44%,#9b7dff);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
-    .gword{font-size:12px;letter-spacing:.2em;font-weight:600;color:var(--text,#e8e4dc)}
+    .gword{font-size:12px;letter-spacing:.2em;font-weight:600;color:var(--text,#e8fbf6)}
     .header-right{margin-left:auto;display:flex;align-items:center;gap:6px}
     .lang-switch{display:flex;gap:3px}
-    .lang-btn{background:transparent;border:1px solid var(--gold-dim,#3a3428);color:var(--text-muted,#9a958a);padding:5px 6px;border-radius:6px;font-size:10px;cursor:pointer}
-    .lang-btn.on{color:var(--text,#e8e4dc);border-color:var(--gold,#c9a962)}
+    .lang-btn{background:transparent;border:1px solid var(--line,rgba(46,230,199,.22));color:var(--text-muted,#9ab3ad);padding:5px 6px;border-radius:6px;font-size:10px;cursor:pointer}
+    .lang-btn.on{color:var(--text,#e8fbf6);border-color:var(--gold,#2ee6c7)}
+    .house{width:min(720px,calc(100% - 32px));margin:18px auto 0;border-radius:22px;overflow:hidden;border:1px solid var(--line,rgba(46,230,199,.22));background:#050508}
+    .house img{display:block;width:100%;height:auto}
     .theme-wrap{position:relative}
-    .theme-btn{display:flex;align-items:center;gap:6px;background:var(--ink-soft,#14141c);color:var(--text,#e8e4dc);border:1px solid var(--gold-dim,#3a3428);border-radius:999px;padding:6px 10px;font:600 11px Outfit,sans-serif;cursor:pointer}
+    .theme-btn{display:flex;align-items:center;gap:6px;background:var(--ink-soft,#121a19);color:var(--text,#e8fbf6);border:1px solid var(--line,rgba(46,230,199,.22));border-radius:999px;padding:6px 10px;font:600 11px Outfit,sans-serif;cursor:pointer}
     .theme-dot{width:10px;height:10px;border-radius:50%;background:#2ee6c7;display:inline-block}
     .theme-panel{display:none;position:absolute;right:0;top:calc(100% + 8px);min-width:200px;background:#16181d;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:10px;z-index:80}
     .theme-wrap.open .theme-panel{display:block}
@@ -52,9 +52,12 @@
     </div>
   </div>
 
-  <div class="signs signs--top" aria-hidden="true">✝️ 🧿 🪬</div>
+  <figure class="house">
+    <img src="glance-card.jpg" alt="35 GLANCE ElGhaly"/>
+  </figure>
+
   <header class="hero">
-    <p class="hero__brand">elghaly</p>
+    <p class="hero__brand">35 · GLANCE · ElGhaly</p>
     <h1 class="hero__title" id="g-title">Glance</h1>
     <p class="hero__tag" id="g-tag">honest status for Solana bots</p>
   </header>
@@ -62,38 +65,22 @@
   <main>
     <section class="section what">
       <h2 class="section__label">What</h2>
-      <p class="build__text" id="g-what">Fault-first doctor status, redaction, and anti-overclaim tests — open-source observability for Solana operators. Not a trading bot.</p>
+      <p class="build__text" id="g-what">Fault-first doctor status, redaction, and anti-overclaim tests. Not a trading bot.</p>
     </section>
-
     <section class="section demo">
       <h2 class="section__label">Demo</h2>
       <p id="synthetic-banner" class="synthetic-banner" hidden>DEMO / SYNTHETIC — not live bot data</p>
-      <div id="cards" class="cards cards--loading" aria-live="polite">Loading demo fixture…</div>
+      <div id="cards" class="cards cards--loading">Loading demo fixture…</div>
     </section>
-
-    <section class="section install">
-      <h2 class="section__label">Install</h2>
-      <div class="install__blocks">
-        <div class="code-block"><span class="code-block__label">Rust · pre-1.0</span>glance-status = "0.0.0"</div>
-        <div class="code-block"><span class="code-block__label">Python · pre-1.0</span>pip install glance_status</div>
-      </div>
-      <p class="install__note">Coming soon to crates.io and PyPI</p>
-      <p style="margin-top:0.75rem"><a class="install__link" href="https://github.com/Alarm2024/glance-35" target="_blank" rel="noopener">github.com/Alarm2024/glance-35 →</a></p>
-    </section>
-
-    <section class="section public-good">
-      <h2 class="section__label">Public good</h2>
-      <p class="public-good__line">MIT · free forever · no paid tier · no strategy or alpha</p>
-    </section>
-
     <section class="section doors">
       <h2 class="section__label">Doors</h2>
       <div class="doors__grid">
         <a class="door" href="https://35.elghaly.dev/"><span class="door__name">35</span><span class="door__arrow">→</span></a>
+        <a class="door" href="https://quay-35.elghaly.dev/"><span class="door__name">QUAY</span><span class="door__arrow">→</span></a>
+        <a class="door" href="https://plumb-35.elghaly.dev/"><span class="door__name">Plumb</span><span class="door__arrow">→</span></a>
         <a class="door" href="https://elghaly.dev/"><span class="door__name">elghaly</span><span class="door__arrow">→</span></a>
       </div>
     </section>
-
     <section class="section contact">
       <h2 class="section__label">Contact</h2>
       <ul class="contact__list">
@@ -102,8 +89,7 @@
       </ul>
     </section>
   </main>
-
-  <footer class="footer"><p>made by love <span aria-label="love">❤️</span> · We are 24</p><p class="footer__signs" aria-hidden="true">3️⃣ 🧿 5️⃣</p></footer>
+  <footer class="footer"><p>548 Market St, San Francisco, CA 94104</p></footer>
   <script src="themes.js"></script>
   <script src="app.js"></script>
   <script>
