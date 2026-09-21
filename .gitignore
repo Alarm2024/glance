@@ -1,0 +1,6 @@
+lib/rust/glance-status/target/
+python/glance_status/*.egg-info/
+python/glance_status/.pytest_cache/
+__pycache__/
+*.pyc
+.venv/

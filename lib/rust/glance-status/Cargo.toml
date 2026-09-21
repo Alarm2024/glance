@@ -1,0 +1,10 @@
+[package]
+name = "glance-status"
+version = "0.0.0"
+edition = "2021"
+description = "Fault-first doctor status, redaction, and anti-overclaim helpers for Glance"
+license = "MIT"
+[dependencies]
+regex = "1.11"
+
+[dev-dependencies]
