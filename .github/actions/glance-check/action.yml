@@ -1,0 +1,36 @@
+name: glance-check
+description: Fail the check when status strings contain banned overclaim phrases (uses assert_no_overclaim).
+branding:
+  icon: shield
+  color: green
+inputs:
+  paths:
+    description: Newline-separated list of files to scan for status strings (JSON or plain text).
+    required: false
+    default: ''
+  banned-phrases:
+    description: Comma-separated banned overclaim phrases (case-insensitive substring match).
+    required: false
+    default: 'guaranteed,profit,alpha'
+  python-version:
+    description: Python version for running the checker.
+    required: false
+    default: '3.11'
+runs:
+  using: composite
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.python-version }}
+
+    - name: Install glance_status
+      shell: bash
+      run: pip install -e "${{ github.action_path }}/../../../lib/python"
+
+    - name: Run glance-check
+      shell: bash
+      env:
+        GLANCE_CHECK_PATHS: ${{ inputs.paths }}
+        GLANCE_CHECK_BANNED: ${{ inputs.banned-phrases }}
+      run: python "${{ github.action_path }}/check.py"

@@ -26,8 +26,13 @@
   <main>
     <section id="demo" class="section">
       <h2>Demo</h2>
+      <p class="muted">Live playground — paste your own status JSON below, or leave empty for the synthetic fixture. Renders client-side only.</p>
+      <label class="playground" for="playground-input">
+        <span class="playground__label">Status JSON</span>
+        <textarea id="playground-input" class="playground__input" rows="10" spellcheck="false"></textarea>
+      </label>
       <p id="synthetic-banner" class="banner" hidden></p>
-      <div id="cards" class="cards cards--loading">Loading demo fixture…</div>
+      <div id="cards" class="cards"></div>
     </section>
 
     <section id="install" class="section">

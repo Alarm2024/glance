@@ -1,0 +1,8 @@
+[build]
+  publish = "."
+
+[[redirects]]
+  from = "/badge"
+  to = "/.netlify/functions/badge"
+  status = 200
+  force = true

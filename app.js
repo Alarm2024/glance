@@ -19,6 +19,42 @@
     build: 'Build'
   };
 
+  /** Synthetic demo fixture — same data as demo/fixture.json, inlined for instant render. */
+  var DEFAULT_FIXTURE = {
+    synthetic: true,
+    label: 'DEMO / SYNTHETIC — not live bot data',
+    generated_at: '2026-09-20T20:00:00Z',
+    online: {
+      status: 'connected',
+      uptime: '4h 12m',
+      detail: 'Process heartbeat OK (demo fixture)'
+    },
+    posture: {
+      mode: 'observe-only',
+      detail: 'No live-send path armed — monitoring posture'
+    },
+    doctor: {
+      status: 'ok',
+      summary: 'No blocking flags, no active faults',
+      detail: 'Hygiene checks passed · config exclusions applied'
+    },
+    feeds: [
+      { name: 'slot-stream', state: 'ok', age: '1.2s' },
+      { name: 'account-delta', state: 'ok', age: '0.8s' },
+      { name: 'price-oracle', state: 'stale', age: '47s' }
+    ],
+    last_signal: {
+      kind: 'heartbeat',
+      ago: '12s',
+      detail: 'Synthetic tick — no strategy payload'
+    },
+    build: {
+      version: '0.0.0-demo',
+      commit: 'fixture',
+      detail: 'Pre-1.0 grant demo build'
+    }
+  };
+
   function el(tag, className, text) {
     var node = document.createElement(tag);
     if (className) node.className = className;
@@ -130,31 +166,66 @@
     });
   }
 
+  function updateBanner(banner, fixture) {
+    if (!banner) return;
+    if (fixture.label) {
+      banner.textContent = fixture.label;
+      banner.hidden = false;
+    } else if (fixture.synthetic) {
+      banner.textContent = 'DEMO / SYNTHETIC — not live bot data';
+      banner.hidden = false;
+    } else {
+      banner.hidden = true;
+    }
+  }
+
+  function showRenderError(container, message) {
+    container.className = 'cards cards--error';
+    container.textContent = message;
+  }
+
+  function applyFixture(fixture, container, banner) {
+    container.className = 'cards';
+    updateBanner(banner, fixture);
+    renderCards(fixture, container);
+  }
+
+  function parsePlaygroundInput(raw) {
+    var trimmed = (raw || '').trim();
+    if (!trimmed) return { ok: true, fixture: DEFAULT_FIXTURE };
+    try {
+      return { ok: true, fixture: JSON.parse(trimmed) };
+    } catch (err) {
+      return { ok: false, error: 'Invalid JSON — fix syntax or clear the field to use the demo fixture.' };
+    }
+  }
+
   function init() {
     var container = document.getElementById('cards');
     var banner = document.getElementById('synthetic-banner');
+    var textarea = document.getElementById('playground-input');
     if (!container) return;
 
-    container.className = 'cards cards--loading';
-    container.textContent = 'Loading demo fixture…';
+    applyFixture(DEFAULT_FIXTURE, container, banner);
 
-    fetch('./demo/fixture.json', { cache: 'no-store' })
-      .then(function (res) {
-        if (!res.ok) throw new Error('Fixture unavailable');
-        return res.json();
-      })
-      .then(function (fixture) {
-        if (banner && fixture.label) {
-          banner.textContent = fixture.label;
-          banner.hidden = false;
+    if (!textarea) return;
+
+    textarea.value = '';
+    textarea.placeholder = JSON.stringify(DEFAULT_FIXTURE, null, 2);
+
+    var debounceTimer;
+    textarea.addEventListener('input', function () {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(function () {
+        var result = parsePlaygroundInput(textarea.value);
+        if (result.ok) {
+          applyFixture(result.fixture, container, banner);
+        } else {
+          showRenderError(container, result.error);
+          if (banner) banner.hidden = true;
         }
-        container.className = 'cards';
-        renderCards(fixture, container);
-      })
-      .catch(function () {
-        container.className = 'cards cards--error';
-        container.textContent = 'Demo fixture could not be loaded.';
-      });
+      }, 200);
+    });
   }
 
   if (document.readyState === 'loading') {

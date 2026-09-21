@@ -1,0 +1,67 @@
+name: Adoption features
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  glance-check-action:
+    name: glance-check composite action
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run glance-check on demo fixture
+        uses: ./.github/actions/glance-check
+        with:
+          paths: demo/fixture.json
+
+      - name: Fail on overclaim (negative test)
+        shell: bash
+        run: |
+          pip install -e lib/python
+          python - <<'PY'
+          import json, os, subprocess, sys, tempfile
+          from pathlib import Path
+
+          bad = {"doctor": {"summary": "Guaranteed profit every day"}}
+          with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as fh:
+              json.dump(bad, fh)
+              path = fh.name
+
+          env = os.environ.copy()
+          env["GLANCE_CHECK_PATHS"] = path
+          env["GLANCE_CHECK_BANNED"] = "guaranteed,profit,alpha"
+          env["GITHUB_WORKSPACE"] = str(Path.cwd())
+          result = subprocess.run(
+              [sys.executable, ".github/actions/glance-check/check.py"],
+              env=env,
+          )
+          os.unlink(path)
+          if result.returncode != 1:
+              print("Expected exit code 1 for overclaim", file=sys.stderr)
+              sys.exit(1)
+          print("Negative test passed (checker correctly failed)")
+          PY
+
+  badge-endpoint:
+    name: badge SVG generator
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Validate badge SVG output
+        run: |
+          node --input-type=module -e "
+          import { badgeSvg } from './netlify/functions/badge.mjs';
+
+          for (const status of ['ok', 'warn', 'blocking']) {
+            const svg = badgeSvg(status);
+            if (!svg.startsWith('<svg')) throw new Error('not svg for ' + status);
+            if (!svg.includes(status)) throw new Error('missing label for ' + status);
+            console.log(status + ': ok (' + svg.length + ' bytes)');
+          }
+          "
