@@ -1,0 +1,12 @@
+[package]
+name = "glance-status-cli"
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+[[bin]]
+name = "glance-status-cli"
+path = "src/main.rs"
+
+[dependencies]
+glance-status = { path = "../../lib/rust/glance-status" }
