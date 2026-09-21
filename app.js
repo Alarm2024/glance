@@ -10,7 +10,7 @@
     'build'
   ];
 
-  var CARD_LABELS = {
+  var LABELS = {
     online: 'Online',
     posture: 'Posture',
     doctor: 'Doctor',
@@ -19,8 +19,7 @@
     build: 'Build'
   };
 
-  /** Synthetic demo fixture — same data as demo/fixture.json, inlined for instant render. */
-  var DEFAULT_FIXTURE = {
+  var DEMO_FIXTURE = {
     synthetic: true,
     label: 'DEMO / SYNTHETIC — not live bot data',
     generated_at: '2026-09-20T20:00:00Z',
@@ -49,7 +48,7 @@
       detail: 'Synthetic tick — no strategy payload'
     },
     build: {
-      version: '0.0.0-demo',
+      version: '0.1.0-demo',
       commit: 'fixture',
       detail: 'Pre-1.0 grant demo build'
     }
@@ -63,8 +62,7 @@
   }
 
   function badge(text, status) {
-    var b = el('span', 'card__badge card__badge--' + (status || 'info'), text);
-    return b;
+    return el('span', 'card__badge card__badge--' + (status || 'info'), text);
   }
 
   function detail(text) {
@@ -74,7 +72,7 @@
   function renderOnline(data) {
     var card = el('article', 'card');
     var header = el('div', 'card__header');
-    header.appendChild(el('span', 'card__name', CARD_LABELS.online));
+    header.appendChild(el('span', 'card__name', LABELS.online));
     header.appendChild(badge(data.status || 'unknown', data.status === 'connected' ? 'ok' : 'unknown'));
     card.appendChild(header);
     if (data.uptime) card.appendChild(detail('Uptime · ' + data.uptime));
@@ -85,7 +83,7 @@
   function renderPosture(data) {
     var card = el('article', 'card');
     var header = el('div', 'card__header');
-    header.appendChild(el('span', 'card__name', CARD_LABELS.posture));
+    header.appendChild(el('span', 'card__name', LABELS.posture));
     header.appendChild(badge(data.mode || 'unknown', 'info'));
     card.appendChild(header);
     if (data.detail) card.appendChild(detail(data.detail));
@@ -95,7 +93,7 @@
   function renderDoctor(data) {
     var card = el('article', 'card');
     var header = el('div', 'card__header');
-    header.appendChild(el('span', 'card__name', CARD_LABELS.doctor));
+    header.appendChild(el('span', 'card__name', LABELS.doctor));
     header.appendChild(badge(data.status || 'unknown', data.status || 'unknown'));
     card.appendChild(header);
     if (data.summary) card.appendChild(detail(data.summary));
@@ -106,14 +104,15 @@
   function renderFeeds(data) {
     var card = el('article', 'card');
     var header = el('div', 'card__header');
-    header.appendChild(el('span', 'card__name', CARD_LABELS.feeds));
+    header.appendChild(el('span', 'card__name', LABELS.feeds));
+    var feeds = data || [];
     var okCount = 0;
-    (data || []).forEach(function (f) { if (f.state === 'ok') okCount++; });
-    header.appendChild(badge(okCount + '/' + (data || []).length + ' live', okCount === (data || []).length ? 'ok' : 'warn'));
+    feeds.forEach(function (f) { if (f.state === 'ok') okCount++; });
+    header.appendChild(badge(okCount + '/' + feeds.length + ' live', okCount === feeds.length ? 'ok' : 'warn'));
     card.appendChild(header);
 
     var list = el('ul', 'feeds-list');
-    (data || []).forEach(function (feed) {
+    feeds.forEach(function (feed) {
       var li = el('li');
       li.appendChild(el('span', 'feeds-list__name', feed.name));
       var state = el('span', 'feeds-list__state feeds-list__state--' + (feed.state || 'unknown'));
@@ -128,7 +127,7 @@
   function renderLastSignal(data) {
     var card = el('article', 'card');
     var header = el('div', 'card__header');
-    header.appendChild(el('span', 'card__name', CARD_LABELS.last_signal));
+    header.appendChild(el('span', 'card__name', LABELS.last_signal));
     header.appendChild(badge(data.kind || 'signal', 'info'));
     card.appendChild(header);
     if (data.ago) card.appendChild(detail('Received ' + data.ago + ' ago'));
@@ -139,7 +138,7 @@
   function renderBuild(data) {
     var card = el('article', 'card');
     var header = el('div', 'card__header');
-    header.appendChild(el('span', 'card__name', CARD_LABELS.build));
+    header.appendChild(el('span', 'card__name', LABELS.build));
     header.appendChild(badge(data.version || 'unknown', 'info'));
     card.appendChild(header);
     if (data.commit) card.appendChild(detail('Commit · ' + data.commit));
@@ -166,16 +165,21 @@
     });
   }
 
-  function updateBanner(banner, fixture) {
-    if (!banner) return;
-    if (fixture.label) {
-      banner.textContent = fixture.label;
+  function showFixture(fixture, container, banner) {
+    if (!container) return;
+    if (banner) {
+      banner.textContent = fixture.label || 'DEMO / SYNTHETIC — not live bot data';
       banner.hidden = false;
-    } else if (fixture.synthetic) {
-      banner.textContent = 'DEMO / SYNTHETIC — not live bot data';
-      banner.hidden = false;
-    } else {
-      banner.hidden = true;
+    }
+    container.className = 'cards';
+    try {
+      renderCards(fixture, container);
+    } catch (err) {
+      /* keep any existing static HTML cards; never leave cards--loading */
+      container.className = 'cards';
+    }
+    if (!container.querySelector('.card')) {
+      renderCards(DEMO_FIXTURE, container);
     }
   }
 
@@ -184,15 +188,9 @@
     container.textContent = message;
   }
 
-  function applyFixture(fixture, container, banner) {
-    container.className = 'cards';
-    updateBanner(banner, fixture);
-    renderCards(fixture, container);
-  }
-
   function parsePlaygroundInput(raw) {
     var trimmed = (raw || '').trim();
-    if (!trimmed) return { ok: true, fixture: DEFAULT_FIXTURE };
+    if (!trimmed) return { ok: true, fixture: null };
     try {
       return { ok: true, fixture: JSON.parse(trimmed) };
     } catch (err) {
@@ -200,37 +198,87 @@
     }
   }
 
-  function init() {
+  function fetchWithTimeout(url, ms) {
+    if (typeof AbortController === 'undefined') {
+      return fetch(url, { cache: 'no-store' });
+    }
+    var controller = new AbortController();
+    var timer = setTimeout(function () { controller.abort(); }, ms);
+    return fetch(url, { cache: 'no-store', signal: controller.signal }).finally(function () {
+      clearTimeout(timer);
+    });
+  }
+
+  function fetchFixture() {
+    var paths = ['/demo/fixture.json', './demo/fixture.json', 'demo/fixture.json'];
+    var attempt = function (index) {
+      if (index >= paths.length) {
+        return Promise.reject(new Error('all paths failed'));
+      }
+      return fetchWithTimeout(paths[index], 4000).then(function (res) {
+        if (!res.ok) throw new Error('Fixture unavailable');
+        return res.json();
+      }).catch(function () {
+        return attempt(index + 1);
+      });
+    };
+    return attempt(0);
+  }
+
+  function initDemo() {
     var container = document.getElementById('cards');
     var banner = document.getElementById('synthetic-banner');
     var textarea = document.getElementById('playground-input');
     if (!container) return;
 
-    applyFixture(DEFAULT_FIXTURE, container, banner);
+    function isPlaygroundEmpty() {
+      return !textarea || !textarea.value.trim();
+    }
 
-    if (!textarea) return;
+    function applyFromPlayground() {
+      if (isPlaygroundEmpty()) {
+        showFixture(DEMO_FIXTURE, container, banner);
+        return;
+      }
+      var result = parsePlaygroundInput(textarea.value);
+      if (result.ok && result.fixture) {
+        showFixture(result.fixture, container, banner);
+      } else if (!result.ok) {
+        showRenderError(container, result.error);
+        if (banner) banner.hidden = true;
+      }
+    }
 
-    textarea.value = '';
-    textarea.placeholder = JSON.stringify(DEFAULT_FIXTURE, null, 2);
+    /* Always paint inline fixture first — never leave cards--loading */
+    showFixture(DEMO_FIXTURE, container, banner);
 
-    var debounceTimer;
-    textarea.addEventListener('input', function () {
-      clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(function () {
-        var result = parsePlaygroundInput(textarea.value);
-        if (result.ok) {
-          applyFixture(result.fixture, container, banner);
-        } else {
-          showRenderError(container, result.error);
-          if (banner) banner.hidden = true;
+    if (textarea) {
+      textarea.value = '';
+      textarea.placeholder = JSON.stringify(DEMO_FIXTURE, null, 2);
+      var debounceTimer;
+      textarea.addEventListener('input', function () {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(applyFromPlayground, 200);
+      });
+    }
+
+    fetchFixture()
+      .then(function (fixture) {
+        if (isPlaygroundEmpty()) {
+          showFixture(fixture, container, banner);
         }
-      }, 200);
-    });
+      })
+      .catch(function () {
+        /* static HTML / DEMO_FIXTURE already rendered */
+        if (container.classList.contains('cards--loading')) {
+          showFixture(DEMO_FIXTURE, container, banner);
+        }
+      });
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
+    document.addEventListener('DOMContentLoaded', initDemo);
   } else {
-    init();
+    initDemo();
   }
 })();

@@ -39,7 +39,7 @@
     "detail": "Synthetic tick — no strategy payload"
   },
   "build": {
-    "version": "0.0.0-demo",
+    "version": "0.1.0-demo",
     "commit": "fixture",
     "detail": "Pre-1.0 grant demo build"
   }

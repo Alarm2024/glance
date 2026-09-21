@@ -1,22 +1,72 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="midnight">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Glance — open-source honest status for Solana bot operators. MIT." />
-  <meta name="theme-color" content="#0c0c10" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Glance — open-source honest status for Solana bot operators. Fault-first health, redaction, anti-overclaim tests. MIT.">
+  <meta name="theme-color" content="#0b1214">
+  <meta property="og:title" content="Glance — honest status for Solana bots">
+  <meta property="og:description" content="Open-source observability for Solana bot operators. Synthetic demo only.">
+  <meta property="og:image" content="https://glance.elghaly.dev/glance-card.jpg">
+  <meta property="og:image:alt" content="Glance — honest status for Solana bots">
+  <meta property="og:url" content="https://glance.elghaly.dev/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Glance — honest status for Solana bots">
+  <meta name="twitter:description" content="Open-source observability for Solana bot operators. Synthetic demo only.">
+  <meta name="twitter:image" content="https://glance.elghaly.dev/glance-card.jpg">
+  <meta name="twitter:image:alt" content="Glance — honest status for Solana bots">
+  <link rel="canonical" href="https://glance.elghaly.dev/">
   <title>Glance — honest status for Solana bots</title>
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <script>
+    (function () {
+      if (location.hostname === 'glance-35.elghaly.dev') {
+        location.replace('https://glance.elghaly.dev' + location.pathname + location.search + location.hash);
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="css/style.css?v=grant3">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{--font-serif:"Instrument Serif",Georgia,serif;--font-sans:"Inter",ui-sans-serif,system-ui,sans-serif}
+    body{font-family:var(--font-sans)}
+    .gword{font-weight:600;font-size:15px;letter-spacing:.22em;background:linear-gradient(135deg,#d8fff4 0%,#6fe0c4 44%,#9b7dff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+    .house{width:min(640px,calc(100% - 32px));margin:16px auto 0;border-radius:18px;overflow:hidden;border:1px solid var(--gold-dim)}
+    .house img{display:block;width:100%;height:auto}
+    .hero__title,.section__label,.card__name,.public-good__line,.footer p{font-family:var(--font-serif)}
+    .topbar{display:flex;align-items:center;gap:8px}
+    .header-right{margin-left:auto;display:flex;align-items:center;gap:6px;flex-wrap:nowrap}
+    .lang-switch{display:flex;gap:3px;flex-wrap:nowrap}
+  </style>
 </head>
 <body>
+  <div class="topbar">
+    <a class="brand" href="/" aria-label="Glance home">
+      <span class="gmark" aria-hidden="true">G</span>
+      <span class="gword">GLANCE</span>
+    </a>
+    <div class="header-right">
+      <div class="lang-switch" id="langs" role="group" aria-label="Language">
+        <button class="lang-btn on" data-lang="en" type="button">EN</button>
+        <button class="lang-btn" data-lang="ar" type="button">AR</button>
+        <button class="lang-btn" data-lang="ru" type="button">RU</button>
+        <button class="lang-btn" data-lang="zh" type="button">ZH</button>
+        <button class="lang-btn" data-lang="de" type="button">DE</button>
+        <button class="lang-btn" data-lang="es" type="button">ES</button>
+      </div>
+    </div>
+  </div>
+
+  <figure class="house">
+    <img src="glance-card.jpg?v=grant2" width="1200" height="630" alt="Glance — honest status for Solana bots"/>
+  </figure>
+
   <header class="hero">
-    <p class="eyebrow">Open source · Developer tooling</p>
-    <h1>Glance</h1>
-    <p class="lede">Honest status library and dashboard template for Solana bot operators. Fault-first health, redaction, anti-overclaim tests — MIT, free, no strategy included.</p>
-    <p class="actions">
+    <p class="hero__eyebrow">Open source · Developer tooling</p>
+    <h1 class="hero__title">Glance</h1>
+    <p class="hero__tag">Honest status for Solana bots</p>
+    <p class="hero__actions">
       <a class="btn" href="#demo">Demo</a>
       <a class="btn btn--ghost" href="https://github.com/Alarm2024/glance">GitHub</a>
       <a class="btn btn--ghost" href="#install">Install</a>
@@ -24,43 +74,103 @@
   </header>
 
   <main>
-    <section id="demo" class="section">
-      <h2>Demo</h2>
-      <p class="muted">Live playground — paste your own status JSON below, or leave empty for the synthetic fixture. Renders client-side only.</p>
+    <section class="section what" id="what">
+      <h2 class="section__label">What</h2>
+      <p class="build__text">Fault-first doctor status, redaction, and anti-overclaim tests — open-source observability for Solana operators. Not a trading bot.</p>
+    </section>
+
+    <section class="section demo" id="demo">
+      <h2 class="section__label">Demo</h2>
+      <p class="build__text playground__hint">Live playground — paste your own status JSON below, or leave empty for the synthetic fixture. Renders client-side only.</p>
       <label class="playground" for="playground-input">
         <span class="playground__label">Status JSON</span>
-        <textarea id="playground-input" class="playground__input" rows="10" spellcheck="false"></textarea>
+        <textarea id="playground-input" class="playground__input" rows="8" spellcheck="false"></textarea>
       </label>
-      <p id="synthetic-banner" class="banner" hidden></p>
-      <div id="cards" class="cards"></div>
+      <p id="synthetic-banner" class="synthetic-banner">DEMO / SYNTHETIC — not live bot data</p>
+      <div id="cards" class="cards" aria-live="polite">
+        <article class="card">
+          <div class="card__header">
+            <span class="card__name">Online</span>
+            <span class="card__badge card__badge--ok">connected</span>
+          </div>
+          <p class="card__detail">Uptime · 4h 12m</p>
+          <p class="card__detail">Process heartbeat OK (demo fixture)</p>
+        </article>
+        <article class="card">
+          <div class="card__header">
+            <span class="card__name">Posture</span>
+            <span class="card__badge card__badge--info">observe-only</span>
+          </div>
+          <p class="card__detail">No live-send path armed — monitoring posture</p>
+        </article>
+        <article class="card">
+          <div class="card__header">
+            <span class="card__name">Doctor</span>
+            <span class="card__badge card__badge--ok">ok</span>
+          </div>
+          <p class="card__detail">No blocking flags, no active faults</p>
+          <p class="card__detail">Hygiene checks passed · config exclusions applied</p>
+        </article>
+        <article class="card">
+          <div class="card__header">
+            <span class="card__name">Feeds</span>
+            <span class="card__badge card__badge--warn">2/3 live</span>
+          </div>
+          <ul class="feeds-list">
+            <li><span class="feeds-list__name">slot-stream</span><span class="feeds-list__state feeds-list__state--ok">ok · 1.2s</span></li>
+            <li><span class="feeds-list__name">account-delta</span><span class="feeds-list__state feeds-list__state--ok">ok · 0.8s</span></li>
+            <li><span class="feeds-list__name">price-oracle</span><span class="feeds-list__state feeds-list__state--stale">stale · 47s</span></li>
+          </ul>
+        </article>
+        <article class="card">
+          <div class="card__header">
+            <span class="card__name">Last signal</span>
+            <span class="card__badge card__badge--info">heartbeat</span>
+          </div>
+          <p class="card__detail">Received 12s ago</p>
+          <p class="card__detail">Synthetic tick — no strategy payload</p>
+        </article>
+        <article class="card">
+          <div class="card__header">
+            <span class="card__name">Build</span>
+            <span class="card__badge card__badge--info">0.1.0-demo</span>
+          </div>
+          <p class="card__detail">Commit · fixture</p>
+          <p class="card__detail">Pre-1.0 grant demo build</p>
+        </article>
+      </div>
     </section>
 
-    <section id="install" class="section">
-      <h2>Install</h2>
-      <p class="muted">Pre-1.0 stubs. Publish to crates.io / PyPI is a grant milestone.</p>
-      <pre><code># Rust
-glance-status = "0.1.0"
-
-# Python
-pip install glance-status</code></pre>
+    <section class="section install" id="install">
+      <h2 class="section__label">Install</h2>
+      <div class="install__blocks">
+        <div class="code-block"><span class="code-block__label">Rust · pre-1.0</span>glance-status = "0.1.0"</div>
+        <div class="code-block"><span class="code-block__label">Python · pre-1.0</span>pip install glance-status</div>
+      </div>
+      <p class="install__note">Pre-1.0 stubs. Publish to crates.io / PyPI is a grant milestone.</p>
+      <p class="install__repo"><a class="install__link" href="https://github.com/Alarm2024/glance" target="_blank" rel="noopener">github.com/Alarm2024/glance →</a></p>
     </section>
 
-    <section class="section">
-      <h2>Repository</h2>
-      <p><a href="https://github.com/Alarm2024/glance">github.com/Alarm2024/glance</a></p>
-      <p class="muted">Rust + Python libraries · CI · MIT License</p>
+    <section class="section license">
+      <h2 class="section__label">License</h2>
+      <p class="public-good__line">MIT · free forever · no paid tier · synthetic demo data only</p>
     </section>
 
-    <section class="section">
-      <h2>License</h2>
-      <p>MIT · free forever · no paid tier · synthetic demo data only</p>
-      <p class="muted">Contact: <a href="mailto:support@elghaly.dev">support@elghaly.dev</a></p>
+    <section class="section contact">
+      <h2 class="section__label">Contact</h2>
+      <ul class="contact__list">
+        <li><a href="mailto:support@elghaly.dev">support@elghaly.dev</a></li>
+        <li><a href="mailto:admin@elghaly.dev">admin@elghaly.dev</a></li>
+      </ul>
     </section>
   </main>
 
   <footer class="footer">
     <p>Glance · MIT</p>
   </footer>
-  <script src="app.js"></script>
+
+  <script src="themes.js?v=grant3"></script>
+  <script src="i18n.js"></script>
+  <script src="app.js?v=grant2"></script>
 </body>
 </html>
