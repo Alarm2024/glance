@@ -39,7 +39,7 @@
       detail: 'Synthetic tick — no strategy payload'
     },
     build: {
-      version: '0.0.0-demo',
+      version: '0.1.0-demo',
       commit: 'fixture',
       detail: 'Pre-1.0 grant demo build'
     }
@@ -191,13 +191,24 @@
     renderCards(fixture, container);
   }
 
+  function fetchWithTimeout(url, ms) {
+    if (typeof AbortController === 'undefined') {
+      return fetch(url, { cache: 'no-store' });
+    }
+    var controller = new AbortController();
+    var timer = setTimeout(function () { controller.abort(); }, ms);
+    return fetch(url, { cache: 'no-store', signal: controller.signal }).finally(function () {
+      clearTimeout(timer);
+    });
+  }
+
   function fetchFixture() {
     var paths = ['/demo/fixture.json', './demo/fixture.json', 'demo/fixture.json'];
     var attempt = function (index) {
       if (index >= paths.length) {
         return Promise.reject(new Error('all paths failed'));
       }
-      return fetch(paths[index], { cache: 'no-store' }).then(function (res) {
+      return fetchWithTimeout(paths[index], 4000).then(function (res) {
         if (!res.ok) throw new Error('Fixture unavailable');
         return res.json();
       }).catch(function () {
@@ -212,14 +223,14 @@
     var banner = document.getElementById('synthetic-banner');
     if (!container) return;
 
-    showLoading(container);
+    showFixture(DEMO_FIXTURE, container, banner);
 
     fetchFixture()
       .then(function (fixture) {
         showFixture(fixture, container, banner);
       })
       .catch(function () {
-        showFixture(DEMO_FIXTURE, container, banner);
+        /* inline fallback already rendered */
       });
   }
 

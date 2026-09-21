@@ -1,6 +1,6 @@
 [package]
 name = "glance-status"
-version = "0.0.0"
+version = "0.1.0"
 edition = "2021"
 description = "Fault-first doctor status, redaction, and anti-overclaim checks for Glance"
 license = "MIT"
