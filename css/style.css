@@ -246,6 +246,97 @@ body {
   margin-inline: auto;
 }
 
+.status-strip {
+  display: inline-block;
+  margin-top: 0.85rem;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-warm);
+  border: 1px solid var(--gold-dim);
+  border-radius: 999px;
+  background: rgba(46, 230, 199, 0.06);
+}
+
+.signs {
+  margin: 0;
+  text-align: center;
+  font-size: 0.875rem;
+  letter-spacing: 0.35em;
+  color: var(--text-muted);
+  user-select: none;
+}
+
+.signs--top {
+  padding: 0.65rem var(--space-md) 0;
+}
+
+.signs--bottom {
+  margin-bottom: 0.35rem;
+  letter-spacing: 0.25em;
+}
+
+.bullets {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  max-width: 28rem;
+  margin-inline: auto;
+  text-align: left;
+}
+
+.bullets li {
+  position: relative;
+  padding-left: 1.1rem;
+  font-size: 0.9375rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.bullets li::before {
+  content: "·";
+  position: absolute;
+  left: 0;
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.playground-advanced {
+  margin-top: var(--space-sm);
+  max-width: 28rem;
+  margin-inline: auto;
+  text-align: left;
+}
+
+.playground-advanced summary {
+  cursor: pointer;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  padding: 0.35rem 0;
+  list-style: none;
+}
+
+.playground-advanced summary::-webkit-details-marker {
+  display: none;
+}
+
+.playground-advanced[open] summary {
+  margin-bottom: 0.5rem;
+  color: var(--gold);
+}
+
+.btn--primary {
+  min-height: 44px;
+  min-width: 8.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .hero__actions {
   display: flex;
   flex-wrap: wrap;
@@ -604,6 +695,43 @@ main {
 
 html[dir="rtl"] .card:hover {
   transform: translateX(-4px);
+}
+
+@media (max-width: 480px) {
+  .hero {
+    padding-top: var(--space-md);
+    padding-inline: var(--space-sm);
+  }
+
+  .hero__actions {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    max-width: 20rem;
+    margin-inline: auto;
+  }
+
+  .hero__actions .btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .lang-btn {
+    padding: 4px 5px;
+    font-size: 9px;
+  }
+
+  .house {
+    width: calc(100% - 24px);
+    margin-top: 12px;
+  }
+
+  .status-strip {
+    font-size: 0.625rem;
+    letter-spacing: 0.1em;
+    max-width: calc(100% - 1rem);
+    line-height: 1.4;
+  }
 }
 
 @media (min-width: 768px) {

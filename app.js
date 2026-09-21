@@ -61,8 +61,8 @@
       detail: 'Process heartbeat OK (demo fixture)'
     },
     posture: {
-      mode: 'observe-only',
-      detail: 'No live-send path armed — monitoring posture'
+      mode: 'dry compose',
+      detail: 'Eyes + dry compose · no auto-send'
     },
     doctor: {
       status: 'ok',
@@ -82,7 +82,7 @@
     build: {
       version: '0.1.0-demo',
       commit: 'fixture',
-      detail: 'Pre-1.0 grant demo build'
+      detail: 'Pre-1.0 demo build'
     }
   };
 
@@ -140,7 +140,7 @@
     var feeds = data || [];
     var okCount = 0;
     feeds.forEach(function (f) { if (f.state === 'ok') okCount++; });
-    header.appendChild(badge(okCount + '/' + feeds.length + ' live', okCount === feeds.length ? 'ok' : 'warn'));
+    header.appendChild(badge(okCount + '/' + feeds.length + ' ok', okCount === feeds.length ? 'ok' : 'warn'));
     card.appendChild(header);
 
     var list = el('ul', 'feeds-list');
@@ -315,9 +315,21 @@
       });
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initDemo);
-  } else {
+  function scrollToDemoIfRequested() {
+    if (location.hash !== '#demo') return;
+    var demo = document.getElementById('demo');
+    if (demo) demo.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function mount() {
     initDemo();
+    scrollToDemoIfRequested();
+    window.addEventListener('hashchange', scrollToDemoIfRequested);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', mount);
+  } else {
+    mount();
   }
 })();
