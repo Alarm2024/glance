@@ -4,7 +4,10 @@ version = "0.1.0"
 edition = "2021"
 description = "Fault-first doctor status, redaction, and anti-overclaim checks for Glance"
 license = "MIT"
-readme = "../../../README.md"
+readme = "README.md"
+repository = "https://github.com/Alarm2024/glance"
+keywords = ["glance", "solana", "observability", "status"]
+categories = ["development-tools"]
 
 [dependencies]
 regex = "1.10"

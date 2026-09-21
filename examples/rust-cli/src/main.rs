@@ -1,6 +1,6 @@
-//! Minimal CLI demo for classify_fault, redact, and assert_no_overclaim.
+//! Minimal CLI demo for classify, redact, and assert_no_overclaim.
 
-use glance_status::{assert_no_overclaim, classify_fault, redact, ClassifierInput, DoctorStatus};
+use glance_status::{assert_no_overclaim, classify, redact, ClassifyInput, DoctorStatus};
 use std::env;
 use std::process;
 
@@ -11,12 +11,11 @@ fn main() {
     match cmd.as_str() {
         "classify" => {
             let message = args.next().unwrap_or_else(|| "Hygiene checks passed".to_string());
-            let status = classify_fault(ClassifierInput {
-                blocking: false,
-                message: &message,
-                hygiene_phrases: &["hygiene", "passed"],
-                fault_phrases: &["stale", "timeout", "degraded"],
-                eyes_fault_phrases: &["observer fault", "eyes offline"],
+            let status = classify(&ClassifyInput {
+                blocking_flag: false,
+                hygiene_phrases: vec!["hygiene".into(), "passed".into()],
+                fault_phrases: vec!["stale".into(), "timeout".into(), "degraded".into()],
+                raw_message: message,
             });
             println!("{}", status.as_str());
         }
@@ -33,14 +32,16 @@ fn main() {
                 eprintln!("usage: glance-status-cli assert-no-overclaim <status> [banned...]");
                 process::exit(1);
             });
-            let banned: Vec<String> = args.collect();
-            let default = ["guaranteed", "profit", "alpha"];
-            let phrases: Vec<&str> = if banned.is_empty() {
-                default.to_vec()
+            let banned: Vec<String> = if args.len() > 0 {
+                args.collect()
             } else {
-                banned.iter().map(String::as_str).collect()
+                vec![
+                    "guaranteed".into(),
+                    "profit".into(),
+                    "alpha".into(),
+                ]
             };
-            match assert_no_overclaim(&status, &phrases) {
+            match assert_no_overclaim(&status, &banned) {
                 Ok(()) => println!("ok"),
                 Err(e) => {
                     eprintln!("{e}");
@@ -49,16 +50,15 @@ fn main() {
             }
         }
         "demo" => {
-            let status = classify_fault(ClassifierInput {
-                blocking: false,
-                message: "Feed stale for 47s",
-                hygiene_phrases: &["hygiene"],
-                fault_phrases: &["stale"],
-                eyes_fault_phrases: &["observer fault"],
+            let status = classify(&ClassifyInput {
+                blocking_flag: false,
+                hygiene_phrases: vec!["hygiene".into()],
+                fault_phrases: vec!["stale".into()],
+                raw_message: "Feed stale for 47s".into(),
             });
             assert_eq!(status, DoctorStatus::Warn);
             let safe = redact("see https://example.com/x?token=secret");
-            assert_no_overclaim(&safe, &["guaranteed profit"]).unwrap();
+            assert_no_overclaim(&safe, &["guaranteed profit".into()]).unwrap();
             println!("demo ok · status={} · redacted={safe}", status.as_str());
         }
         _ => usage(),

@@ -3,14 +3,33 @@ requires = ["setuptools>=61"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "glance_status"
+name = "glance-status"
 version = "0.1.0"
-description = "Thin Python mirror of glance-status (pre-1.0 M1 skeleton)"
-license = { text = "MIT" }
+description = "Fault-first doctor status, redaction, and anti-overclaim checks for Glance"
+readme = "README.md"
+license = "MIT"
 requires-python = ">=3.9"
+authors = [{ name = "Glance contributors" }]
+keywords = ["glance", "solana", "observability", "status"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Software Development :: Libraries",
+]
+
+[project.urls]
+Homepage = "https://glance.elghaly.dev/"
+Repository = "https://github.com/Alarm2024/glance"
+Documentation = "https://github.com/Alarm2024/glance/blob/main/docs/add-glance-in-15-minutes.md"
 
 [project.optional-dependencies]
-dev = ["pytest>=7.0"]
+dev = ["pytest>=7.0", "build>=1.0", "twine>=4.0"]
 
 [tool.setuptools.packages.find]
 where = ["."]

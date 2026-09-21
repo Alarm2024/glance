@@ -73,6 +73,14 @@ mod tests {
     }
 
     #[test]
+    fn strips_bearer_token() {
+        let raw = "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.payload.sig";
+        let out = redact(raw);
+        assert!(out.contains(REDACTED_SECRET));
+        assert!(!out.contains("eyJhbGci"));
+    }
+
+    #[test]
     fn leaves_benign_text() {
         let raw = "Process heartbeat OK (demo fixture)";
         assert_eq!(redact(raw), raw);

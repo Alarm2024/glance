@@ -1,13 +1,13 @@
 //! Glance status primitives — doctor classification, redaction, anti-overclaim checks.
 //!
-//! Pre-1.0 M1 skeleton. Synthetic demo data only; no live bot wiring.
+//! Synthetic demo data only; no live bot wiring.
 
 mod classifier;
 mod overclaim;
 mod redact;
 
-pub use classifier::{classify_fault, ClassifierInput, DoctorStatus};
-pub use overclaim::{assert_no_overclaim, OverclaimError};
+pub use classifier::{classify, ClassifyInput, DoctorStatus};
+pub use overclaim::assert_no_overclaim;
 pub use redact::redact;
 
 #[cfg(test)]
@@ -25,16 +25,26 @@ mod integration_tests {
 
     #[test]
     fn end_to_end_fixture_doctor_line() {
-        let status = classify_fault(ClassifierInput {
-            blocking: false,
-            message: "Hygiene checks passed · config exclusions applied",
-            hygiene_phrases: &["hygiene", "config exclusion"],
-            fault_phrases: &["fault", "error", "stale feed"],
-            eyes_fault_phrases: &["eyes offline", "observer fault"],
+        let status = classify(&ClassifyInput {
+            blocking_flag: false,
+            hygiene_phrases: vec![
+                "hygiene".into(),
+                "config exclusion".into(),
+            ],
+            fault_phrases: vec![
+                "fault".into(),
+                "error".into(),
+                "stale feed".into(),
+            ],
+            raw_message: "Hygiene checks passed · config exclusions applied".into(),
         });
         assert_eq!(status, DoctorStatus::Ok);
 
         let redacted = redact("detail ok");
-        assert_no_overclaim(&redacted, &["guaranteed profit", "alpha leak"]).unwrap();
+        assert_no_overclaim(
+            &redacted,
+            &["guaranteed profit".into(), "alpha leak".into()],
+        )
+        .unwrap();
     }
 }
