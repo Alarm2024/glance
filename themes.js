@@ -49,7 +49,7 @@
       panel.appendChild(b);
     });
     wrap.appendChild(panel);
-    var host=document.querySelector('.header-right')||document.querySelector('header');
+    var host=document.querySelector('.topbar .header-right')||document.querySelector('.topbar');
     if(host) host.appendChild(wrap);
     document.getElementById('themeOpen').onclick=function(e){e.stopPropagation();wrap.classList.toggle('open');};
     document.addEventListener('click',function(){wrap.classList.remove('open');});
