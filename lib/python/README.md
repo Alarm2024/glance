@@ -2,16 +2,20 @@
 
 Python port of the Glance `glance-status` crate: doctor classification, redaction, and anti-overclaim checks.
 
+**Status:** pre-1.0 · not yet on [PyPI](https://pypi.org/project/glance-status/).
+
 ## Install
 
-```bash
-pip install glance-status
-```
-
-Or editable from this repository:
+Editable from this repository:
 
 ```bash
 pip install -e lib/python
+```
+
+After publish (not live yet):
+
+```bash
+pip install glance-status
 ```
 
 ## Usage

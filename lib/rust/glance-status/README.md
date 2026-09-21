@@ -2,17 +2,20 @@
 
 Rust library for Glance honest status: doctor classification, redaction, and anti-overclaim checks.
 
+**Status:** pre-1.0 · not yet on [crates.io](https://crates.io/crates/glance-status).
+
 ## Install
 
-```toml
-[dependencies]
-glance-status = "0.1.0"
-```
-
-Or from this repository:
+From this repository:
 
 ```toml
 glance-status = { path = "lib/rust/glance-status" }
+```
+
+After publish (not live yet):
+
+```toml
+glance-status = "0.1.0"
 ```
 
 ## Usage
