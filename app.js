@@ -10,6 +10,15 @@
     'build'
   ];
 
+  var LABELS = {
+    online: 'Online',
+    posture: 'Posture',
+    doctor: 'Doctor',
+    feeds: 'Feeds',
+    last_signal: 'Last signal',
+    build: 'Build'
+  };
+
   var DEMO_FIXTURE = {
     synthetic: true,
     label: 'DEMO / SYNTHETIC — not live bot data',
@@ -45,21 +54,6 @@
     }
   };
 
-  function t(key) {
-    return window.GlanceI18n ? window.GlanceI18n.t(key) : key;
-  }
-
-  function cardLabels() {
-    return {
-      online: t('cardOnline'),
-      posture: t('cardPosture'),
-      doctor: t('cardDoctor'),
-      feeds: t('cardFeeds'),
-      last_signal: t('cardLastSignal'),
-      build: t('cardBuild')
-    };
-  }
-
   function el(tag, className, text) {
     var node = document.createElement(tag);
     if (className) node.className = className;
@@ -75,31 +69,31 @@
     return el('p', 'card__detail', text);
   }
 
-  function renderOnline(data, labels) {
+  function renderOnline(data) {
     var card = el('article', 'card');
     var header = el('div', 'card__header');
-    header.appendChild(el('span', 'card__name', labels.online));
+    header.appendChild(el('span', 'card__name', LABELS.online));
     header.appendChild(badge(data.status || 'unknown', data.status === 'connected' ? 'ok' : 'unknown'));
     card.appendChild(header);
-    if (data.uptime) card.appendChild(detail(t('uptime') + ' · ' + data.uptime));
+    if (data.uptime) card.appendChild(detail('Uptime · ' + data.uptime));
     if (data.detail) card.appendChild(detail(data.detail));
     return card;
   }
 
-  function renderPosture(data, labels) {
+  function renderPosture(data) {
     var card = el('article', 'card');
     var header = el('div', 'card__header');
-    header.appendChild(el('span', 'card__name', labels.posture));
+    header.appendChild(el('span', 'card__name', LABELS.posture));
     header.appendChild(badge(data.mode || 'unknown', 'info'));
     card.appendChild(header);
     if (data.detail) card.appendChild(detail(data.detail));
     return card;
   }
 
-  function renderDoctor(data, labels) {
+  function renderDoctor(data) {
     var card = el('article', 'card');
     var header = el('div', 'card__header');
-    header.appendChild(el('span', 'card__name', labels.doctor));
+    header.appendChild(el('span', 'card__name', LABELS.doctor));
     header.appendChild(badge(data.status || 'unknown', data.status || 'unknown'));
     card.appendChild(header);
     if (data.summary) card.appendChild(detail(data.summary));
@@ -107,14 +101,14 @@
     return card;
   }
 
-  function renderFeeds(data, labels) {
+  function renderFeeds(data) {
     var card = el('article', 'card');
     var header = el('div', 'card__header');
-    header.appendChild(el('span', 'card__name', labels.feeds));
+    header.appendChild(el('span', 'card__name', LABELS.feeds));
     var feeds = data || [];
     var okCount = 0;
     feeds.forEach(function (f) { if (f.state === 'ok') okCount++; });
-    header.appendChild(badge(okCount + '/' + feeds.length + ' ' + t('live'), okCount === feeds.length ? 'ok' : 'warn'));
+    header.appendChild(badge(okCount + '/' + feeds.length + ' live', okCount === feeds.length ? 'ok' : 'warn'));
     card.appendChild(header);
 
     var list = el('ul', 'feeds-list');
@@ -130,24 +124,24 @@
     return card;
   }
 
-  function renderLastSignal(data, labels) {
+  function renderLastSignal(data) {
     var card = el('article', 'card');
     var header = el('div', 'card__header');
-    header.appendChild(el('span', 'card__name', labels.last_signal));
+    header.appendChild(el('span', 'card__name', LABELS.last_signal));
     header.appendChild(badge(data.kind || 'signal', 'info'));
     card.appendChild(header);
-    if (data.ago) card.appendChild(detail(t('received') + ' ' + data.ago + ' ' + t('ago')));
+    if (data.ago) card.appendChild(detail('Received ' + data.ago + ' ago'));
     if (data.detail) card.appendChild(detail(data.detail));
     return card;
   }
 
-  function renderBuild(data, labels) {
+  function renderBuild(data) {
     var card = el('article', 'card');
     var header = el('div', 'card__header');
-    header.appendChild(el('span', 'card__name', labels.build));
+    header.appendChild(el('span', 'card__name', LABELS.build));
     header.appendChild(badge(data.version || 'unknown', 'info'));
     card.appendChild(header);
-    if (data.commit) card.appendChild(detail(t('commit') + ' · ' + data.commit));
+    if (data.commit) card.appendChild(detail('Commit · ' + data.commit));
     if (data.detail) card.appendChild(detail(data.detail));
     return card;
   }
@@ -162,33 +156,31 @@
   };
 
   function renderCards(fixture, container) {
-    var labels = cardLabels();
     container.innerHTML = '';
     CARD_ORDER.forEach(function (key) {
       var data = fixture[key];
       if (data == null) return;
       var renderer = RENDERERS[key];
-      if (renderer) container.appendChild(renderer(data, labels));
+      if (renderer) container.appendChild(renderer(data));
     });
   }
 
-  function showLoading(container) {
-    container.className = 'cards cards--loading';
-    container.textContent = t('loading');
-  }
-
-  function showError(container) {
-    container.className = 'cards cards--error';
-    container.textContent = t('loadError');
-  }
-
   function showFixture(fixture, container, banner) {
+    if (!container) return;
     if (banner) {
-      banner.textContent = fixture.label || t('syntheticFallback');
+      banner.textContent = fixture.label || 'DEMO / SYNTHETIC — not live bot data';
       banner.hidden = false;
     }
     container.className = 'cards';
-    renderCards(fixture, container);
+    try {
+      renderCards(fixture, container);
+    } catch (err) {
+      /* keep any existing static HTML cards; never leave cards--loading */
+      container.className = 'cards';
+    }
+    if (!container.querySelector('.card')) {
+      renderCards(DEMO_FIXTURE, container);
+    }
   }
 
   function fetchWithTimeout(url, ms) {
@@ -223,6 +215,7 @@
     var banner = document.getElementById('synthetic-banner');
     if (!container) return;
 
+    /* Always paint inline fixture first — never leave cards--loading */
     showFixture(DEMO_FIXTURE, container, banner);
 
     fetchFixture()
@@ -230,7 +223,10 @@
         showFixture(fixture, container, banner);
       })
       .catch(function () {
-        /* inline fallback already rendered */
+        /* static HTML / DEMO_FIXTURE already rendered */
+        if (container.classList.contains('cards--loading')) {
+          showFixture(DEMO_FIXTURE, container, banner);
+        }
       });
   }
 
@@ -239,14 +235,4 @@
   } else {
     initDemo();
   }
-
-  document.addEventListener('glance:lang', function () {
-    var container = document.getElementById('cards');
-    if (!container || container.classList.contains('cards--loading') || container.classList.contains('cards--error')) {
-      return;
-    }
-    fetchFixture()
-      .then(function (fixture) { renderCards(fixture, container); })
-      .catch(function () { renderCards(DEMO_FIXTURE, container); });
-  });
 })();
