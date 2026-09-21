@@ -1,4 +1,4 @@
-//! Fault classifier — blocking flag, then hygiene exclusion, then fault allowlist.
+//! Fault classifier — blocking flag, hygiene exclusion, fault allowlist, then unknown.
 
 /// Doctor card status values (matches demo/fixture.json `doctor.status`).
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
@@ -22,108 +22,102 @@ impl DoctorStatus {
     }
 }
 
-/// Inputs for fault classification. Order of evaluation is fixed:
-/// 1. blocking flag
-/// 2. hygiene / info exclusion
-/// 3. caller-supplied fault-phrase allowlist (eyes faults checked first)
+/// Inputs for doctor status classification.
+///
+/// Evaluation order is fixed:
+/// 1. `blocking_flag`
+/// 2. hygiene / info exclusion (`hygiene_phrases`)
+/// 3. caller-supplied fault allowlist (`fault_phrases`)
+/// 4. [`DoctorStatus::Unknown`]
 #[derive(Debug, Clone)]
-pub struct ClassifierInput<'a> {
-    pub blocking: bool,
-    pub message: &'a str,
-    pub hygiene_phrases: &'a [&'a str],
-    pub fault_phrases: &'a [&'a str],
-    pub eyes_fault_phrases: &'a [&'a str],
+pub struct ClassifyInput {
+    pub blocking_flag: bool,
+    pub hygiene_phrases: Vec<String>,
+    pub fault_phrases: Vec<String>,
+    pub raw_message: String,
 }
 
 /// Classify a doctor message into a [`DoctorStatus`].
-pub fn classify_fault(input: ClassifierInput<'_>) -> DoctorStatus {
-    if input.blocking {
+pub fn classify(input: &ClassifyInput) -> DoctorStatus {
+    if input.blocking_flag {
         return DoctorStatus::Blocking;
     }
 
-    let msg = input.message.to_ascii_lowercase();
+    let msg = input.raw_message.to_ascii_lowercase();
 
-    for phrase in input.hygiene_phrases {
+    for phrase in &input.hygiene_phrases {
         if msg.contains(&phrase.to_ascii_lowercase()) {
             return DoctorStatus::Ok;
         }
     }
 
-    for phrase in input.eyes_fault_phrases {
-        if msg.contains(&phrase.to_ascii_lowercase()) {
-            return DoctorStatus::EyesFault;
-        }
-    }
-
-    for phrase in input.fault_phrases {
+    for phrase in &input.fault_phrases {
         if msg.contains(&phrase.to_ascii_lowercase()) {
             return DoctorStatus::Warn;
         }
     }
 
-    if msg.trim().is_empty() {
-        DoctorStatus::Unknown
-    } else {
-        DoctorStatus::Ok
-    }
+    DoctorStatus::Unknown
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
 
-    fn base_input(message: &str) -> ClassifierInput<'_> {
-        ClassifierInput {
-            blocking: false,
-            message,
-            hygiene_phrases: &["hygiene", "heartbeat ok", "passed"],
-            fault_phrases: &["stale", "timeout", "degraded"],
-            eyes_fault_phrases: &["eyes offline", "observer fault"],
+    fn base_input(raw_message: impl Into<String>) -> ClassifyInput {
+        ClassifyInput {
+            blocking_flag: false,
+            hygiene_phrases: vec![
+                "hygiene".into(),
+                "heartbeat ok".into(),
+                "passed".into(),
+            ],
+            fault_phrases: vec![
+                "stale".into(),
+                "timeout".into(),
+                "degraded".into(),
+            ],
+            raw_message: raw_message.into(),
         }
     }
 
     #[test]
-    fn blocking_flag_wins() {
-        let status = classify_fault(ClassifierInput {
-            blocking: true,
-            ..base_input("anything")
+    fn blocking_overrides_everything() {
+        let status = classify(&ClassifyInput {
+            blocking_flag: true,
+            ..base_input("Hygiene checks passed · stale feed")
         });
         assert_eq!(status, DoctorStatus::Blocking);
     }
 
     #[test]
-    fn hygiene_exclusion_before_faults() {
-        let status = classify_fault(base_input("Hygiene checks passed · stale ignored"));
+    fn hygiene_never_classifies_as_fault() {
+        let status = classify(&base_input(
+            "Hygiene checks passed · stale ignored for now",
+        ));
         assert_eq!(status, DoctorStatus::Ok);
     }
 
     #[test]
-    fn eyes_fault_from_allowlist() {
-        let status = classify_fault(base_input("Observer fault on slot stream"));
-        assert_eq!(status, DoctorStatus::EyesFault);
-    }
-
-    #[test]
     fn warn_from_fault_allowlist() {
-        let status = classify_fault(base_input("Feed stale for 47s"));
+        let status = classify(&base_input("Feed stale for 47s"));
         assert_eq!(status, DoctorStatus::Warn);
     }
 
     #[test]
     fn unknown_on_empty_message() {
-        let status = classify_fault(ClassifierInput {
-            blocking: false,
-            message: "   ",
-            hygiene_phrases: &[],
-            fault_phrases: &[],
-            eyes_fault_phrases: &[],
+        let status = classify(&ClassifyInput {
+            blocking_flag: false,
+            hygiene_phrases: vec![],
+            fault_phrases: vec![],
+            raw_message: "   ".into(),
         });
         assert_eq!(status, DoctorStatus::Unknown);
     }
 
     #[test]
-    fn ok_when_no_fault_phrases_match() {
-        let status = classify_fault(base_input("All nominal"));
-        assert_eq!(status, DoctorStatus::Ok);
+    fn unknown_when_no_phrase_matches() {
+        let status = classify(&base_input("All nominal"));
+        assert_eq!(status, DoctorStatus::Unknown);
     }
 }

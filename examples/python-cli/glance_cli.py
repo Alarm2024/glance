@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
-"""Minimal CLI demo for classify_fault, redact, and assert_no_overclaim."""
+"""Minimal CLI demo for classify, redact, and assert_no_overclaim."""
 
 from __future__ import annotations
 
 import sys
 
 from glance_status import (
+    ClassifyInput,
     DoctorStatus,
-    OverclaimError,
     assert_no_overclaim,
-    classify_fault,
+    classify,
     redact,
 )
 
@@ -26,12 +26,13 @@ def main() -> None:
 
     if cmd == "classify":
         message = sys.argv[2] if len(sys.argv) > 2 else "Hygiene checks passed"
-        status = classify_fault(
-            blocking=False,
-            message=message,
-            hygiene_phrases=["hygiene", "passed"],
-            fault_phrases=["stale", "timeout", "degraded"],
-            eyes_fault_phrases=["observer fault", "eyes offline"],
+        status = classify(
+            ClassifyInput(
+                blocking_flag=False,
+                raw_message=message,
+                hygiene_phrases=["hygiene", "passed"],
+                fault_phrases=["stale", "timeout", "degraded"],
+            )
         )
         print(status.value)
 
@@ -54,15 +55,18 @@ def main() -> None:
         try:
             assert_no_overclaim(status_text, banned)
             print("ok")
-        except OverclaimError as exc:
+        except ValueError as exc:
             print(exc, file=sys.stderr)
             raise SystemExit(1) from exc
 
     elif cmd == "demo":
-        status = classify_fault(
-            blocking=False,
-            message="Feed stale for 47s",
-            fault_phrases=["stale"],
+        status = classify(
+            ClassifyInput(
+                blocking_flag=False,
+                raw_message="Feed stale for 47s",
+                hygiene_phrases=["hygiene"],
+                fault_phrases=["stale"],
+            )
         )
         assert status == DoctorStatus.WARN
         safe = redact("see https://example.com/x?token=secret")

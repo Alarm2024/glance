@@ -6,42 +6,63 @@ Open-source honest status for Solana bot operators.
 
 ## Install
 
-| Language | Path / package | Status |
-|----------|----------------|--------|
-| Rust | `lib/rust/glance-status` (`glance-status`) | pre-1.0 local path |
-| Python | `lib/python` (`glance_status`) | pre-1.0 editable install |
+| Language | Package | Registry |
+|----------|---------|----------|
+| Rust | `glance-status` | [crates.io/crates/glance-status](https://crates.io/crates/glance-status) |
+| Python | `glance-status` | [pypi.org/project/glance-status](https://pypi.org/project/glance-status/) |
 
 ```bash
-# Rust — add to Cargo.toml
-glance-status = { path = "lib/rust/glance-status" }
+# Rust — Cargo.toml
+glance-status = "0.1.0"
 
 # Python
+pip install glance-status
+```
+
+Local development:
+
+```bash
+# Rust path dependency
+glance-status = { path = "lib/rust/glance-status" }
+
+# Python editable
 pip install -e lib/python
 ```
 
 ## Usage
 
 ```rust
-use glance_status::{assert_no_overclaim, classify_fault, redact, ClassifierInput, DoctorStatus};
+use glance_status::{assert_no_overclaim, classify, redact, ClassifyInput, DoctorStatus};
 
-let status = classify_fault(ClassifierInput {
-    blocking: false,
-    message: "Hygiene checks passed",
-    hygiene_phrases: &["hygiene"],
-    fault_phrases: &["stale"],
-    eyes_fault_phrases: &["observer fault"],
+let status = classify(&ClassifyInput {
+    blocking_flag: false,
+    hygiene_phrases: vec!["hygiene".into()],
+    fault_phrases: vec!["stale".into()],
+    raw_message: "Feed stale for 47s".into(),
 });
+assert_eq!(status, DoctorStatus::Warn);
+
 let safe = redact("see https://example.com/x?token=secret");
-assert_no_overclaim(&safe, &["guaranteed profit"]).unwrap();
+assert_no_overclaim(&safe, &["guaranteed".into()]).unwrap();
 ```
 
 ```python
-from glance_status import classify_fault, redact, assert_no_overclaim
+from glance_status import ClassifyInput, DoctorStatus, assert_no_overclaim, classify, redact
 
-status = classify_fault(blocking=False, message="Feed stale", fault_phrases=["stale"])
+status = classify(
+    ClassifyInput(
+        blocking_flag=False,
+        raw_message="Feed stale for 47s",
+        fault_phrases=["stale"],
+    )
+)
+assert status == DoctorStatus.WARN
+
 safe = redact("auth sk-live-abcdefghijklmnopqrstuvwxyz")
 assert_no_overclaim(safe, ["profit"])
 ```
+
+See [Add Glance in 15 minutes](docs/add-glance-in-15-minutes.md) for a quick integration guide.
 
 ## Examples
 
@@ -67,7 +88,7 @@ cd lib/python && pip install -e ".[dev]" && python -m pytest -v
 cd examples/rust-cli && cargo run -- demo
 ```
 
-GitHub Actions runs Rust + Python tests on every pull request.
+GitHub Actions runs Rust + Python tests on every pull request. Releases publish to crates.io and PyPI.
 
 ## License
 

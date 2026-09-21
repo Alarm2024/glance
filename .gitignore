@@ -7,3 +7,4 @@ examples/rust-cli/Cargo.lock
 **/*.egg-info/
 **/.pytest_cache/
 **/.venv/
+**/dist/

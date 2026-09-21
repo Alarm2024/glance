@@ -1,10 +1,11 @@
-"""Glance status — Python mirror of the Rust glance-status M1 skeleton."""
+"""Glance status — Python port of the glance-status Rust crate."""
 
 from __future__ import annotations
 
 import re
+from dataclasses import dataclass, field
 from enum import Enum
-from typing import Iterable, Sequence
+from typing import Iterable
 
 
 class DoctorStatus(str, Enum):
@@ -15,12 +16,12 @@ class DoctorStatus(str, Enum):
     UNKNOWN = "unknown"
 
 
-class OverclaimError(Exception):
-    """Raised when a status string contains a banned overclaim phrase."""
-
-    def __init__(self, phrase: str) -> None:
-        self.phrase = phrase
-        super().__init__(f"status string contains banned overclaim phrase: {phrase!r}")
+@dataclass
+class ClassifyInput:
+    blocking_flag: bool
+    raw_message: str
+    hygiene_phrases: list[str] = field(default_factory=list)
+    fault_phrases: list[str] = field(default_factory=list)
 
 
 _URL_WITH_QUERY = re.compile(r"https?://[^\s]+?\?[^\s#]+")
@@ -35,36 +36,22 @@ _REDACTED_KEY = "[REDACTED_KEY]"
 _REDACTED_SECRET = "[REDACTED_SECRET]"
 
 
-def classify_fault(
-    *,
-    blocking: bool,
-    message: str,
-    hygiene_phrases: Sequence[str] = (),
-    fault_phrases: Sequence[str] = (),
-    eyes_fault_phrases: Sequence[str] = (),
-) -> DoctorStatus:
-    """Classify a doctor message (blocking → hygiene → fault allowlist)."""
-    if blocking:
+def classify(input: ClassifyInput) -> DoctorStatus:
+    """Classify a doctor message (blocking → hygiene → fault allowlist → unknown)."""
+    if input.blocking_flag:
         return DoctorStatus.BLOCKING
 
-    msg = message.lower()
+    msg = input.raw_message.lower()
 
-    for phrase in hygiene_phrases:
+    for phrase in input.hygiene_phrases:
         if phrase.lower() in msg:
             return DoctorStatus.OK
 
-    for phrase in eyes_fault_phrases:
-        if phrase.lower() in msg:
-            return DoctorStatus.EYES_FAULT
-
-    for phrase in fault_phrases:
+    for phrase in input.fault_phrases:
         if phrase.lower() in msg:
             return DoctorStatus.WARN
 
-    if not msg.strip():
-        return DoctorStatus.UNKNOWN
-
-    return DoctorStatus.OK
+    return DoctorStatus.UNKNOWN
 
 
 def redact(input_text: str) -> str:
@@ -77,18 +64,20 @@ def redact(input_text: str) -> str:
     return out
 
 
-def assert_no_overclaim(status: str, banned_phrases: Iterable[str]) -> None:
-    """Raise OverclaimError if status contains any banned phrase (case-insensitive)."""
-    lower = status.lower()
-    for phrase in banned_phrases:
+def assert_no_overclaim(status_text: str, banned: Iterable[str]) -> None:
+    """Raise ValueError if status_text contains any banned phrase (case-insensitive)."""
+    lower = status_text.lower()
+    for phrase in banned:
         if phrase.lower() in lower:
-            raise OverclaimError(phrase)
+            raise ValueError(
+                f"status string contains banned overclaim phrase: {phrase!r}"
+            )
 
 
 __all__ = [
+    "ClassifyInput",
     "DoctorStatus",
-    "OverclaimError",
     "assert_no_overclaim",
-    "classify_fault",
+    "classify",
     "redact",
 ]
