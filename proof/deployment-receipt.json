@@ -1,0 +1,13 @@
+{
+  "label": "CLEAR LAB — declared public proof assets",
+  "assets": [
+    {
+      "url": "https://glance.elghaly.dev/proof/manifest.json",
+      "expected_sha256": "21469d5664fd80a1c3b3e377e281696c38368c555edc1ca3c6ee5dcc9da71a89"
+    },
+    {
+      "url": "https://glance.elghaly.dev/proof/index.html",
+      "expected_sha256": "a233f2b5d082d24ed41e88ea7c4f57a658266b7532d20061f69dde1570de0766"
+    }
+  ]
+}
