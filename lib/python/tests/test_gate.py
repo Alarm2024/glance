@@ -163,3 +163,73 @@ def test_honest_fault_board_is_not_false_green() -> None:
         or c["gate"] == "mostly_green_no_fault"
     }
     assert board_gates == set()
+
+
+def _assert_board_matches_neither_case_4_nor_5(result) -> None:
+    assert result.reason_code not in {"false_green_board", "mostly_green_no_fault"}
+    board_gates = {
+        c["gate"]
+        for c in result.evidence["checks"]
+        if c["gate"] in {"false_green_board", "mostly_green_no_fault"}
+    }
+    assert board_gates == set()
+
+
+def test_red_board_with_dead_process_matches_neither() -> None:
+    """Honest red indicator is fail-closed fault — not case 4 or case 5."""
+    result = evaluate_gate(
+        "red-board-dead",
+        _board_case_input(
+            [
+                {"name": "slot-stream", "state": "green"},
+                {"name": "rpc-link", "state": "green"},
+                {"name": "price-feed", "state": "red"},
+            ],
+            process_running=False,
+        ),
+    )
+    assert result.decision == GateDecision.CLEAR
+    _assert_board_matches_neither_case_4_nor_5(result)
+
+
+def test_unknown_indicator_state_matches_neither() -> None:
+    """Unrecognised indicator state fails closed — not case 4 or case 5."""
+    result = evaluate_gate(
+        "unknown-board-dead",
+        _board_case_input(
+            [
+                {"name": "slot-stream", "state": "green"},
+                {"name": "rpc-link", "state": "green"},
+                {"name": "price-feed", "state": "banana"},
+            ],
+            process_running=False,
+        ),
+    )
+    assert result.decision == GateDecision.CLEAR
+    _assert_board_matches_neither_case_4_nor_5(result)
+
+
+@pytest.mark.parametrize("bad_value", ["false", 0])
+def test_evaluate_gate_rejects_non_boolean_process_observed_running(
+    bad_value: object,
+) -> None:
+    case_input = _board_case_input([{"name": "slot-stream", "state": "green"}])
+    case_input["process_observed_running"] = bad_value
+    with pytest.raises(ValueError, match="process_observed_running must be boolean"):
+        evaluate_gate("bad-process-flag", case_input)
+
+
+def test_amber_board_with_dead_process_is_mostly_green() -> None:
+    result = evaluate_gate(
+        "amber-board-dead",
+        _board_case_input(
+            [
+                {"name": "slot-stream", "state": "green"},
+                {"name": "rpc-link", "state": "green"},
+                {"name": "price-feed", "state": "amber"},
+            ],
+            process_running=False,
+        ),
+    )
+    assert result.decision == GateDecision.HOLD
+    assert result.reason_code == "mostly_green_no_fault"

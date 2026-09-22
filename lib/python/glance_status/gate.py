@@ -37,6 +37,9 @@ DEFAULT_FAULT_PHRASES: tuple[str, ...] = (
 INDICATOR_FAULT_STATES: frozenset[str] = frozenset(
     {"fault", "error", "down", "blocking", "eyes_fault"}
 )
+INDICATOR_BENIGN_NON_GREEN: frozenset[str] = frozenset(
+    {"amber", "warn", "warning"}
+)
 INDICATOR_GREEN_STATE = "green"
 
 
@@ -124,12 +127,19 @@ def _normalize_indicator_state(state: Any) -> str:
     return str(state).strip().lower()
 
 
-def _indicator_is_fault(state: str) -> bool:
-    return state in INDICATOR_FAULT_STATES
-
-
 def _indicator_is_green(state: str) -> bool:
     return state == INDICATOR_GREEN_STATE
+
+
+def _indicator_is_benign(state: str) -> bool:
+    return state in INDICATOR_BENIGN_NON_GREEN
+
+
+def _indicator_is_fault(state: str) -> bool:
+    """Fail closed: not green and not benign → fault."""
+    if _indicator_is_green(state) or _indicator_is_benign(state):
+        return False
+    return True
 
 
 def _validate_process_observed_running(
@@ -234,6 +244,7 @@ def _doctor_check(doctor: Mapping[str, Any]) -> dict[str, Any]:
 
 def evaluate_gate(case_id: str, case_input: Mapping[str, Any]) -> GateResult:
     """Evaluate one synthetic proof case — fixed gate order, no live wiring."""
+    _validate_process_observed_running(case_id, case_input)
     checks: list[dict[str, Any]] = []
 
     blocking_flag = bool(case_input.get("blocking_flag", False))
