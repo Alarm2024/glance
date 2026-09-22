@@ -53,3 +53,4 @@ It does not prove the decision was right.
 
 Case copy gates live in [`lib/python/glance_status/case_wording.py`](../lib/python/glance_status/case_wording.py).
 Cases that reference an earn schedule cannot ship until page 35 states what a credit is for.
+A fixture records inputs and the decision. An outcome that did not happen is not an input, in prose or in a field.
