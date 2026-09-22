@@ -74,6 +74,15 @@ def assert_no_overclaim(status_text: str, banned: Iterable[str]) -> None:
             )
 
 
+from glance_status.gate import (
+    GateDecision,
+    GateResult,
+    LIQUIDITY_FLOOR_USD,
+    ORACLE_STALE_THRESHOLD_SECONDS,
+    compute_evidence_hash,
+    evaluate_fixture,
+    evaluate_gate,
+)
 from glance_status.posture import (
     ALLOWED_POSTURE_MODES,
     StatusSummary,
@@ -87,6 +96,13 @@ from glance_status.posture import (
 )
 
 __all__ = [
+    "GateDecision",
+    "GateResult",
+    "LIQUIDITY_FLOOR_USD",
+    "ORACLE_STALE_THRESHOLD_SECONDS",
+    "compute_evidence_hash",
+    "evaluate_fixture",
+    "evaluate_gate",
     "ALLOWED_POSTURE_MODES",
     "ClassifyInput",
     "DoctorStatus",

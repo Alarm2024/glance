@@ -1,0 +1,26 @@
+{
+  "synthetic": true,
+  "label": "PROOF / SYNTHETIC — stale-oracle case",
+  "case_id": "stale-oracle",
+  "input": {
+    "feeds": [
+      {
+        "name": "slot-stream",
+        "state": "ok",
+        "age_seconds": 2
+      },
+      {
+        "name": "price-oracle",
+        "state": "stale",
+        "age_seconds": 47
+      }
+    ],
+    "liquidity_usd": 125000,
+    "doctor": {
+      "blocking_flag": false,
+      "message": "Hygiene checks passed · config exclusions applied",
+      "hygiene_phrases": ["hygiene", "passed", "config exclusion"],
+      "fault_phrases": ["stale", "timeout", "degraded"]
+    }
+  }
+}

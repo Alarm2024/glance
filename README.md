@@ -2,7 +2,7 @@
 
 Open-source honest status for Solana bot operators.
 
-**Live demo:** [glance.elghaly.dev](https://glance.elghaly.dev/)
+**Demo (synthetic):** [glance.elghaly.dev](https://glance.elghaly.dev/) · **CLEAR LAB proof:** [glance.elghaly.dev/proof/](https://glance.elghaly.dev/proof/)
 
 ## Install
 
@@ -64,6 +64,26 @@ assert_no_overclaim(safe, ["profit"])
 
 See [Add Glance in 15 minutes](docs/add-glance-in-15-minutes.md) for a quick integration guide.
 
+Terms: [Glossary](docs/glossary.md) (Eyes, Doctor, Posture, CLEAR).
+
+## CLEAR LAB — reproduce HOLD proof (stranger path)
+
+Three synthetic cases show why the operator gate says **HOLD** — same decision and evidence hash on the page and in your terminal.
+
+```bash
+git clone https://github.com/Alarm2024/glance && cd glance && python3 scripts/run_proof.py
+```
+
+You should see three `decision: HOLD` lines and evidence hashes matching [proof/](proof/index.html).
+
+| Case | Reason code |
+|------|-------------|
+| stale-oracle | Oracle feed stale — price reference unreliable |
+| thin-liquidity | Depth below $5,000 floor |
+| refuse-to-classify | Doctor message unmatched — REFUSE TO CLASSIFY |
+
+Fixtures: [`proof/fixtures/`](proof/fixtures/) · Gate logic: [`lib/python/glance_status/gate.py`](lib/python/glance_status/gate.py)
+
 ## Examples
 
 ```bash
@@ -80,7 +100,7 @@ Synthetic only — see [`demo/fixture.schema.md`](demo/fixture.schema.md).
 
 Card order: **Online → Posture → Doctor → Feeds → Last signal → Build**
 
-The live demo includes a **playground**: paste your own status JSON in the textarea (or leave it empty for the synthetic fixture). Rendering is client-side only — no backend call.
+The demo (synthetic) includes a **playground**: paste your own status JSON in the textarea (or leave it empty for the synthetic fixture). Rendering is client-side only — no backend call.
 
 ## Status badge
 

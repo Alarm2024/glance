@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="CLEAR LAB — synthetic proof cases showing why Glance says HOLD. Reproducible evidence hashes. Dry compose only.">
+  <title>CLEAR LAB — synthetic HOLD proof · Glance</title>
+  <link rel="stylesheet" href="../css/style.css?v=clearlab1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root { --max-width: 42rem; }
+    body { font-family: "Inter", ui-sans-serif, system-ui, sans-serif; align-items: stretch; }
+    .proof-wrap { width: min(42rem, calc(100% - 32px)); margin: 0 auto; padding: 1.5rem 0 3rem; }
+    .proof-wrap h1, .proof-wrap h2, .proof-wrap h3 { font-family: "Instrument Serif", Georgia, serif; font-weight: 400; }
+    .proof-wrap h1 { font-size: 2rem; margin-bottom: 0.25rem; }
+    .proof-wrap h2 { font-size: 1.35rem; margin: 2rem 0 0.75rem; color: var(--gold-warm); }
+    .proof-wrap h3 { font-size: 1.05rem; margin: 1.25rem 0 0.5rem; }
+    .banner { background: rgba(201, 98, 98, 0.12); border: 1px solid rgba(201, 98, 98, 0.35); border-radius: 12px; padding: 0.75rem 1rem; margin: 1rem 0; font-size: 0.9rem; }
+    .banner--info { background: rgba(46, 230, 199, 0.08); border-color: var(--gold-dim); }
+    .nav { display: flex; gap: 1rem; flex-wrap: wrap; margin: 1rem 0; font-size: 0.9rem; }
+    .nav a { color: var(--gold-warm); }
+    .step { margin: 0.5rem 0; padding-left: 1rem; border-left: 2px solid var(--gold-dim); }
+    .step strong { color: var(--gold-warm); }
+    .case { border: 1px solid var(--gold-dim); border-radius: 14px; padding: 1rem 1.15rem; margin: 1.25rem 0; background: rgba(18, 26, 25, 0.6); }
+    .case__id { font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); }
+    .decision { display: inline-block; font-weight: 600; letter-spacing: 0.08em; padding: 0.2rem 0.6rem; border-radius: 6px; margin: 0.5rem 0; }
+    .decision--hold { background: rgba(201, 98, 98, 0.2); color: #f0a8a8; border: 1px solid rgba(201, 98, 98, 0.4); }
+    .hash { font-family: ui-monospace, monospace; font-size: 0.78rem; word-break: break-all; color: var(--text-muted); }
+    pre.fixture { background: var(--ink-muted); border: 1px solid var(--gold-dim); border-radius: 10px; padding: 0.85rem 1rem; overflow-x: auto; font-size: 0.78rem; line-height: 1.45; margin: 0.75rem 0; }
+    .glossary-dl dt { font-weight: 600; color: var(--gold-warm); margin-top: 0.75rem; }
+    .glossary-dl dd { margin-left: 0; color: var(--text-muted); }
+    .glossary-dl a { color: var(--gold-warm); }
+    code { font-family: ui-monospace, monospace; font-size: 0.88em; background: var(--ink-muted); padding: 0.1rem 0.35rem; border-radius: 4px; }
+    .ai-note { font-size: 0.85rem; color: var(--text-muted); font-style: italic; }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <a class="brand" href="/" aria-label="Glance home">
+      <span class="gmark" aria-hidden="true">G</span>
+      <span class="gword" style="font-weight:600;font-size:15px;letter-spacing:.22em;background:linear-gradient(135deg,#d8fff4 0%,#6fe0c4 44%,#9b7dff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;">GLANCE</span>
+    </a>
+  </div>
+
+  <main class="proof-wrap">
+    <p class="case__id">CLEAR LAB · synthetic proof</p>
+    <h1>Why the gate says HOLD</h1>
+    <p>Dry HOLD only — reproducible synthetic cases. No live claims, no keys, no wallets.</p>
+
+    <p class="banner">PROOF / SYNTHETIC — not connected to any operator process</p>
+    <p class="banner banner--info">Demo (synthetic) — compare evidence hashes below to <code>python3 scripts/run_proof.py</code> output</p>
+
+    <nav class="nav" aria-label="On this page">
+      <a href="#glossary">Glossary</a>
+      <a href="#reproduce">Reproduce</a>
+      <a href="#case-stale-oracle">Case 1</a>
+      <a href="#case-thin-liquidity">Case 2</a>
+      <a href="#case-refuse-to-classify">Case 3</a>
+      <a href="https://github.com/Alarm2024/glance/blob/main/docs/glossary.md">Full glossary (GitHub)</a>
+    </nav>
+
+    <section id="glossary">
+      <h2>Glossary</h2>
+      <p>Defined once here; other docs link to <a href="https://github.com/Alarm2024/glance/blob/main/docs/glossary.md">docs/glossary.md</a>.</p>
+      <dl class="glossary-dl">
+        <dt><a href="https://github.com/Alarm2024/glance/blob/main/docs/glossary.md#eyes">Eyes</a></dt>
+        <dd>Fault-first read-only health cards — observability before any operator action.</dd>
+        <dt><a href="https://github.com/Alarm2024/glance/blob/main/docs/glossary.md#doctor">Doctor</a></dt>
+        <dd>Classifier layer: blocking → hygiene → fault allowlist → <em>unknown</em> (REFUSE TO CLASSIFY).</dd>
+        <dt><a href="https://github.com/Alarm2024/glance/blob/main/docs/glossary.md#posture">Posture</a></dt>
+        <dd>Process mode (dry compose, eyes-only). Public demos stay dry — no auto-send.</dd>
+        <dt><a href="https://github.com/Alarm2024/glance/blob/main/docs/glossary.md#clear">CLEAR</a></dt>
+        <dd>Explicit human gate. System may evaluate HOLD/CLEAR; only the operator may CLEAR.</dd>
+      </dl>
+    </section>
+
+    <section id="reproduce">
+      <h2>Reproduce in one command</h2>
+      <p>From a fresh clone — you should see three cases, each <strong>HOLD</strong>, with the same evidence hashes as this page.</p>
+      <pre class="fixture">git clone https://github.com/Alarm2024/glance &amp;&amp; cd glance &amp;&amp; python3 scripts/run_proof.py</pre>
+      <div class="step"><strong>Step 1.</strong> Clone the repo. You should see <code>CLEAR LAB — synthetic proof cases</code> header.</div>
+      <div class="step"><strong>Step 2.</strong> Runner loads <code>proof/fixtures/*.json</code> — no pip install required.</div>
+      <div class="step"><strong>Step 3.</strong> For each case you should see <code>decision: HOLD</code> and an <code>evidence_hash</code> matching the table below.</div>
+      <div class="step"><strong>Step 4.</strong> If any hash differs, gate thresholds or fixtures changed — update <code>proof/manifest.json</code> and this page together.</div>
+    </section>
+
+    <section id="cases">
+      <h2>Three synthetic cases</h2>
+      <p>Thresholds (not lowered for prettier output): oracle stale &gt; 30s · liquidity floor $5,000 USD.</p>
+
+      <article class="case" id="case-stale-oracle">
+        <p class="case__id">Case 1 · stale-oracle</p>
+        <span class="decision decision--hold">HOLD</span>
+        <p><strong>Reason:</strong> Oracle feed stale (price-oracle) — price reference unreliable</p>
+        <p><strong>Evidence hash:</strong><br><span class="hash" data-hash="stale-oracle">703ad4b4c199499aeb1b1e5ed0518297367ad28331807b1f12e0913a1c4ad993</span></p>
+        <p><strong>Human still needed:</strong> Operator must confirm oracle freshness or switch reference before CLEAR.</p>
+        <h3>Input (paste-ready fixture)</h3>
+        <pre class="fixture" id="fixture-stale-oracle">Loading…</pre>
+      </article>
+
+      <article class="case" id="case-thin-liquidity">
+        <p class="case__id">Case 2 · thin-liquidity</p>
+        <span class="decision decision--hold">HOLD</span>
+        <p><strong>Reason:</strong> Depth $1,200 below floor $5,000</p>
+        <p><strong>Evidence hash:</strong><br><span class="hash" data-hash="thin-liquidity">5b36d6bc6ffa715dd70cfaa8a76ddee22501a423e400dfe1d00f876517708552</span></p>
+        <p><strong>Human still needed:</strong> Operator must accept slippage risk or wait for depth before CLEAR.</p>
+        <h3>Input (paste-ready fixture)</h3>
+        <pre class="fixture" id="fixture-thin-liquidity">Loading…</pre>
+      </article>
+
+      <article class="case" id="case-refuse-to-classify">
+        <p class="case__id">Case 3 · refuse-to-classify (mandatory)</p>
+        <span class="decision decision--hold">HOLD</span>
+        <p><strong>Reason:</strong> REFUSE TO CLASSIFY — doctor message unmatched by hygiene or fault allowlists</p>
+        <p><strong>Evidence hash:</strong><br><span class="hash" data-hash="refuse-to-classify">008f6948f3fd63b6a8955aab763f204d03dd8bb91cc8c123e3ca2fb34b3af47e</span></p>
+        <p><strong>Human still needed:</strong> Operator must classify the doctor message, update allowlists, or accept HOLD.</p>
+        <p class="ai-note">AI-assisted analysis: this synthetic case models skipping a favorable spread window because classification correctly refused — HOLD costs opportunity but avoids acting on unknown signal text.</p>
+        <h3>Input (paste-ready fixture)</h3>
+        <pre class="fixture" id="fixture-refuse-to-classify">Loading…</pre>
+      </article>
+    </section>
+
+    <section id="links">
+      <h2>Links</h2>
+      <ul>
+        <li><a href="/">Glance home</a> — Demo (synthetic) dashboard</li>
+        <li><a href="https://github.com/Alarm2024/glance/blob/main/docs/glossary.md">Glossary</a></li>
+        <li><a href="https://github.com/Alarm2024/glance/blob/main/scripts/run_proof.py">run_proof.py</a></li>
+        <li><a href="https://github.com/Alarm2024/glance">GitHub</a></li>
+      </ul>
+    </section>
+
+    <footer class="footer" style="margin-top:2rem;text-align:center;">
+      <p>Glance · MIT · synthetic proof only</p>
+    </footer>
+  </main>
+
+  <script>
+    (function () {
+      var files = {
+        'fixture-stale-oracle': 'fixtures/stale-oracle.json',
+        'fixture-thin-liquidity': 'fixtures/thin-liquidity.json',
+        'fixture-refuse-to-classify': 'fixtures/refuse-to-classify.json'
+      };
+      Object.keys(files).forEach(function (id) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        fetch(files[id])
+          .then(function (r) { return r.json(); })
+          .then(function (data) { el.textContent = JSON.stringify(data, null, 2); })
+          .catch(function () { el.textContent = '# fetch failed — open fixtures/ in the repo'; });
+      });
+    })();
+  </script>
+</body>
+</html>

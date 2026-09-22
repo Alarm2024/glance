@@ -1,0 +1,27 @@
+{
+  "synthetic": true,
+  "label": "PROOF / SYNTHETIC — refuse-to-classify case",
+  "case_id": "refuse-to-classify",
+  "input": {
+    "feeds": [
+      {
+        "name": "slot-stream",
+        "state": "ok",
+        "age_seconds": 1
+      },
+      {
+        "name": "price-oracle",
+        "state": "ok",
+        "age_seconds": 2
+      }
+    ],
+    "liquidity_usd": 85000,
+    "doctor": {
+      "blocking_flag": false,
+      "message": "Spread compression +127bps — pattern unseen in allowlists",
+      "hygiene_phrases": ["hygiene", "passed", "heartbeat ok"],
+      "fault_phrases": ["stale", "timeout", "degraded", "fault"]
+    },
+    "analysis_note": "AI-assisted analysis: synthetic case models skipping a favorable spread window because classification refused."
+  }
+}

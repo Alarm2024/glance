@@ -46,3 +46,18 @@ jobs:
         run: pip install -e lib/python
       - name: Run posture self-test
         run: python3 scripts/posture_selftest.py
+
+  proof:
+    name: CLEAR LAB proof runner
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run proof cases (no pip install)
+        run: python3 scripts/run_proof.py
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Gate tests + manifest parity
+        run: |
+          pip install -e lib/python
+          cd lib/python && python -m pytest tests/test_gate.py -v

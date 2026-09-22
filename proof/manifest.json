@@ -1,0 +1,34 @@
+{
+  "synthetic": true,
+  "label": "CLEAR LAB / SYNTHETIC — reproducible HOLD proof cases",
+  "generated_by": "scripts/run_proof.py",
+  "cases": [
+    {
+      "case_id": "stale-oracle",
+      "fixture": "fixtures/stale-oracle.json",
+      "decision": "HOLD",
+      "reason": "Oracle feed stale (price-oracle) — price reference unreliable",
+      "reason_code": "stale_oracle_feed",
+      "evidence_hash": "703ad4b4c199499aeb1b1e5ed0518297367ad28331807b1f12e0913a1c4ad993",
+      "human_needed": "Operator must confirm oracle freshness or switch reference before CLEAR."
+    },
+    {
+      "case_id": "thin-liquidity",
+      "fixture": "fixtures/thin-liquidity.json",
+      "decision": "HOLD",
+      "reason": "Depth $1,200 below floor $5,000",
+      "reason_code": "thin_liquidity",
+      "evidence_hash": "5b36d6bc6ffa715dd70cfaa8a76ddee22501a423e400dfe1d00f876517708552",
+      "human_needed": "Operator must accept slippage risk or wait for depth before CLEAR."
+    },
+    {
+      "case_id": "refuse-to-classify",
+      "fixture": "fixtures/refuse-to-classify.json",
+      "decision": "HOLD",
+      "reason": "REFUSE TO CLASSIFY — doctor message unmatched by hygiene or fault allowlists",
+      "reason_code": "refuse_to_classify",
+      "evidence_hash": "008f6948f3fd63b6a8955aab763f204d03dd8bb91cc8c123e3ca2fb34b3af47e",
+      "human_needed": "Operator must classify the doctor message, update allowlists, or accept HOLD (correct refusal may skip a favorable window — synthetic case only)."
+    }
+  ]
+}
