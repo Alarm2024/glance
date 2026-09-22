@@ -47,6 +47,15 @@
       "reason_code": "mostly_green_no_fault",
       "evidence_hash": "519e6a04ea1b3f7a8b0051a6b1df13788fdd4a9fba70faa35eeb9eaed6ecb638",
       "human_needed": "Operator must confirm the process is running before CLEAR."
+    },
+    {
+      "case_id": "fault-board",
+      "fixture": "fixtures/fault-board.json",
+      "decision": "HOLD",
+      "reason": "Board reports a fault — at least one indicator is in a fault state",
+      "reason_code": "fault_indicator_present",
+      "evidence_hash": "f228cabb21c22652f91c85b07da079689295edced88d85520824a678ff801392",
+      "human_needed": "Operator must resolve the reported fault before CLEAR."
     }
   ]
 }

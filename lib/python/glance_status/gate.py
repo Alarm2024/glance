@@ -173,6 +173,27 @@ def _board_indicator_stats(indicators: list[Mapping[str, Any]]) -> dict[str, Any
     }
 
 
+def _fault_indicator_check(case_input: Mapping[str, Any]) -> dict[str, Any] | None:
+    """Case 6 — at least one indicator is a fault; fires regardless of process observation."""
+    indicators = case_input.get("indicators")
+    if not isinstance(indicators, list) or not indicators:
+        return None
+
+    stats = _board_indicator_stats(indicators)
+    if not stats["any_fault"]:
+        return None
+
+    process_running = case_input.get("process_observed_running")
+    return {
+        "gate": "fault_indicator_present",
+        "passed": False,
+        "fault_indicator_count": stats["fault_indicator_count"],
+        "green_indicator_count": stats["green_indicator_count"],
+        "total_indicator_count": stats["total_indicator_count"],
+        "process_observed_running": process_running,
+    }
+
+
 def _false_green_check(case_input: Mapping[str, Any]) -> dict[str, Any] | None:
     """Case 4 — all indicators green, no fault, process not observed running."""
     indicators = case_input.get("indicators")
@@ -322,6 +343,18 @@ def evaluate_gate(case_id: str, case_input: Mapping[str, Any]) -> GateResult:
                 evidence,
                 "Operator must review warn-level doctor message before CLEAR.",
             )
+
+    fault_indicator = _fault_indicator_check(case_input)
+    if fault_indicator:
+        checks.append(fault_indicator)
+        evidence = _build_evidence(case_id, checks, "fault_indicator_present")
+        return _hold(
+            case_id,
+            "Board reports a fault — at least one indicator is in a fault state",
+            "fault_indicator_present",
+            evidence,
+            "Operator must resolve the reported fault before CLEAR.",
+        )
 
     false_green = _false_green_check(case_input)
     if false_green:

@@ -61,6 +61,7 @@
       <a href="#case-refuse-to-classify">Case 3</a>
       <a href="#case-all-green">Case 4</a>
       <a href="#case-mostly-green">Case 5</a>
+      <a href="#case-fault-board">Case 6</a>
       <a href="https://github.com/Alarm2024/glance/blob/main/docs/glossary.md">Full glossary (GitHub)</a>
     </nav>
 
@@ -154,6 +155,18 @@
         <h3>Input (paste-ready fixture)</h3>
         <pre class="fixture" id="fixture-mostly-green">Loading…</pre>
       </article>
+
+      <article class="case" id="case-fault-board">
+        <p class="case__id">Case 6 · fault-board</p>
+        <span class="decision decision--hold">HOLD</span>
+        <p class="observed"><strong>Observed:</strong> Two synthetic indicators report green, one reports a fault, and the sealed runtime observation says no running process was observed.</p>
+        <p><strong>Reason:</strong> Board reports a fault — at least one indicator is in a fault state</p>
+        <p><strong>Evidence hash:</strong><br><span class="hash" data-hash="fault-board">f228cabb21c22652f91c85b07da079689295edced88d85520824a678ff801392</span></p>
+        <p class="hash-limit">Same fixture in, same decision out. This proves the case was not changed after the fact. It does not prove the decision was right.</p>
+        <p><strong>Human still needed:</strong> Operator must resolve the reported fault before CLEAR.</p>
+        <h3>Input (paste-ready fixture)</h3>
+        <pre class="fixture" id="fixture-fault-board">Loading…</pre>
+      </article>
     </section>
 
     <section id="links">
@@ -178,7 +191,8 @@
         'fixture-thin-liquidity': 'fixtures/thin-liquidity.json',
         'fixture-refuse-to-classify': 'fixtures/refuse-to-classify.json',
         'fixture-all-green': 'fixtures/all-green.json',
-        'fixture-mostly-green': 'fixtures/mostly-green.json'
+        'fixture-mostly-green': 'fixtures/mostly-green.json',
+        'fixture-fault-board': 'fixtures/fault-board.json'
       };
       Object.keys(files).forEach(function (id) {
         var el = document.getElementById(id);

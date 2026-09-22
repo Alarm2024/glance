@@ -26,6 +26,7 @@ FIXTURE_ORDER = (
     "refuse-to-classify.json",
     "all-green.json",
     "mostly-green.json",
+    "fault-board.json",
 )
 
 

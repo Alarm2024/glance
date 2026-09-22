@@ -23,7 +23,12 @@ GOLDEN_HASHES = {
     "refuse-to-classify": "008f6948f3fd63b6a8955aab763f204d03dd8bb91cc8c123e3ca2fb34b3af47e",
     "all-green": "1f4ada1b9487d2af4821accdf82f956c32b69b656fcb1fac0cbeca76dfbcb139",
     "mostly-green": "519e6a04ea1b3f7a8b0051a6b1df13788fdd4a9fba70faa35eeb9eaed6ecb638",
+    "fault-board": "f228cabb21c22652f91c85b07da079689295edced88d85520824a678ff801392",
 }
+
+BOARD_GATES = frozenset(
+    {"fault_indicator_present", "false_green_board", "mostly_green_no_fault"}
+)
 
 
 @pytest.mark.parametrize(
@@ -34,6 +39,7 @@ GOLDEN_HASHES = {
         ("refuse-to-classify.json", "refuse_to_classify"),
         ("all-green.json", "false_green_board"),
         ("mostly-green.json", "mostly_green_no_fault"),
+        ("fault-board.json", "fault_indicator_present"),
     ],
 )
 def test_proof_fixtures_hold(fixture_name: str, reason_code: str) -> None:
@@ -145,68 +151,84 @@ def test_process_observed_running_rejects_non_boolean(bad_value: object) -> None
         evaluate_fixture(fixture)
 
 
-def test_honest_fault_board_is_not_false_green() -> None:
-    """Explicit fault on the board is honest — not case 4 or case 5."""
+def _assert_exactly_one_board_gate(result) -> str:
+    board_gates = [
+        c["gate"] for c in result.evidence["checks"] if c["gate"] in BOARD_GATES
+    ]
+    assert len(board_gates) == 1, f"expected exactly one board gate, got {board_gates}"
+    return board_gates[0]
+
+
+def test_fault_board_fixture_holds() -> None:
+    fixture = json.loads((_FIXTURES / "fault-board.json").read_text(encoding="utf-8"))
+    result = evaluate_fixture(fixture)
+    assert result.decision == GateDecision.HOLD
+    assert result.reason_code == "fault_indicator_present"
+    board_check = next(
+        c for c in result.evidence["checks"] if c["gate"] == "fault_indicator_present"
+    )
+    assert board_check["fault_indicator_count"] == 1
+    assert board_check["green_indicator_count"] == 2
+    assert board_check["total_indicator_count"] == 3
+    assert board_check["process_observed_running"] is False
+
+
+@pytest.mark.parametrize(
+    "fault_state",
+    ["red", "critical", "banana", ""],
+)
+def test_fault_indicator_holds_with_dead_process(fault_state: str) -> None:
     result = evaluate_gate(
-        "honest-fault-board",
+        f"fault-{fault_state or 'empty'}-dead",
         _board_case_input(
             [
                 {"name": "slot-stream", "state": "green"},
-                {"name": "rpc-link", "state": "fault"},
-            ]
+                {"name": "rpc-link", "state": "green"},
+                {"name": "price-feed", "state": fault_state},
+            ],
+            process_running=False,
         ),
     )
-    assert result.decision == GateDecision.CLEAR
-    assert result.reason_code == "clear"
-    board_gates = {
-        c["gate"] for c in result.evidence["checks"] if c["gate"].endswith("_board")
-        or c["gate"] == "mostly_green_no_fault"
-    }
-    assert board_gates == set()
+    assert result.decision == GateDecision.HOLD
+    assert result.reason_code == "fault_indicator_present"
+    assert _assert_exactly_one_board_gate(result) == "fault_indicator_present"
 
 
-def _assert_board_matches_neither_case_4_nor_5(result) -> None:
-    assert result.reason_code not in {"false_green_board", "mostly_green_no_fault"}
-    board_gates = {
-        c["gate"]
-        for c in result.evidence["checks"]
-        if c["gate"] in {"false_green_board", "mostly_green_no_fault"}
-    }
-    assert board_gates == set()
-
-
-def test_red_board_with_dead_process_matches_neither() -> None:
-    """Honest red indicator is fail-closed fault — not case 4 or case 5."""
+def test_fault_indicator_holds_with_running_process() -> None:
+    """Fault on board fires regardless of process_observed_running."""
     result = evaluate_gate(
-        "red-board-dead",
+        "red-board-running",
         _board_case_input(
             [
                 {"name": "slot-stream", "state": "green"},
                 {"name": "rpc-link", "state": "green"},
                 {"name": "price-feed", "state": "red"},
             ],
-            process_running=False,
+            process_running=True,
         ),
     )
-    assert result.decision == GateDecision.CLEAR
-    _assert_board_matches_neither_case_4_nor_5(result)
-
-
-def test_unknown_indicator_state_matches_neither() -> None:
-    """Unrecognised indicator state fails closed — not case 4 or case 5."""
-    result = evaluate_gate(
-        "unknown-board-dead",
-        _board_case_input(
-            [
-                {"name": "slot-stream", "state": "green"},
-                {"name": "rpc-link", "state": "green"},
-                {"name": "price-feed", "state": "banana"},
-            ],
-            process_running=False,
-        ),
+    assert result.decision == GateDecision.HOLD
+    assert result.reason_code == "fault_indicator_present"
+    board_check = next(
+        c for c in result.evidence["checks"] if c["gate"] == "fault_indicator_present"
     )
-    assert result.decision == GateDecision.CLEAR
-    _assert_board_matches_neither_case_4_nor_5(result)
+    assert board_check["process_observed_running"] is True
+
+
+@pytest.mark.parametrize(
+    "fixture_name,expected_gate",
+    [
+        ("all-green.json", "false_green_board"),
+        ("mostly-green.json", "mostly_green_no_fault"),
+        ("fault-board.json", "fault_indicator_present"),
+    ],
+)
+def test_board_gates_are_mutually_exclusive(
+    fixture_name: str, expected_gate: str
+) -> None:
+    fixture = json.loads((_FIXTURES / fixture_name).read_text(encoding="utf-8"))
+    result = evaluate_fixture(fixture)
+    assert _assert_exactly_one_board_gate(result) == expected_gate
 
 
 @pytest.mark.parametrize("bad_value", ["false", 0])
