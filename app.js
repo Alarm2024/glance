@@ -21,35 +21,9 @@
 
   var DEMO_LOAD_TIMEOUT_MS = 3000;
   var demoLoadTimeoutId = null;
-
-  function t(key, fallback) {
-    if (window.GlanceI18n && window.GlanceI18n.t) {
-      var value = window.GlanceI18n.t(key);
-      if (value && value !== key) return value;
-    }
-    return fallback;
-  }
-
-  function armDemoLoadTimeout(container) {
-    if (demoLoadTimeoutId) clearTimeout(demoLoadTimeoutId);
-    demoLoadTimeoutId = setTimeout(function () {
-      if (!container || !container.classList.contains('cards--loading')) return;
-      showRenderError(container, t('loadError', 'Demo fixture could not be loaded.'));
-    }, DEMO_LOAD_TIMEOUT_MS);
-  }
-
-  function clearDemoLoadTimeout() {
-    if (demoLoadTimeoutId) {
-      clearTimeout(demoLoadTimeoutId);
-      demoLoadTimeoutId = null;
-    }
-  }
-
-  function showLoading(container) {
-    container.className = 'cards cards--loading';
-    container.textContent = t('loading', 'Loading demo fixture…');
-    armDemoLoadTimeout(container);
-  }
+  var activeCaseId = 'hold-stale-oracle';
+  var loadedFixtures = {};
+  var userPasted = false;
 
   var DEMO_FIXTURE = {
     synthetic: true,
@@ -81,10 +55,87 @@
     },
     build: {
       version: '0.1.0-demo',
-      commit: 'fixture',
+      commit: 'fixture-hold-stale-oracle',
       detail: 'Pre-1.0 demo build'
     }
   };
+
+  var DEMO_CASE_FILES = {
+    'hold-stale-oracle': 'demo/fixture-hold-stale-oracle.json',
+    'hold-queue': 'demo/fixture-hold-queue.json',
+    clear: 'demo/fixture-clear.json'
+  };
+
+  var INLINE_FIXTURES = {
+    'hold-stale-oracle': DEMO_FIXTURE,
+    'hold-queue': {
+      synthetic: true,
+      label: 'DEMO / SYNTHETIC — not live bot data',
+      generated_at: '2026-09-22T18:00:00Z',
+      online: { status: 'connected', uptime: '2h 41m', detail: 'Process heartbeat OK (demo fixture)' },
+      posture: { mode: 'dry compose', detail: 'Eyes + dry compose · no auto-send' },
+      doctor: {
+        status: 'warn',
+        summary: 'Compose queue backlog · depth 12',
+        detail: 'Dry compose paused — operator HOLD until queue drains'
+      },
+      feeds: [
+        { name: 'slot-stream', state: 'ok', age: '1.0s' },
+        { name: 'account-delta', state: 'ok', age: '0.7s' },
+        { name: 'price-oracle', state: 'ok', age: '1.3s' }
+      ],
+      last_signal: { kind: 'heartbeat', ago: '19s', detail: 'Synthetic tick — no strategy payload' },
+      build: { version: '0.1.0-demo', commit: 'fixture-hold-queue', detail: 'Pre-1.0 demo build' }
+    },
+    clear: {
+      synthetic: true,
+      label: 'DEMO / SYNTHETIC — not live bot data',
+      generated_at: '2026-09-22T18:00:00Z',
+      online: { status: 'connected', uptime: '6h 03m', detail: 'Process heartbeat OK (demo fixture)' },
+      posture: { mode: 'dry compose', detail: 'Eyes + dry compose · no auto-send' },
+      doctor: {
+        status: 'ok',
+        summary: 'No blocking flags, no active faults',
+        detail: 'Hygiene checks passed · config exclusions applied'
+      },
+      feeds: [
+        { name: 'slot-stream', state: 'ok', age: '0.9s' },
+        { name: 'account-delta', state: 'ok', age: '0.6s' },
+        { name: 'price-oracle', state: 'ok', age: '1.1s' }
+      ],
+      last_signal: { kind: 'heartbeat', ago: '8s', detail: 'Synthetic tick — no strategy payload' },
+      build: { version: '0.1.0-demo', commit: 'fixture-clear', detail: 'Pre-1.0 demo build' }
+    }
+  };
+
+  function t(key, fallback) {
+    if (window.GlanceI18n && window.GlanceI18n.t) {
+      var value = window.GlanceI18n.t(key);
+      if (value && value !== key) return value;
+    }
+    return fallback;
+  }
+
+  function armDemoLoadTimeout(container) {
+    if (demoLoadTimeoutId) clearTimeout(demoLoadTimeoutId);
+    demoLoadTimeoutId = setTimeout(function () {
+      if (!container || !container.classList.contains('cards--loading')) return;
+      showRenderError(container, t('loadError', 'Demo fixture could not be loaded.'));
+    }, DEMO_LOAD_TIMEOUT_MS);
+  }
+
+  function clearDemoLoadTimeout() {
+    if (demoLoadTimeoutId) {
+      clearTimeout(demoLoadTimeoutId);
+      demoLoadTimeoutId = null;
+    }
+  }
+
+  function showLoading(container) {
+    container.className = 'cards cards--loading';
+    container.textContent = t('loading', 'Loading demo fixture…');
+    armDemoLoadTimeout(container);
+  }
 
   function el(tag, className, text) {
     var node = document.createElement(tag);
@@ -234,6 +285,12 @@
     summaryEl.className = 'status-summary status-summary--' + line.toLowerCase();
   }
 
+  function updatePasteJson(fixture) {
+    var pasteEl = document.getElementById('demo-paste-json');
+    if (!pasteEl || !fixture) return;
+    pasteEl.textContent = JSON.stringify(fixture, null, 2);
+  }
+
   function showFixture(fixture, container, banner, summaryEl) {
     if (!container) return;
     clearDemoLoadTimeout();
@@ -246,13 +303,14 @@
     try {
       renderCards(fixture, container);
       updateSummaryLine(fixture, summaryEl);
+      if (!userPasted) updatePasteJson(fixture);
     } catch (err) {
-      /* keep any existing static HTML cards; never leave cards--loading */
       container.className = 'cards';
     }
     if (!container.querySelector('.card')) {
       renderCards(DEMO_FIXTURE, container);
       updateSummaryLine(DEMO_FIXTURE, summaryEl);
+      if (!userPasted) updatePasteJson(DEMO_FIXTURE);
     }
   }
 
@@ -263,9 +321,9 @@
 
   function parsePlaygroundInput(raw) {
     var trimmed = (raw || '').trim();
-    if (!trimmed) return { ok: true, fixture: null };
+    if (!trimmed) return { ok: true, fixture: null, empty: true };
     try {
-      return { ok: true, fixture: JSON.parse(trimmed) };
+      return { ok: true, fixture: JSON.parse(trimmed), empty: false };
     } catch (err) {
       return { ok: false, error: 'Invalid JSON — fix syntax or clear the field to use the demo fixture.' };
     }
@@ -282,8 +340,7 @@
     });
   }
 
-  function fetchFixture() {
-    var paths = ['/demo/fixture.json', './demo/fixture.json', 'demo/fixture.json'];
+  function fetchJson(paths) {
     var attempt = function (index) {
       if (index >= paths.length) {
         return Promise.reject(new Error('all paths failed'));
@@ -298,11 +355,55 @@
     return attempt(0);
   }
 
+  function fixturePaths(relativePath) {
+    return ['/' + relativePath, './' + relativePath, relativePath];
+  }
+
+  function loadCaseFixture(caseId) {
+    if (loadedFixtures[caseId]) {
+      return Promise.resolve(loadedFixtures[caseId]);
+    }
+    var relative = DEMO_CASE_FILES[caseId];
+    if (!relative) {
+      return Promise.reject(new Error('unknown case'));
+    }
+    return fetchJson(fixturePaths(relative)).then(function (fixture) {
+      loadedFixtures[caseId] = fixture;
+      return fixture;
+    }).catch(function () {
+      if (INLINE_FIXTURES[caseId]) {
+        loadedFixtures[caseId] = INLINE_FIXTURES[caseId];
+        return INLINE_FIXTURES[caseId];
+      }
+      return Promise.reject(new Error('case load failed'));
+    });
+  }
+
+  function setActiveCaseTab(caseId) {
+    document.querySelectorAll('.demo-case').forEach(function (btn) {
+      var on = btn.getAttribute('data-case') === caseId;
+      btn.classList.toggle('on', on);
+      btn.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+  }
+
+  function applyCase(caseId, container, banner, summaryEl, textarea) {
+    activeCaseId = caseId;
+    setActiveCaseTab(caseId);
+    userPasted = false;
+    if (textarea) textarea.value = '';
+    return loadCaseFixture(caseId).then(function (fixture) {
+      showFixture(fixture, container, banner, summaryEl);
+      if (textarea) textarea.placeholder = JSON.stringify(fixture, null, 2);
+    });
+  }
+
   function initDemo() {
     var container = document.getElementById('cards');
     var banner = document.getElementById('synthetic-banner');
     var summaryEl = document.getElementById('status-summary');
     var textarea = document.getElementById('playground-input');
+    var caseButtons = document.querySelectorAll('.demo-case');
     if (!container) return;
 
     function isPlaygroundEmpty() {
@@ -311,11 +412,13 @@
 
     function applyFromPlayground() {
       if (isPlaygroundEmpty()) {
-        showFixture(DEMO_FIXTURE, container, banner, summaryEl);
+        userPasted = false;
+        applyCase(activeCaseId, container, banner, summaryEl, null);
         return;
       }
       var result = parsePlaygroundInput(textarea.value);
       if (result.ok && result.fixture) {
+        userPasted = true;
         showFixture(result.fixture, container, banner, summaryEl);
       } else if (!result.ok) {
         showRenderError(container, result.error);
@@ -330,8 +433,15 @@
       armDemoLoadTimeout(container);
     }
 
-    /* Always paint inline fixture first — never leave cards--loading */
     showFixture(DEMO_FIXTURE, container, banner, summaryEl);
+
+    caseButtons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var caseId = btn.getAttribute('data-case');
+        if (!caseId || userPasted && textarea && textarea.value.trim()) return;
+        applyCase(caseId, container, banner, summaryEl, textarea);
+      });
+    });
 
     if (textarea) {
       textarea.value = '';
@@ -343,30 +453,34 @@
       });
     }
 
-    fetchFixture()
+    Object.keys(DEMO_CASE_FILES).forEach(function (caseId) {
+      loadCaseFixture(caseId).catch(function () { /* inline fallback */ });
+    });
+
+    fetchJson(fixturePaths('demo/fixture.json'))
       .then(function (fixture) {
-        if (isPlaygroundEmpty()) {
+        loadedFixtures['hold-stale-oracle'] = loadedFixtures['hold-stale-oracle'] || fixture;
+        if (isPlaygroundEmpty() && activeCaseId === 'hold-stale-oracle') {
           showFixture(fixture, container, banner, summaryEl);
         }
       })
       .catch(function () {
-        /* static HTML / DEMO_FIXTURE already rendered */
         if (container.classList.contains('cards--loading')) {
           showFixture(DEMO_FIXTURE, container, banner, summaryEl);
         }
       });
   }
 
-  function scrollToDemoIfRequested() {
-    if (location.hash !== '#demo') return;
-    var demo = document.getElementById('demo');
-    if (demo) demo.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  function scrollToHashIfRequested() {
+    if (!location.hash) return;
+    var target = document.querySelector(location.hash);
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   function mount() {
     initDemo();
-    scrollToDemoIfRequested();
-    window.addEventListener('hashchange', scrollToDemoIfRequested);
+    scrollToHashIfRequested();
+    window.addEventListener('hashchange', scrollToHashIfRequested);
   }
 
   if (document.readyState === 'loading') {
