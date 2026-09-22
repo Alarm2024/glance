@@ -74,10 +74,31 @@ def assert_no_overclaim(status_text: str, banned: Iterable[str]) -> None:
             )
 
 
+from glance_status.posture import (
+    ALLOWED_POSTURE_MODES,
+    StatusSummary,
+    assert_dry_posture,
+    assert_eyes_only_fixture,
+    assert_no_send_suggestions,
+    assert_page_sources_dry,
+    extract_demo_fixture_from_app_js,
+    is_allowed_posture_mode,
+    summarize_status,
+)
+
 __all__ = [
+    "ALLOWED_POSTURE_MODES",
     "ClassifyInput",
     "DoctorStatus",
+    "StatusSummary",
+    "assert_dry_posture",
+    "assert_eyes_only_fixture",
     "assert_no_overclaim",
+    "assert_no_send_suggestions",
+    "assert_page_sources_dry",
     "classify",
+    "extract_demo_fixture_from_app_js",
+    "is_allowed_posture_mode",
     "redact",
+    "summarize_status",
 ]

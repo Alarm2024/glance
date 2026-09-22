@@ -4,15 +4,22 @@
 
 mod classifier;
 mod overclaim;
+mod posture;
 mod redact;
 
 pub use classifier::{classify, ClassifyInput, DoctorStatus};
 pub use overclaim::assert_no_overclaim;
+pub use posture::{
+    assert_dry_posture, assert_eyes_only_fixture, assert_no_send_suggestions,
+    assert_page_sources_dry, extract_demo_fixture_from_app_js, is_allowed_posture_mode,
+    summarize_status, StatusSummary, ALLOWED_POSTURE_MODES,
+};
 pub use redact::redact;
 
 #[cfg(test)]
 mod integration_tests {
     use super::*;
+    use std::path::Path;
 
     #[test]
     fn doctor_status_variants_as_str() {
@@ -21,6 +28,15 @@ mod integration_tests {
         assert_eq!(DoctorStatus::EyesFault.as_str(), "eyes_fault");
         assert_eq!(DoctorStatus::Blocking.as_str(), "blocking");
         assert_eq!(DoctorStatus::Unknown.as_str(), "unknown");
+    }
+
+    #[test]
+    fn posture_selftest_page_sources_dry() {
+        let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../..");
+        let fixture = std::fs::read_to_string(root.join("demo/fixture.json")).unwrap();
+        let app_js = std::fs::read_to_string(root.join("app.js")).unwrap();
+        let index_html = std::fs::read_to_string(root.join("index.html")).unwrap();
+        assert_page_sources_dry(&fixture, &app_js, &index_html).unwrap();
     }
 
     #[test]

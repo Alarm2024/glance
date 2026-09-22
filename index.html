@@ -89,7 +89,8 @@
     <section class="section demo" id="demo">
       <h2 class="section__label" data-i18n="sectionDemo">Demo</h2>
       <p class="build__text playground__hint" data-i18n="demoHint">Synthetic fixture below — client-side only, not live bot data.</p>
-      <p id="synthetic-banner" class="synthetic-banner" data-i18n="syntheticFallback">DEMO / SYNTHETIC — not live bot data</p>
+      <p id="synthetic-banner" class="synthetic-banner" data-synthetic="true" data-i18n="syntheticFallback">DEMO / SYNTHETIC — not live bot data</p>
+      <p id="status-summary" class="status-summary status-summary--degraded" hidden aria-live="polite">Summary · DEGRADED (read-only · eyes-only)</p>
       <div id="cards" class="cards" aria-live="polite">
         <article class="card">
           <div class="card__header">

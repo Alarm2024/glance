@@ -197,22 +197,62 @@
     });
   }
 
-  function showFixture(fixture, container, banner) {
+  /* Read-only cards — eyes-only display; never suggest CLEAR, send, arm, or mint. */
+  function summarizeStatus(fixture) {
+    if (!fixture || typeof fixture !== 'object') return '';
+    var doctor = fixture.doctor || {};
+    var doctorStatus = (doctor.status || '').toLowerCase();
+    if (doctorStatus === 'blocking' || doctorStatus === 'eyes_fault') return 'FAULT';
+    if (doctorStatus === 'warn') return 'DEGRADED';
+    var online = fixture.online || {};
+    var onlineStatus = (online.status || '').toLowerCase();
+    if (onlineStatus && onlineStatus !== 'connected' && onlineStatus !== 'ok') return 'FAULT';
+    var feeds = fixture.feeds || [];
+    var degraded = false;
+    for (var i = 0; i < feeds.length; i++) {
+      var state = (feeds[i].state || '').toLowerCase();
+      if (state === 'fault' || state === 'error' || state === 'down' || state === 'blocking') {
+        return 'FAULT';
+      }
+      if (state === 'stale' || state === 'warn' || state === 'degraded' || state === 'unknown') {
+        degraded = true;
+      }
+    }
+    return degraded ? 'DEGRADED' : 'OK';
+  }
+
+  function updateSummaryLine(fixture, summaryEl) {
+    if (!summaryEl) return;
+    var line = summarizeStatus(fixture);
+    if (!line) {
+      summaryEl.hidden = true;
+      summaryEl.textContent = '';
+      return;
+    }
+    summaryEl.hidden = false;
+    summaryEl.textContent = 'Summary · ' + line + ' (read-only · eyes-only)';
+    summaryEl.className = 'status-summary status-summary--' + line.toLowerCase();
+  }
+
+  function showFixture(fixture, container, banner, summaryEl) {
     if (!container) return;
     clearDemoLoadTimeout();
     if (banner) {
       banner.textContent = fixture.label || 'DEMO / SYNTHETIC — not live bot data';
       banner.hidden = false;
+      banner.setAttribute('data-synthetic', fixture.synthetic === false ? 'false' : 'true');
     }
     container.className = 'cards';
     try {
       renderCards(fixture, container);
+      updateSummaryLine(fixture, summaryEl);
     } catch (err) {
       /* keep any existing static HTML cards; never leave cards--loading */
       container.className = 'cards';
     }
     if (!container.querySelector('.card')) {
       renderCards(DEMO_FIXTURE, container);
+      updateSummaryLine(DEMO_FIXTURE, summaryEl);
     }
   }
 
@@ -261,6 +301,7 @@
   function initDemo() {
     var container = document.getElementById('cards');
     var banner = document.getElementById('synthetic-banner');
+    var summaryEl = document.getElementById('status-summary');
     var textarea = document.getElementById('playground-input');
     if (!container) return;
 
@@ -270,15 +311,16 @@
 
     function applyFromPlayground() {
       if (isPlaygroundEmpty()) {
-        showFixture(DEMO_FIXTURE, container, banner);
+        showFixture(DEMO_FIXTURE, container, banner, summaryEl);
         return;
       }
       var result = parsePlaygroundInput(textarea.value);
       if (result.ok && result.fixture) {
-        showFixture(result.fixture, container, banner);
+        showFixture(result.fixture, container, banner, summaryEl);
       } else if (!result.ok) {
         showRenderError(container, result.error);
         if (banner) banner.hidden = true;
+        updateSummaryLine(null, summaryEl);
       }
     }
 
@@ -289,7 +331,7 @@
     }
 
     /* Always paint inline fixture first — never leave cards--loading */
-    showFixture(DEMO_FIXTURE, container, banner);
+    showFixture(DEMO_FIXTURE, container, banner, summaryEl);
 
     if (textarea) {
       textarea.value = '';
@@ -304,13 +346,13 @@
     fetchFixture()
       .then(function (fixture) {
         if (isPlaygroundEmpty()) {
-          showFixture(fixture, container, banner);
+          showFixture(fixture, container, banner, summaryEl);
         }
       })
       .catch(function () {
         /* static HTML / DEMO_FIXTURE already rendered */
         if (container.classList.contains('cards--loading')) {
-          showFixture(DEMO_FIXTURE, container, banner);
+          showFixture(DEMO_FIXTURE, container, banner, summaryEl);
         }
       });
   }
