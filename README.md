@@ -86,6 +86,12 @@ Same fixture in, same decision out — hash parity proves the case was not chang
 
 Fixtures: [`proof/fixtures/`](proof/fixtures/) · Gate logic: [`lib/python/glance_status/gate.py`](lib/python/glance_status/gate.py)
 
+## Deployment receipt
+
+Read-only checker for declared public deployment assets — fetches each URL, hashes the bytes, and prints one JSON record per asset. Manifest: [`proof/deployment-receipt.json`](proof/deployment-receipt.json) · Runner: [`scripts/deployment_receipt.py`](scripts/deployment_receipt.py).
+
+The hostname is resolved during validation and again when connecting. A hostile resolver can answer with a public address and then a private one. This is not closed. Closing it requires pinning the resolved address and connecting to it directly.
+
 ## Examples
 
 ```bash
