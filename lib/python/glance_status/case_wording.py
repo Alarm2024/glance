@@ -57,6 +57,35 @@ FIXTURE_CREDENTIAL_MARKERS: tuple[str, ...] = (
     "os.environ",
 )
 
+# Fixture fields must record inputs and the decision — not counterfactual outcomes.
+FIXTURE_OUTCOME_BANNED_KEYS: tuple[str, ...] = (
+    "gap_bps",
+    "gap_size",
+    "gap_closed",
+    "gap_closed_seconds",
+    "close_seconds",
+    "spread_captured",
+    "missed_profit",
+    "missed_pnl",
+    "forgone",
+    "would_have",
+    "would_have_paid",
+    "would_have_filled",
+    "would_have_landed",
+    "opportunity_cost",
+    "profit_if",
+    "pnl_if",
+    "could_have",
+)
+
+_FIXTURE_OUTCOME_BANNED_KEYS_NORMALIZED = frozenset(
+    key.lower().replace("-", "").replace("_", "") for key in FIXTURE_OUTCOME_BANNED_KEYS
+)
+
+_FIXTURE_OUTCOME_FIELD_MESSAGE = (
+    "A fixture records inputs and the decision. What did not happen is not an input."
+)
+
 _ORACLE_AGE_DISPLAY = re.compile(
     r"price-oracle[^·\n]*stale\s*·\s*(\d+)s",
     re.IGNORECASE,
@@ -145,6 +174,47 @@ def assert_hash_proof_disclaimer_present(text: str, *, label: str = "proof page"
         raise ValueError(f"{label}: missing hash proof disclaimer")
 
 
+def _normalize_fixture_key(key: str) -> str:
+    return key.lower().replace("-", "").replace("_", "")
+
+
+def _fixture_outcome_field_error(label: str, key_path: str, detail: str) -> ValueError:
+    return ValueError(
+        f"fixture outcome field banned — {label} {key_path}. "
+        f"{detail} {_FIXTURE_OUTCOME_FIELD_MESSAGE}"
+    )
+
+
+def assert_fixture_no_outcome_fields(fixture: Mapping[str, object], *, label: str) -> None:
+    """Reject fixture keys or string values that describe outcomes that did not occur."""
+
+    def _walk(value: object, path: str) -> None:
+        if isinstance(value, Mapping):
+            for key, item in value.items():
+                key_path = f"{path}.{key}" if path else str(key)
+                normalized = _normalize_fixture_key(str(key))
+                if normalized in _FIXTURE_OUTCOME_BANNED_KEYS_NORMALIZED:
+                    raise _fixture_outcome_field_error(
+                        label,
+                        key_path,
+                        f"Banned outcome key {key!r}.",
+                    )
+                _walk(item, key_path)
+        elif isinstance(value, list):
+            for idx, item in enumerate(value):
+                _walk(item, f"{path}[{idx}]")
+        elif isinstance(value, str):
+            for phrase in COUNTERFACTUAL_BANNED_PHRASES:
+                if _counterfactual_in_positive_context(value, phrase):
+                    raise _fixture_outcome_field_error(
+                        label,
+                        path,
+                        f"Counterfactual phrase {phrase!r} in string value.",
+                    )
+
+    _walk(fixture, "")
+
+
 def assert_fixture_self_contained(fixture: Mapping[str, object], *, label: str) -> None:
     """Proof fixtures must run offline with no keys or network dependencies."""
     raw = json.dumps(fixture, sort_keys=True)
@@ -155,6 +225,7 @@ def assert_fixture_self_contained(fixture: Mapping[str, object], *, label: str) 
                 f"{label}: fixture requires credentials or env ({marker!r}) — "
                 "seal the fixture or do not ship the case."
             )
+    assert_fixture_no_outcome_fields(fixture, label=label)
 
 
 def assert_stale_oracle_age_consistent(
@@ -246,8 +317,10 @@ __all__ = [
     "AI_ASSISTED_FINDING_LABEL",
     "COUNTERFACTUAL_BANNED_PHRASES",
     "EARN_SCHEDULE_MARKERS",
+    "FIXTURE_OUTCOME_BANNED_KEYS",
     "HASH_PROOF_DISCLAIMER",
     "assert_case_copy",
+    "assert_fixture_no_outcome_fields",
     "assert_fixture_self_contained",
     "assert_hash_proof_disclaimer_present",
     "assert_no_counterfactual_outcomes",
