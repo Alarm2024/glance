@@ -132,6 +132,17 @@ def _indicator_is_green(state: str) -> bool:
     return state == INDICATOR_GREEN_STATE
 
 
+def _validate_process_observed_running(
+    case_id: str, case_input: Mapping[str, Any]
+) -> None:
+    """Reject non-boolean process_observed_running at fixture validation."""
+    if "process_observed_running" not in case_input:
+        return
+    value = case_input["process_observed_running"]
+    if type(value) is not bool:
+        raise ValueError(f"{case_id}: process_observed_running must be boolean")
+
+
 def _board_indicator_stats(indicators: list[Mapping[str, Any]]) -> dict[str, Any]:
     total = len(indicators)
     green_count = 0
@@ -383,6 +394,7 @@ def evaluate_fixture(fixture: Mapping[str, Any]) -> GateResult:
     case_input = fixture.get("input")
     if not isinstance(case_input, Mapping):
         raise ValueError("proof fixture missing input object")
+    _validate_process_observed_running(case_id, case_input)
     return evaluate_gate(case_id, case_input)
 
 

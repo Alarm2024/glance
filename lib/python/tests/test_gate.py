@@ -134,6 +134,17 @@ def test_mostly_green_evidence_fields() -> None:
     assert board_check["process_observed_running"] is False
 
 
+@pytest.mark.parametrize(
+    "bad_value",
+    ["false", 0, 1, None, [], {}],
+)
+def test_process_observed_running_rejects_non_boolean(bad_value: object) -> None:
+    fixture = json.loads((_FIXTURES / "all-green.json").read_text(encoding="utf-8"))
+    fixture["input"]["process_observed_running"] = bad_value
+    with pytest.raises(ValueError, match=r"all-green: process_observed_running must be boolean"):
+        evaluate_fixture(fixture)
+
+
 def test_honest_fault_board_is_not_false_green() -> None:
     """Explicit fault on the board is honest — not case 4 or case 5."""
     result = evaluate_gate(
