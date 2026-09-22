@@ -406,6 +406,27 @@ main {
   margin-bottom: var(--space-sm);
   background: rgba(46, 230, 199, 0.06);
 }
+
+.status-summary {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 0 auto var(--space-sm);
+  max-width: 28rem;
+}
+
+.status-summary--ok {
+  color: var(--status-ok, #6fe0c4);
+}
+
+.status-summary--degraded {
+  color: var(--status-warn, #c9a962);
+}
+
+.status-summary--fault {
+  color: var(--status-fault, #c97a62);
+}
 .playground {
   display: block;
   margin-bottom: var(--space-sm);

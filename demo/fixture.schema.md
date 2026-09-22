@@ -31,8 +31,8 @@ Card render order (matches site): **Online → Posture → Doctor → Feeds → 
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `mode` | string | e.g. `observe-only` |
-| `detail` | string | Optional detail line |
+| `mode` | string | Must be dry / eyes-only, e.g. `dry compose`, `dry simulate`, `observe-only` |
+| `detail` | string | Optional detail line — must not imply live send, armed, or auto-send |
 
 ## `doctor`
 
