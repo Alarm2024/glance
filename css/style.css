@@ -304,6 +304,216 @@ body {
   font-weight: 600;
 }
 
+.bullets--left {
+  text-align: left;
+}
+
+.bullets a,
+.vocab-list a,
+.quickstart-step a,
+.trust-meta a {
+  color: var(--gold);
+  text-decoration: none;
+}
+
+.bullets a:hover,
+.vocab-list a:hover,
+.quickstart-step a:hover,
+.trust-meta a:hover {
+  color: var(--gold-warm);
+}
+
+.pre1-badge {
+  display: inline-block;
+  padding: 0.1rem 0.4rem;
+  border: 1px solid var(--gold-dim);
+  border-radius: 999px;
+  font-size: 0.625rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold-warm);
+  vertical-align: middle;
+}
+
+.vocab-list {
+  max-width: 28rem;
+  margin-inline: auto;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.vocab-list__item {
+  padding: var(--space-sm);
+  border: 1px solid var(--gold-dim);
+  border-radius: 2px;
+  background: var(--ink-soft);
+}
+
+.vocab-list dt {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--gold-warm);
+  margin-bottom: 0.35rem;
+}
+
+.vocab-list dd {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  line-height: 1.55;
+  margin: 0;
+}
+
+.quickstart-steps {
+  list-style: none;
+  max-width: 28rem;
+  margin-inline: auto;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  counter-reset: qs;
+}
+
+.quickstart-step__title {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+
+.code-block--step {
+  margin-bottom: 0.5rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.quickstart-step__check,
+.quickstart-step__hint {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.quickstart-step__check code,
+.quickstart-step__hint code {
+  font-family: ui-monospace, "Cascadia Code", "Source Code Pro", monospace;
+  font-size: 0.75rem;
+  color: var(--gold-warm);
+}
+
+.quickstart-more {
+  margin-top: var(--space-sm);
+  font-size: 0.8125rem;
+}
+
+.quickstart-more a {
+  color: var(--gold);
+  text-decoration: none;
+}
+
+.demo-cases {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  justify-content: center;
+  margin-bottom: var(--space-sm);
+  max-width: 28rem;
+  margin-inline: auto;
+}
+
+.demo-case {
+  background: transparent;
+  border: 1px solid var(--gold-dim);
+  color: var(--text-muted);
+  padding: 0.4rem 0.55rem;
+  border-radius: 6px;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.demo-case.on {
+  color: var(--text);
+  border-color: var(--gold);
+  background: rgba(46, 230, 199, 0.08);
+}
+
+.demo-paste {
+  margin-top: var(--space-sm);
+  max-width: 28rem;
+  margin-inline: auto;
+  text-align: left;
+}
+
+.demo-paste summary {
+  cursor: pointer;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  padding: 0.35rem 0;
+  list-style: none;
+}
+
+.demo-paste summary::-webkit-details-marker {
+  display: none;
+}
+
+.demo-paste__json {
+  margin-top: 0.35rem;
+  padding: var(--space-sm);
+  border: 1px solid var(--gold-dim);
+  border-radius: 2px;
+  background: var(--ink-soft);
+  font-family: ui-monospace, "Cascadia Code", "Source Code Pro", monospace;
+  font-size: 0.72rem;
+  line-height: 1.45;
+  color: var(--gold-warm);
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 14rem;
+  overflow-y: auto;
+}
+
+.trust-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  max-width: 28rem;
+  margin-inline: auto;
+}
+
+.trust-block {
+  text-align: left;
+  padding: var(--space-sm);
+  border: 1px solid var(--gold-dim);
+  border-radius: 2px;
+  background: var(--ink-soft);
+}
+
+.trust-block__title {
+  font-family: var(--font-serif);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--gold-warm);
+  margin-bottom: 0.5rem;
+}
+
+.trust-meta {
+  margin-top: var(--space-sm);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-style: italic;
+  max-width: 28rem;
+  margin-inline: auto;
+}
+
 .playground-advanced {
   margin-top: var(--space-sm);
   max-width: 28rem;

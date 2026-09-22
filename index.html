@@ -7,13 +7,13 @@
   <meta name="theme-color" content="#0b1214">
   <meta property="og:title" content="Glance — honest status for Solana bots">
   <meta property="og:description" content="Open-source observability for Solana bot operators. Try the synthetic demo — no live send.">
-  <meta property="og:image" content="https://glance.elghaly.dev/glance-card.jpg?v=tryready1">
+  <meta property="og:image" content="https://glance.elghaly.dev/glance-card.jpg?v=packaging1">
   <meta property="og:image:alt" content="Glance status dashboard preview">
   <meta property="og:url" content="https://glance.elghaly.dev/">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Glance — honest status for Solana bots">
   <meta name="twitter:description" content="Open-source observability for Solana bot operators. Try the synthetic demo — no live send.">
-  <meta name="twitter:image" content="https://glance.elghaly.dev/glance-card.jpg?v=tryready1">
+  <meta name="twitter:image" content="https://glance.elghaly.dev/glance-card.jpg?v=packaging1">
   <meta name="twitter:image:alt" content="Glance status dashboard preview">
   <link rel="canonical" href="https://glance.elghaly.dev/">
   <title>Glance — honest status for Solana bots</title>
@@ -25,7 +25,7 @@
       }
     })();
   </script>
-  <link rel="stylesheet" href="css/style.css?v=tryready1">
+  <link rel="stylesheet" href="css/style.css?v=packaging1">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -62,16 +62,17 @@
   <p class="signs signs--top" aria-hidden="true">✝️🧿🪬</p>
 
   <figure class="house">
-    <img src="glance-card.jpg?v=tryready1" width="1200" height="630" alt="Glance status dashboard preview"/>
+    <img src="glance-card.jpg?v=packaging1" width="1200" height="630" alt="Glance status dashboard preview"/>
   </figure>
 
   <header class="hero">
-    <p class="hero__eyebrow" data-i18n="eyebrow">Open source · Developer tooling</p>
+    <p class="hero__eyebrow"><span data-i18n="eyebrow">Open source · Developer tooling</span> · <span class="pre1-badge">pre-1.0</span></p>
     <h1 class="hero__title">Glance</h1>
     <p class="hero__tag" data-i18n="tag">Honest status for Solana bots</p>
     <p class="status-strip" data-i18n="statusStrip">Eyes + dry compose · no auto-send</p>
     <p class="hero__actions">
-      <a class="btn btn--primary" href="#demo" data-i18n="tryDemo">Try demo</a>
+      <a class="btn btn--primary" href="#quickstart" data-i18n="tryQuickstart">Quickstart</a>
+      <a class="btn btn--ghost" href="#demo" data-i18n="tryDemo">Try demo</a>
       <a class="btn btn--ghost" href="/proof/">CLEAR LAB</a>
       <a class="btn btn--ghost" href="https://github.com/Alarm2024/glance">GitHub</a>
     </p>
@@ -81,16 +82,78 @@
     <section class="section what-you-get" id="what">
       <h2 class="section__label" data-i18n="sectionWhatYouGet">What you get</h2>
       <ul class="bullets">
-        <li data-i18n="bulletEyes">Glance eyes — fault-first health cards</li>
+        <li data-i18n-html="bulletEyes">Glance <a href="#vocab-eyes">eyes</a> — fault-first health cards</li>
         <li data-i18n="bulletDry">Dry simulate — compose without sending</li>
-        <li data-i18n="bulletClear">Operator CLEAR only — human gate, no auto-send</li>
+        <li data-i18n-html="bulletClear">Operator <a href="#vocab-clear">CLEAR</a> only — human gate, no auto-send</li>
       </ul>
+    </section>
+
+    <section class="section vocab" id="vocab">
+      <h2 class="section__label" data-i18n="sectionVocab">Vocabulary</h2>
+      <p class="build__text" data-i18n="vocabIntro">Defined once here — every other mention links back.</p>
+      <dl class="vocab-list">
+        <div class="vocab-list__item" id="vocab-eyes">
+          <dt data-i18n="vocabEyesTerm">Eyes</dt>
+          <dd data-i18n="vocabEyesDef">Read-only status cards. Fault-first health display — never suggests send, arm, or mint. Summary lines are marked (read-only · eyes-only).</dd>
+        </div>
+        <div class="vocab-list__item" id="vocab-doctor">
+          <dt data-i18n="vocabDoctorTerm">Doctor</dt>
+          <dd data-i18n="vocabDoctorDef">Fault-first classifier for operator messages. Status values: ok, warn, eyes_fault, blocking, unknown. Order: blocking flag → hygiene phrases → fault phrases → unknown.</dd>
+        </div>
+        <div class="vocab-list__item" id="vocab-posture">
+          <dt data-i18n="vocabPostureTerm">Posture</dt>
+          <dd data-i18n="vocabPostureDef">How your tooling composes transactions. Allowed modes: dry compose, dry simulate, observe-only. Must not imply auto-send, live send, or mint.</dd>
+        </div>
+        <div class="vocab-list__item" id="vocab-clear">
+          <dt data-i18n="vocabClearTerm">CLEAR</dt>
+          <dd data-i18n="vocabClearDef">Operator CLEAR only — a human operator must explicitly CLEAR before anything sends. Glance observes and composes dry; it never auto-sends. The refusal is the product.</dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="section quickstart" id="quickstart">
+      <h2 class="section__label" data-i18n="sectionQuickstart">Quickstart</h2>
+      <p class="build__text" data-i18n="quickstartIntro">Clone the public repo, run the shipped checks, then compare with the synthetic demo below. No sign-in required.</p>
+      <ol class="quickstart-steps">
+        <li class="quickstart-step">
+          <p class="quickstart-step__title" data-i18n="qs1Title">1 · Clone the repo</p>
+          <pre class="code-block code-block--step"><code>git clone https://github.com/Alarm2024/glance.git &amp;&amp; cd glance</code></pre>
+          <p class="quickstart-step__check" data-i18n-html="qs1Check">You should see a <code>glance/</code> directory containing <code>lib/</code>, <code>demo/</code>, and <code>examples/</code>.</p>
+        </li>
+        <li class="quickstart-step">
+          <p class="quickstart-step__title" data-i18n="qs2Title">2 · Run posture self-test (dry / eyes-only guard)</p>
+          <pre class="code-block code-block--step"><code>pip install -e lib/python &amp;&amp; python3 scripts/posture_selftest.py</code></pre>
+          <p class="quickstart-step__check" data-i18n-html="qs2Check">You should see: <code>posture-selftest passed — dry compose / eyes-only across fixture + page sources</code></p>
+        </li>
+        <li class="quickstart-step">
+          <p class="quickstart-step__title" data-i18n="qs3Title">3 · Run the library demo CLI</p>
+          <pre class="code-block code-block--step"><code>python3 examples/python-cli/glance_cli.py demo</code></pre>
+          <p class="quickstart-step__check" data-i18n-html="qs3Check">You should see a line starting with <code>demo ok · status=warn</code> and a redacted URL (no raw token).</p>
+        </li>
+        <li class="quickstart-step">
+          <p class="quickstart-step__title" data-i18n="qs4Title">4 · Summarize a synthetic fixture</p>
+          <pre class="code-block code-block--step"><code>python3 examples/python-cli/glance_cli.py summarize demo/fixture-hold-stale-oracle.json
+python3 examples/python-cli/glance_cli.py summarize demo/fixture-clear.json</code></pre>
+          <p class="quickstart-step__check" data-i18n-html="qs4Check">You should see <code>DEGRADED</code> then <code>OK</code> — two different judgements from two synthetic files.</p>
+        </li>
+        <li class="quickstart-step">
+          <p class="quickstart-step__title" data-i18n="qs5Title">5 · Match the site demo</p>
+          <p class="quickstart-step__hint" data-i18n-html="qs5Hint">Scroll to <a href="#demo">Demo</a>, pick a synthetic case tab, or paste the JSON into the playground.</p>
+          <p class="quickstart-step__check" data-i18n="qs5Check">You should see the same Summary line and six cards as the case label describes — client-side only, not live bot data.</p>
+        </li>
+      </ol>
+      <p class="quickstart-more"><a href="https://github.com/Alarm2024/glance/blob/main/docs/add-glance-in-15-minutes.md" target="_blank" rel="noopener" data-i18n="quickstartGuide">Full integration guide in the repo →</a></p>
     </section>
 
     <section class="section demo" id="demo">
       <h2 class="section__label" data-i18n="sectionDemo">Demo</h2>
-      <p class="build__text playground__hint" data-i18n="demoHint">Synthetic fixture below — client-side only, not live bot data.</p>
+      <p class="build__text playground__hint" data-i18n="demoHint">Synthetic fixtures below — client-side only, not live bot data.</p>
       <p id="synthetic-banner" class="synthetic-banner" data-synthetic="true" data-i18n="syntheticFallback">DEMO / SYNTHETIC — not live bot data</p>
+      <div class="demo-cases" role="tablist" aria-label="Synthetic demo cases">
+        <button type="button" class="demo-case on" role="tab" aria-selected="true" data-case="hold-stale-oracle" data-i18n="caseHoldOracle">HOLD · stale oracle</button>
+        <button type="button" class="demo-case" role="tab" aria-selected="false" data-case="hold-queue" data-i18n="caseHoldQueue">HOLD · queue backlog</button>
+        <button type="button" class="demo-case" role="tab" aria-selected="false" data-case="clear" data-i18n="caseClear">CLEAR · all feeds ok</button>
+      </div>
       <p id="status-summary" class="status-summary status-summary--degraded" hidden aria-live="polite">Summary · DEGRADED (read-only · eyes-only)</p>
       <div id="cards" class="cards" aria-live="polite">
         <article class="card">
@@ -144,6 +207,10 @@
           <p class="card__detail">Pre-1.0 demo build</p>
         </article>
       </div>
+      <details class="demo-paste" open>
+        <summary data-i18n="demoPasteToggle">Paste-ready JSON for this case</summary>
+        <pre id="demo-paste-json" class="demo-paste__json" aria-label="Synthetic fixture JSON"></pre>
+      </details>
       <details class="playground-advanced">
         <summary data-i18n="playgroundToggle">Paste your own status JSON</summary>
         <label class="playground" for="playground-input">
@@ -151,6 +218,32 @@
           <textarea id="playground-input" class="playground__input" rows="8" spellcheck="false"></textarea>
         </label>
       </details>
+    </section>
+
+    <section class="section trust" id="trust">
+      <h2 class="section__label" data-i18n="sectionTrust">Trust</h2>
+      <div class="trust-grid">
+        <div class="trust-block">
+          <h3 class="trust-block__title" data-i18n="trustCanTitle">Glance can verify</h3>
+          <ul class="bullets bullets--left">
+            <li data-i18n-html="trustCan1"><a href="#vocab-doctor">Doctor</a> message classification (ok / warn / fault / blocking)</li>
+            <li data-i18n="trustCan2">Secret redaction before display</li>
+            <li data-i18n="trustCan3">Banned overclaim phrases (CI via glance-check action)</li>
+            <li data-i18n-html="trustCan4"><a href="#vocab-posture">Posture</a> stays dry compose / eyes-only (posture self-test)</li>
+            <li data-i18n="trustCan5">Synthetic fixture schema conformance</li>
+          </ul>
+        </div>
+        <div class="trust-block">
+          <h3 class="trust-block__title" data-i18n="trustCannotTitle">Glance cannot verify</h3>
+          <ul class="bullets bullets--left">
+            <li data-i18n="trustCannot1">Live trade correctness, PnL, or strategy alpha</li>
+            <li data-i18n="trustCannot2">Wallet balances or real RPC endpoints</li>
+            <li data-i18n="trustCannot3">Whether an operator actually CLEARs off-site</li>
+            <li data-i18n="trustCannot4">Anything beyond what your status JSON reports</li>
+          </ul>
+        </div>
+      </div>
+      <p class="trust-meta" data-i18n-html="trustMeta">MIT licence · pre-1.0 (not yet on crates.io or PyPI) · synthetic demo data only · contact <a href="mailto:support@elghaly.dev">support@elghaly.dev</a></p>
     </section>
 
     <section class="section install" id="install">
@@ -167,6 +260,7 @@
       <h2 class="section__label" data-i18n="sectionAsk">Ask us</h2>
       <ul class="contact__list">
         <li><a href="mailto:support@elghaly.dev">support@elghaly.dev</a></li>
+        <li><a href="https://github.com/Alarm2024/glance/issues" target="_blank" rel="noopener">GitHub issues →</a></li>
         <li><a href="https://github.com/Alarm2024/glance" target="_blank" rel="noopener">github.com/Alarm2024/glance →</a></li>
       </ul>
     </section>
@@ -174,11 +268,11 @@
 
   <footer class="footer">
     <p class="signs signs--bottom" aria-hidden="true">3️⃣🧿5️⃣</p>
-    <p data-i18n="footer">Glance · MIT</p>
+    <p data-i18n="footer">Glance · MIT · pre-1.0</p>
   </footer>
 
-  <script src="themes.js?v=tryready1"></script>
-  <script src="i18n.js?v=tryready1"></script>
-  <script src="app.js?v=tryready1"></script>
+  <script src="themes.js?v=packaging1"></script>
+  <script src="i18n.js?v=packaging1"></script>
+  <script src="app.js?v=packaging1"></script>
 </body>
 </html>
