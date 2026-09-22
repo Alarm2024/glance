@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""CI posture self-test — fixture + live page sources must stay dry / eyes-only."""
+"""CI posture self-test — fixture + page sources must stay dry / eyes-only."""
 
 from __future__ import annotations
 

@@ -1,0 +1,27 @@
+{
+  "synthetic": true,
+  "label": "PROOF / SYNTHETIC — thin-liquidity case",
+  "case_id": "thin-liquidity",
+  "input": {
+    "feeds": [
+      {
+        "name": "pool-depth",
+        "state": "ok",
+        "age_seconds": 1
+      },
+      {
+        "name": "price-oracle",
+        "state": "ok",
+        "age_seconds": 3
+      }
+    ],
+    "liquidity_usd": 1200,
+    "liquidity_floor_usd": 5000,
+    "doctor": {
+      "blocking_flag": false,
+      "message": "Hygiene checks passed · heartbeat ok",
+      "hygiene_phrases": ["hygiene", "passed", "heartbeat ok"],
+      "fault_phrases": ["stale", "timeout", "degraded"]
+    }
+  }
+}

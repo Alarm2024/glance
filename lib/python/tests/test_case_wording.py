@@ -1,0 +1,62 @@
+"""Tests for CLEAR LAB case wording gates."""
+
+from __future__ import annotations
+
+from pathlib import Path
+
+import pytest
+
+from glance_status.case_wording import (
+    AI_ASSISTED_FINDING_LABEL,
+    HASH_PROOF_DISCLAIMER,
+    assert_case_copy,
+    assert_hash_proof_disclaimer_present,
+    assert_no_counterfactual_outcomes,
+    assert_no_earn_schedule_reference,
+    assert_proof_tree,
+    assert_stale_oracle_age_consistent,
+)
+
+_REPO = Path(__file__).resolve().parents[3]
+
+
+def test_counterfactual_phrases_rejected() -> None:
+    with pytest.raises(ValueError, match="counterfactual"):
+        assert_no_counterfactual_outcomes("The refusal costs money.")
+    with pytest.raises(ValueError, match="counterfactual"):
+        assert_no_counterfactual_outcomes("a gap that really would have paid")
+
+
+def test_observed_refusal_copy_allowed() -> None:
+    assert_case_copy(
+        "HOLD, on feed age. price-oracle stale · 47s. "
+        "We do not claim it would have filled — we cannot know that."
+    )
+
+
+def test_earn_schedule_blocked() -> None:
+    with pytest.raises(ValueError, match="earn-schedule"):
+        assert_no_earn_schedule_reference("See the earn schedule on page 35.")
+
+
+def test_hash_disclaimer_required_on_proof_page() -> None:
+    page = (_REPO / "proof" / "index.html").read_text(encoding="utf-8")
+    assert_hash_proof_disclaimer_present(page)
+    assert HASH_PROOF_DISCLAIMER in page
+
+
+def test_stale_oracle_fixture_uses_47s() -> None:
+    import json
+
+    fixture = json.loads(
+        (_REPO / "proof" / "fixtures" / "stale-oracle.json").read_text(encoding="utf-8")
+    )
+    assert_stale_oracle_age_consistent(fixture, label="stale-oracle.json")
+
+
+def test_proof_tree_passes() -> None:
+    assert_proof_tree(_REPO)
+
+
+def test_ai_assisted_label_constant() -> None:
+    assert AI_ASSISTED_FINDING_LABEL == "AI-assisted analysis of public pages."

@@ -74,6 +74,23 @@ def assert_no_overclaim(status_text: str, banned: Iterable[str]) -> None:
             )
 
 
+from glance_status.gate import (
+    GateDecision,
+    GateResult,
+    LIQUIDITY_FLOOR_USD,
+    ORACLE_STALE_THRESHOLD_SECONDS,
+    compute_evidence_hash,
+    evaluate_fixture,
+    evaluate_gate,
+)
+from glance_status.case_wording import (
+    AI_ASSISTED_FINDING_LABEL,
+    HASH_PROOF_DISCLAIMER,
+    assert_case_copy,
+    assert_no_counterfactual_outcomes,
+    assert_proof_tree,
+)
+
 from glance_status.posture import (
     ALLOWED_POSTURE_MODES,
     StatusSummary,
@@ -87,16 +104,28 @@ from glance_status.posture import (
 )
 
 __all__ = [
+    "AI_ASSISTED_FINDING_LABEL",
     "ALLOWED_POSTURE_MODES",
     "ClassifyInput",
     "DoctorStatus",
+    "GateDecision",
+    "GateResult",
+    "HASH_PROOF_DISCLAIMER",
+    "LIQUIDITY_FLOOR_USD",
+    "ORACLE_STALE_THRESHOLD_SECONDS",
     "StatusSummary",
+    "assert_case_copy",
     "assert_dry_posture",
     "assert_eyes_only_fixture",
+    "assert_no_counterfactual_outcomes",
     "assert_no_overclaim",
     "assert_no_send_suggestions",
     "assert_page_sources_dry",
+    "assert_proof_tree",
     "classify",
+    "compute_evidence_hash",
+    "evaluate_fixture",
+    "evaluate_gate",
     "extract_demo_fixture_from_app_js",
     "is_allowed_posture_mode",
     "redact",
