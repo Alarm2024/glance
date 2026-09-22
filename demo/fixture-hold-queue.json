@@ -1,10 +1,10 @@
 {
   "synthetic": true,
   "label": "DEMO / SYNTHETIC — not live bot data",
-  "generated_at": "2026-09-20T20:00:00Z",
+  "generated_at": "2026-09-22T18:00:00Z",
   "online": {
     "status": "connected",
-    "uptime": "4h 12m",
+    "uptime": "2h 41m",
     "detail": "Process heartbeat OK (demo fixture)"
   },
   "posture": {
@@ -12,35 +12,35 @@
     "detail": "Eyes + dry compose · no auto-send"
   },
   "doctor": {
-    "status": "ok",
-    "summary": "No blocking flags, no active faults",
-    "detail": "Hygiene checks passed · config exclusions applied"
+    "status": "warn",
+    "summary": "Compose queue backlog · depth 12",
+    "detail": "Dry compose paused — operator HOLD until queue drains"
   },
   "feeds": [
     {
       "name": "slot-stream",
       "state": "ok",
-      "age": "1.2s"
+      "age": "1.0s"
     },
     {
       "name": "account-delta",
       "state": "ok",
-      "age": "0.8s"
+      "age": "0.7s"
     },
     {
       "name": "price-oracle",
-      "state": "stale",
-      "age": "47s"
+      "state": "ok",
+      "age": "1.3s"
     }
   ],
   "last_signal": {
     "kind": "heartbeat",
-    "ago": "12s",
+    "ago": "19s",
     "detail": "Synthetic tick — no strategy payload"
   },
   "build": {
     "version": "0.1.0-demo",
-    "commit": "fixture-hold-stale-oracle",
+    "commit": "fixture-hold-queue",
     "detail": "Pre-1.0 demo build"
   }
 }

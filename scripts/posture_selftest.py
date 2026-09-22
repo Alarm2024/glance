@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import json
 import sys
 from pathlib import Path
 
@@ -30,6 +31,20 @@ def main() -> int:
     except ValueError as exc:
         print(f"posture-selftest FAILED: {exc}", file=sys.stderr)
         return 1
+
+    from glance_status.posture import assert_eyes_only_fixture
+
+    demo_dir = repo_root / "demo"
+    extra_fixtures = sorted(demo_dir.glob("fixture*.json"))
+    for path in extra_fixtures:
+        if path.name == "fixture.json":
+            continue
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        try:
+            assert_eyes_only_fixture(payload, label=str(path.relative_to(repo_root)))
+        except ValueError as exc:
+            print(f"posture-selftest FAILED: {exc}", file=sys.stderr)
+            return 1
 
     print("posture-selftest passed — dry compose / eyes-only across fixture + page sources")
     return 0
