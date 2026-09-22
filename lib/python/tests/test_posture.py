@@ -45,6 +45,19 @@ def test_rejects_send_suggestion_in_doctor():
         assert_no_send_suggestions(fixture)
 
 
+def test_rejects_bare_mint_button_label():
+    fixture = json.loads((REPO_ROOT / "demo" / "fixture.json").read_text(encoding="utf-8"))
+    fixture["doctor"] = {"status": "warn", "summary": "Mint"}
+    with pytest.raises(ValueError, match="mint"):
+        assert_no_send_suggestions(fixture)
+
+
+def test_allows_negated_mint_suggestion():
+    fixture = json.loads((REPO_ROOT / "demo" / "fixture.json").read_text(encoding="utf-8"))
+    fixture["doctor"] = {"status": "warn", "summary": "no mint — eyes-only demo"}
+    assert_no_send_suggestions(fixture)
+
+
 def test_summarize_demo_fixture():
     payload = json.loads((REPO_ROOT / "demo" / "fixture.json").read_text(encoding="utf-8"))
     summary = summarize_status(payload)

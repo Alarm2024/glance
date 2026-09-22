@@ -34,6 +34,7 @@ const BANNED_ACTION_SUGGESTIONS: &[&str] = &[
     "flip dry",
     "go live",
     "arm now",
+    "mint",
     "mint now",
 ];
 
@@ -351,5 +352,21 @@ mod tests {
     #[test]
     fn allowed_modes_include_dry_compose() {
         assert!(ALLOWED_POSTURE_MODES.contains(&"dry compose"));
+    }
+
+    #[test]
+    fn rejects_bare_mint_button_label() {
+        let mut fixture = demo_fixture();
+        fixture["doctor"] = serde_json::json!({"status": "warn", "summary": "Mint"});
+        let err = assert_no_send_suggestions(&fixture, "test").unwrap_err();
+        assert!(err.contains("mint"), "expected mint ban, got {err}");
+    }
+
+    #[test]
+    fn allows_negated_mint_suggestion() {
+        let mut fixture = demo_fixture();
+        fixture["doctor"] =
+            serde_json::json!({"status": "warn", "summary": "no mint — eyes-only demo"});
+        assert_no_send_suggestions(&fixture, "test").unwrap();
     }
 }
