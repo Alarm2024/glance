@@ -24,6 +24,8 @@ FIXTURE_ORDER = (
     "stale-oracle.json",
     "thin-liquidity.json",
     "refuse-to-classify.json",
+    "all-green.json",
+    "mostly-green.json",
 )
 
 

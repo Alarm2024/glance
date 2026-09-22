@@ -59,6 +59,8 @@
       <a href="#case-stale-oracle">Case 1</a>
       <a href="#case-thin-liquidity">Case 2</a>
       <a href="#case-refuse-to-classify">Case 3</a>
+      <a href="#case-all-green">Case 4</a>
+      <a href="#case-mostly-green">Case 5</a>
       <a href="https://github.com/Alarm2024/glance/blob/main/docs/glossary.md">Full glossary (GitHub)</a>
     </nav>
 
@@ -79,7 +81,7 @@
 
     <section id="reproduce">
       <h2>Reproduce in one command</h2>
-      <p>From a fresh clone — no keys, no network, no credentials. Fixtures only. You should see three cases, each <strong>HOLD</strong>, with the same evidence hashes as this page.</p>
+      <p>From a fresh clone — no keys, no network, no credentials. Fixtures only. You should see each synthetic case as <strong>HOLD</strong>, with the same evidence hashes as this page.</p>
       <pre class="fixture">git clone https://github.com/Alarm2024/glance &amp;&amp; cd glance &amp;&amp; python3 scripts/run_proof.py</pre>
       <p class="hash-limit"><strong>What the hash proves:</strong> Same fixture in, same decision out. This proves the case was not changed after the fact. It does not prove the decision was right.</p>
       <div class="step"><strong>Step 1.</strong> Clone the repo. You should see <code>CLEAR LAB — synthetic proof cases</code> header.</div>
@@ -89,7 +91,7 @@
     </section>
 
     <section id="cases">
-      <h2>Three synthetic cases</h2>
+      <h2>Synthetic HOLD cases</h2>
       <p>Thresholds (not lowered for prettier output): oracle stale &gt; 30s · liquidity floor $5,000 USD.</p>
 
       <article class="case" id="case-stale-oracle">
@@ -128,6 +130,30 @@
         <h3>Input (paste-ready fixture)</h3>
         <pre class="fixture" id="fixture-refuse-to-classify">Loading…</pre>
       </article>
+
+      <article class="case" id="case-all-green">
+        <p class="case__id">Case 4 · all-green</p>
+        <span class="decision decision--hold">HOLD</span>
+        <p class="observed"><strong>Observed:</strong> HOLD, on false green board. All indicators green · process not observed running. We do not claim the board would have cleared — we cannot know that. The system does not decide on outcome.</p>
+        <p><strong>Reason:</strong> Board reports all green while no running process was observed</p>
+        <p><strong>Evidence hash:</strong><br><span class="hash" data-hash="all-green">1f4ada1b9487d2af4821accdf82f956c32b69b656fcb1fac0cbeca76dfbcb139</span></p>
+        <p class="hash-limit">Same fixture in, same decision out. This proves the case was not changed after the fact. It does not prove the decision was right.</p>
+        <p><strong>Human still needed:</strong> Operator must confirm the process is running before CLEAR.</p>
+        <h3>Input (paste-ready fixture)</h3>
+        <pre class="fixture" id="fixture-all-green">Loading…</pre>
+      </article>
+
+      <article class="case" id="case-mostly-green">
+        <p class="case__id">Case 5 · mostly-green</p>
+        <span class="decision decision--hold">HOLD</span>
+        <p class="observed"><strong>Observed:</strong> HOLD, on mostly-green board. No fault on board · queue-depth amber · process not observed running. We do not claim the board would have cleared — we cannot know that. The system does not decide on outcome.</p>
+        <p><strong>Reason:</strong> Board reports no fault while no running process was observed</p>
+        <p><strong>Evidence hash:</strong><br><span class="hash" data-hash="mostly-green">519e6a04ea1b3f7a8b0051a6b1df13788fdd4a9fba70faa35eeb9eaed6ecb638</span></p>
+        <p class="hash-limit">Same fixture in, same decision out. This proves the case was not changed after the fact. It does not prove the decision was right.</p>
+        <p><strong>Human still needed:</strong> Operator must confirm the process is running before CLEAR.</p>
+        <h3>Input (paste-ready fixture)</h3>
+        <pre class="fixture" id="fixture-mostly-green">Loading…</pre>
+      </article>
     </section>
 
     <section id="links">
@@ -150,7 +176,9 @@
       var files = {
         'fixture-stale-oracle': 'fixtures/stale-oracle.json',
         'fixture-thin-liquidity': 'fixtures/thin-liquidity.json',
-        'fixture-refuse-to-classify': 'fixtures/refuse-to-classify.json'
+        'fixture-refuse-to-classify': 'fixtures/refuse-to-classify.json',
+        'fixture-all-green': 'fixtures/all-green.json',
+        'fixture-mostly-green': 'fixtures/mostly-green.json'
       };
       Object.keys(files).forEach(function (id) {
         var el = document.getElementById(id);

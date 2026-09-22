@@ -1,0 +1,36 @@
+{
+  "synthetic": true,
+  "label": "PROOF / SYNTHETIC — all-green case",
+  "case_id": "all-green",
+  "input": {
+    "feeds": [
+      {
+        "name": "price-oracle",
+        "state": "ok",
+        "age_seconds": 2
+      }
+    ],
+    "liquidity_usd": 50000,
+    "doctor": {
+      "blocking_flag": false,
+      "message": "Hygiene checks passed · heartbeat ok",
+      "hygiene_phrases": ["hygiene", "passed", "heartbeat ok"],
+      "fault_phrases": ["stale", "timeout", "degraded"]
+    },
+    "indicators": [
+      {
+        "name": "slot-stream",
+        "state": "green"
+      },
+      {
+        "name": "account-delta",
+        "state": "green"
+      },
+      {
+        "name": "price-oracle",
+        "state": "green"
+      }
+    ],
+    "process_observed_running": false
+  }
+}

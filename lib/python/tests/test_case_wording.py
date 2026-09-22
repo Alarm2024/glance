@@ -93,7 +93,13 @@ def test_fixture_camelcase_gap_closed_rejected() -> None:
 def test_shipped_fixtures_pass_outcome_gate() -> None:
     import json
 
-    for name in ("stale-oracle.json", "thin-liquidity.json", "refuse-to-classify.json"):
+    for name in (
+        "stale-oracle.json",
+        "thin-liquidity.json",
+        "refuse-to-classify.json",
+        "all-green.json",
+        "mostly-green.json",
+    ):
         fixture = json.loads(
             (_REPO / "proof" / "fixtures" / name).read_text(encoding="utf-8")
         )

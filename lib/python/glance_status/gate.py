@@ -34,6 +34,14 @@ DEFAULT_FAULT_PHRASES: tuple[str, ...] = (
     "blocking",
 )
 
+INDICATOR_FAULT_STATES: frozenset[str] = frozenset(
+    {"fault", "error", "down", "blocking", "eyes_fault"}
+)
+INDICATOR_BENIGN_NON_GREEN: frozenset[str] = frozenset(
+    {"amber", "warn", "warning"}
+)
+INDICATOR_GREEN_STATE = "green"
+
 
 class GateDecision(str, Enum):
     HOLD = "HOLD"
@@ -115,6 +123,100 @@ def _liquidity_check(case_input: Mapping[str, Any]) -> dict[str, Any] | None:
     return None
 
 
+def _normalize_indicator_state(state: Any) -> str:
+    return str(state).strip().lower()
+
+
+def _indicator_is_green(state: str) -> bool:
+    return state == INDICATOR_GREEN_STATE
+
+
+def _indicator_is_benign(state: str) -> bool:
+    return state in INDICATOR_BENIGN_NON_GREEN
+
+
+def _indicator_is_fault(state: str) -> bool:
+    """Fail closed: not green and not benign → fault."""
+    if _indicator_is_green(state) or _indicator_is_benign(state):
+        return False
+    return True
+
+
+def _validate_process_observed_running(
+    case_id: str, case_input: Mapping[str, Any]
+) -> None:
+    """Reject non-boolean process_observed_running at fixture validation."""
+    if "process_observed_running" not in case_input:
+        return
+    value = case_input["process_observed_running"]
+    if type(value) is not bool:
+        raise ValueError(f"{case_id}: process_observed_running must be boolean")
+
+
+def _board_indicator_stats(indicators: list[Mapping[str, Any]]) -> dict[str, Any]:
+    total = len(indicators)
+    green_count = 0
+    fault_count = 0
+    for indicator in indicators:
+        state = _normalize_indicator_state(indicator.get("state", ""))
+        if _indicator_is_fault(state):
+            fault_count += 1
+        elif _indicator_is_green(state):
+            green_count += 1
+    return {
+        "total_indicator_count": total,
+        "green_indicator_count": green_count,
+        "fault_indicator_count": fault_count,
+        "all_green": green_count == total and total > 0,
+        "any_not_green": green_count < total and fault_count == 0,
+        "any_fault": fault_count > 0,
+    }
+
+
+def _false_green_check(case_input: Mapping[str, Any]) -> dict[str, Any] | None:
+    """Case 4 — all indicators green, no fault, process not observed running."""
+    indicators = case_input.get("indicators")
+    if not isinstance(indicators, list) or not indicators:
+        return None
+    process_running = case_input.get("process_observed_running")
+    if process_running is not False:
+        return None
+
+    stats = _board_indicator_stats(indicators)
+    if stats["any_fault"] or not stats["all_green"]:
+        return None
+
+    return {
+        "gate": "false_green_board",
+        "passed": False,
+        "green_indicator_count": stats["green_indicator_count"],
+        "total_indicator_count": stats["total_indicator_count"],
+        "process_observed_running": process_running,
+    }
+
+
+def _mostly_green_no_fault_check(case_input: Mapping[str, Any]) -> dict[str, Any] | None:
+    """Case 5 — at least one non-green, no fault, process not observed running."""
+    indicators = case_input.get("indicators")
+    if not isinstance(indicators, list) or not indicators:
+        return None
+    process_running = case_input.get("process_observed_running")
+    if process_running is not False:
+        return None
+
+    stats = _board_indicator_stats(indicators)
+    if stats["any_fault"] or not stats["any_not_green"]:
+        return None
+
+    return {
+        "gate": "mostly_green_no_fault",
+        "passed": False,
+        "green_indicator_count": stats["green_indicator_count"],
+        "total_indicator_count": stats["total_indicator_count"],
+        "process_observed_running": process_running,
+    }
+
+
 def _doctor_check(doctor: Mapping[str, Any]) -> dict[str, Any]:
     blocking_flag = bool(doctor.get("blocking_flag", False))
     message = str(doctor.get("message", ""))
@@ -142,6 +244,7 @@ def _doctor_check(doctor: Mapping[str, Any]) -> dict[str, Any]:
 
 def evaluate_gate(case_id: str, case_input: Mapping[str, Any]) -> GateResult:
     """Evaluate one synthetic proof case — fixed gate order, no live wiring."""
+    _validate_process_observed_running(case_id, case_input)
     checks: list[dict[str, Any]] = []
 
     blocking_flag = bool(case_input.get("blocking_flag", False))
@@ -220,6 +323,30 @@ def evaluate_gate(case_id: str, case_input: Mapping[str, Any]) -> GateResult:
                 "Operator must review warn-level doctor message before CLEAR.",
             )
 
+    false_green = _false_green_check(case_input)
+    if false_green:
+        checks.append(false_green)
+        evidence = _build_evidence(case_id, checks, "false_green_board")
+        return _hold(
+            case_id,
+            "Board reports all green while no running process was observed",
+            "false_green_board",
+            evidence,
+            "Operator must confirm the process is running before CLEAR.",
+        )
+
+    mostly_green = _mostly_green_no_fault_check(case_input)
+    if mostly_green:
+        checks.append(mostly_green)
+        evidence = _build_evidence(case_id, checks, "mostly_green_no_fault")
+        return _hold(
+            case_id,
+            "Board reports no fault while no running process was observed",
+            "mostly_green_no_fault",
+            evidence,
+            "Operator must confirm the process is running before CLEAR.",
+        )
+
     checks.append({"gate": "all_gates", "passed": True})
     evidence = _build_evidence(case_id, checks, "clear")
     evidence_hash = compute_evidence_hash(evidence)
@@ -278,6 +405,7 @@ def evaluate_fixture(fixture: Mapping[str, Any]) -> GateResult:
     case_input = fixture.get("input")
     if not isinstance(case_input, Mapping):
         raise ValueError("proof fixture missing input object")
+    _validate_process_observed_running(case_id, case_input)
     return evaluate_gate(case_id, case_input)
 
 

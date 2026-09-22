@@ -29,6 +29,24 @@
       "reason_code": "refuse_to_classify",
       "evidence_hash": "008f6948f3fd63b6a8955aab763f204d03dd8bb91cc8c123e3ca2fb34b3af47e",
       "human_needed": "Operator must classify the doctor message, update allowlists, or accept HOLD."
+    },
+    {
+      "case_id": "all-green",
+      "fixture": "fixtures/all-green.json",
+      "decision": "HOLD",
+      "reason": "Board reports all green while no running process was observed",
+      "reason_code": "false_green_board",
+      "evidence_hash": "1f4ada1b9487d2af4821accdf82f956c32b69b656fcb1fac0cbeca76dfbcb139",
+      "human_needed": "Operator must confirm the process is running before CLEAR."
+    },
+    {
+      "case_id": "mostly-green",
+      "fixture": "fixtures/mostly-green.json",
+      "decision": "HOLD",
+      "reason": "Board reports no fault while no running process was observed",
+      "reason_code": "mostly_green_no_fault",
+      "evidence_hash": "519e6a04ea1b3f7a8b0051a6b1df13788fdd4a9fba70faa35eeb9eaed6ecb638",
+      "human_needed": "Operator must confirm the process is running before CLEAR."
     }
   ]
 }

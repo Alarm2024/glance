@@ -68,14 +68,14 @@ Terms: [Glossary](docs/glossary.md) (Eyes, Doctor, Posture, CLEAR).
 
 ## CLEAR LAB — reproduce HOLD proof (stranger path)
 
-Three synthetic cases show why the operator gate says **HOLD** — same decision and evidence hash on the page and in your terminal.
+Synthetic proof cases show why the operator gate says **HOLD** — same decision and evidence hash on the page and in your terminal.
 No keys, no network, fixtures only. Cases state what was observed and refused — never counterfactual outcomes.
 
 ```bash
 git clone https://github.com/Alarm2024/glance && cd glance && python3 scripts/run_proof.py
 ```
 
-You should see three `decision: HOLD` lines and evidence hashes matching [proof/](proof/index.html).
+You should see each `decision: HOLD` line and evidence hashes matching [proof/](proof/index.html).
 Same fixture in, same decision out — hash parity proves the case was not changed after the fact, not that the decision was right.
 
 | Case | Reason code |
@@ -83,6 +83,8 @@ Same fixture in, same decision out — hash parity proves the case was not chang
 | stale-oracle | Oracle feed stale — price reference unreliable |
 | thin-liquidity | Depth below $5,000 floor |
 | refuse-to-classify | Doctor message unmatched — REFUSE TO CLASSIFY |
+| all-green | All indicators green — no running process observed |
+| mostly-green | No fault on board — no running process observed |
 
 Fixtures: [`proof/fixtures/`](proof/fixtures/) · Gate logic: [`lib/python/glance_status/gate.py`](lib/python/glance_status/gate.py)
 
