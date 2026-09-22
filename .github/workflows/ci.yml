@@ -59,7 +59,7 @@ jobs:
           python-version: "3.11"
       - name: Gate tests + manifest parity
         run: |
-          pip install -e lib/python
+          pip install -e "lib/python[dev]"
           cd lib/python && python -m pytest tests/test_gate.py tests/test_case_wording.py -v
       - name: Case wording gates
         run: python3 scripts/case_wording_selftest.py
