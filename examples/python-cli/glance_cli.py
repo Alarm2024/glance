@@ -3,9 +3,9 @@
 
 from __future__ import annotations
 
-import sys
-
 import json
+import sys
+from pathlib import Path
 
 from glance_status import (
     ClassifyInput,
@@ -20,7 +20,7 @@ from glance_status import (
 def main() -> None:
     if len(sys.argv) < 2:
         print(
-            "usage: glance_cli.py {classify|redact|assert-no-overclaim|demo} [args...]",
+            "usage: glance_cli.py {classify|redact|assert-no-overclaim|summarize|demo} [args...]",
             file=sys.stderr,
         )
         raise SystemExit(1)
@@ -61,6 +61,13 @@ def main() -> None:
         except ValueError as exc:
             print(exc, file=sys.stderr)
             raise SystemExit(1) from exc
+
+    elif cmd == "summarize":
+        if len(sys.argv) > 2:
+            payload = json.loads(Path(sys.argv[2]).read_text(encoding="utf-8"))
+        else:
+            payload = json.load(sys.stdin)
+        print(summarize_status(payload).value)
 
     elif cmd == "demo":
         status = classify(

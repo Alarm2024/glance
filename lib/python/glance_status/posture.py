@@ -43,6 +43,7 @@ BANNED_ACTION_SUGGESTIONS: tuple[str, ...] = (
     "flip dry",
     "go live",
     "arm now",
+    "mint",
     "mint now",
 )
 
