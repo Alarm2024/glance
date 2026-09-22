@@ -85,6 +85,7 @@ Same fixture in, same decision out — hash parity proves the case was not chang
 | refuse-to-classify | Doctor message unmatched — REFUSE TO CLASSIFY |
 | all-green | All indicators green — no running process observed |
 | mostly-green | No fault on board — no running process observed |
+| fault-board | At least one indicator in a fault state |
 
 Fixtures: [`proof/fixtures/`](proof/fixtures/) · Gate logic: [`lib/python/glance_status/gate.py`](lib/python/glance_status/gate.py)
 
