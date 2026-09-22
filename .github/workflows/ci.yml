@@ -60,4 +60,6 @@ jobs:
       - name: Gate tests + manifest parity
         run: |
           pip install -e lib/python
-          cd lib/python && python -m pytest tests/test_gate.py -v
+          cd lib/python && python -m pytest tests/test_gate.py tests/test_case_wording.py -v
+      - name: Case wording gates
+        run: python3 scripts/case_wording_selftest.py

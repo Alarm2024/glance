@@ -28,7 +28,7 @@
       "reason": "REFUSE TO CLASSIFY — doctor message unmatched by hygiene or fault allowlists",
       "reason_code": "refuse_to_classify",
       "evidence_hash": "008f6948f3fd63b6a8955aab763f204d03dd8bb91cc8c123e3ca2fb34b3af47e",
-      "human_needed": "Operator must classify the doctor message, update allowlists, or accept HOLD (correct refusal may skip a favorable window — synthetic case only)."
+      "human_needed": "Operator must classify the doctor message, update allowlists, or accept HOLD."
     }
   ]
 }

@@ -35,7 +35,10 @@ def main() -> int:
             print(f"run_proof: missing fixture: {fixtures_dir / name}", file=sys.stderr)
         return 1
 
+    from glance_status.case_wording import HASH_PROOF_DISCLAIMER
+
     print("CLEAR LAB — synthetic proof cases (dry HOLD · no live claims)")
+    print("No keys · no network · fixtures only")
     print("=" * 64)
 
     results: list[dict] = []
@@ -55,6 +58,7 @@ def main() -> int:
 
     print("\n" + "=" * 64)
     print(f"cases: {len(results)} · all synthetic · compare hashes to /proof/")
+    print(f"hash limit: {HASH_PROOF_DISCLAIMER}")
     return 0
 
 

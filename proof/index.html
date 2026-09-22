@@ -33,7 +33,8 @@
     .glossary-dl dd { margin-left: 0; color: var(--text-muted); }
     .glossary-dl a { color: var(--gold-warm); }
     code { font-family: ui-monospace, monospace; font-size: 0.88em; background: var(--ink-muted); padding: 0.1rem 0.35rem; border-radius: 4px; }
-    .ai-note { font-size: 0.85rem; color: var(--text-muted); font-style: italic; }
+    .hash-limit, .ai-note { font-size: 0.85rem; color: var(--text-muted); }
+    .observed { margin: 0.75rem 0; color: var(--text-muted); }
   </style>
 </head>
 <body>
@@ -78,11 +79,12 @@
 
     <section id="reproduce">
       <h2>Reproduce in one command</h2>
-      <p>From a fresh clone — you should see three cases, each <strong>HOLD</strong>, with the same evidence hashes as this page.</p>
+      <p>From a fresh clone — no keys, no network, no credentials. Fixtures only. You should see three cases, each <strong>HOLD</strong>, with the same evidence hashes as this page.</p>
       <pre class="fixture">git clone https://github.com/Alarm2024/glance &amp;&amp; cd glance &amp;&amp; python3 scripts/run_proof.py</pre>
+      <p class="hash-limit"><strong>What the hash proves:</strong> Same fixture in, same decision out. This proves the case was not changed after the fact. It does not prove the decision was right.</p>
       <div class="step"><strong>Step 1.</strong> Clone the repo. You should see <code>CLEAR LAB — synthetic proof cases</code> header.</div>
-      <div class="step"><strong>Step 2.</strong> Runner loads <code>proof/fixtures/*.json</code> — no pip install required.</div>
-      <div class="step"><strong>Step 3.</strong> For each case you should see <code>decision: HOLD</code> and an <code>evidence_hash</code> matching the table below.</div>
+      <div class="step"><strong>Step 2.</strong> Runner loads <code>proof/fixtures/*.json</code> — no pip install, no Redis, no RPC.</div>
+      <div class="step"><strong>Step 3.</strong> For each case you should see <code>decision: HOLD</code> and an <code>evidence_hash</code> matching the cases below.</div>
       <div class="step"><strong>Step 4.</strong> If any hash differs, gate thresholds or fixtures changed — update <code>proof/manifest.json</code> and this page together.</div>
     </section>
 
@@ -93,8 +95,10 @@
       <article class="case" id="case-stale-oracle">
         <p class="case__id">Case 1 · stale-oracle</p>
         <span class="decision decision--hold">HOLD</span>
+        <p class="observed"><strong>Observed:</strong> HOLD, on feed age. price-oracle stale · 47s. We do not claim it would have filled — we cannot know that. The system does not decide on outcome.</p>
         <p><strong>Reason:</strong> Oracle feed stale (price-oracle) — price reference unreliable</p>
         <p><strong>Evidence hash:</strong><br><span class="hash" data-hash="stale-oracle">703ad4b4c199499aeb1b1e5ed0518297367ad28331807b1f12e0913a1c4ad993</span></p>
+        <p class="hash-limit">Same fixture in, same decision out. This proves the case was not changed after the fact. It does not prove the decision was right.</p>
         <p><strong>Human still needed:</strong> Operator must confirm oracle freshness or switch reference before CLEAR.</p>
         <h3>Input (paste-ready fixture)</h3>
         <pre class="fixture" id="fixture-stale-oracle">Loading…</pre>
@@ -103,8 +107,10 @@
       <article class="case" id="case-thin-liquidity">
         <p class="case__id">Case 2 · thin-liquidity</p>
         <span class="decision decision--hold">HOLD</span>
+        <p class="observed"><strong>Observed:</strong> HOLD, on depth. Liquidity $1,200 below floor $5,000. We do not claim a composed trade would have landed — we cannot know that. The system does not decide on outcome.</p>
         <p><strong>Reason:</strong> Depth $1,200 below floor $5,000</p>
         <p><strong>Evidence hash:</strong><br><span class="hash" data-hash="thin-liquidity">5b36d6bc6ffa715dd70cfaa8a76ddee22501a423e400dfe1d00f876517708552</span></p>
+        <p class="hash-limit">Same fixture in, same decision out. This proves the case was not changed after the fact. It does not prove the decision was right.</p>
         <p><strong>Human still needed:</strong> Operator must accept slippage risk or wait for depth before CLEAR.</p>
         <h3>Input (paste-ready fixture)</h3>
         <pre class="fixture" id="fixture-thin-liquidity">Loading…</pre>
@@ -113,10 +119,12 @@
       <article class="case" id="case-refuse-to-classify">
         <p class="case__id">Case 3 · refuse-to-classify (mandatory)</p>
         <span class="decision decision--hold">HOLD</span>
+        <p class="observed"><strong>Observed:</strong> HOLD, on REFUSE TO CLASSIFY. Doctor message: “Spread compression +127bps — pattern unseen in allowlists.” We do not claim the spread would have paid — we cannot know that. The system does not decide on outcome.</p>
         <p><strong>Reason:</strong> REFUSE TO CLASSIFY — doctor message unmatched by hygiene or fault allowlists</p>
         <p><strong>Evidence hash:</strong><br><span class="hash" data-hash="refuse-to-classify">008f6948f3fd63b6a8955aab763f204d03dd8bb91cc8c123e3ca2fb34b3af47e</span></p>
+        <p class="hash-limit">Same fixture in, same decision out. This proves the case was not changed after the fact. It does not prove the decision was right.</p>
         <p><strong>Human still needed:</strong> Operator must classify the doctor message, update allowlists, or accept HOLD.</p>
-        <p class="ai-note">AI-assisted analysis: this synthetic case models skipping a favorable spread window because classification correctly refused — HOLD costs opportunity but avoids acting on unknown signal text.</p>
+        <p class="ai-note">AI-assisted analysis of public pages.</p>
         <h3>Input (paste-ready fixture)</h3>
         <pre class="fixture" id="fixture-refuse-to-classify">Loading…</pre>
       </article>

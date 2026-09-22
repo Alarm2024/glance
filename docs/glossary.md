@@ -34,7 +34,8 @@ See [`demo/fixture.schema.md`](../demo/fixture.schema.md) and [`lib/python/glanc
 **Operator CLEAR** — explicit human gate. The system may evaluate gates and say HOLD or CLEAR,
 but only a human operator may CLEAR. No auto-send. HOLD means wait for human review.
 
-The [CLEAR LAB proof page](../proof/index.html) shows synthetic cases where the gate correctly stays HOLD.
+The [CLEAR LAB proof page](../proof/index.html) shows synthetic cases where the gate stays HOLD.
+Cases state what was observed and what was refused — never what would have happened if a trade had landed.
 
 ## HOLD
 
@@ -45,4 +46,10 @@ unclassified doctor messages, or blocking/warn doctor status. Thresholds are fix
 ## Evidence hash
 
 **Evidence hash** — SHA-256 of canonical JSON listing which gates ran, threshold values, and check results.
-Reproducible via `python3 scripts/run_proof.py` — must match the proof page.
+Reproducible via `python3 scripts/run_proof.py` — no keys, no network, fixtures only — must match the proof page.
+
+Same fixture in, same decision out. This proves the case was not changed after the fact.
+It does not prove the decision was right.
+
+Case copy gates live in [`lib/python/glance_status/case_wording.py`](../lib/python/glance_status/case_wording.py).
+Cases that reference an earn schedule cannot ship until page 35 states what a credit is for.

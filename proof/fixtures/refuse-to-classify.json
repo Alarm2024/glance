@@ -21,7 +21,6 @@
       "message": "Spread compression +127bps — pattern unseen in allowlists",
       "hygiene_phrases": ["hygiene", "passed", "heartbeat ok"],
       "fault_phrases": ["stale", "timeout", "degraded", "fault"]
-    },
-    "analysis_note": "AI-assisted analysis: synthetic case models skipping a favorable spread window because classification refused."
+    }
   }
 }

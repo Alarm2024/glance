@@ -199,8 +199,7 @@ def evaluate_gate(case_id: str, case_input: Mapping[str, Any]) -> GateResult:
                 "REFUSE TO CLASSIFY — doctor message unmatched by hygiene or fault allowlists",
                 "refuse_to_classify",
                 evidence,
-                "Operator must classify the doctor message, update allowlists, or accept HOLD "
-                "(correct refusal may skip a favorable window — synthetic case only).",
+                "Operator must classify the doctor message, update allowlists, or accept HOLD.",
             )
         if doctor_result.get("doctor_status") == DoctorStatus.BLOCKING.value:
             evidence = _build_evidence(case_id, checks, "doctor_blocking")
