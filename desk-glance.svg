@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 520" role="img" aria-label="Telegram Glance board">
+  <defs>
+    <linearGradient id="kbGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#141a1f"/>
+      <stop offset="1" stop-color="#0e1317"/>
+    </linearGradient>
+    <pattern id="doodle" x="0" y="0" width="72" height="72" patternUnits="userSpaceOnUse">
+      <circle cx="10" cy="14" r="2.5" fill="#fff" opacity="0.035"/>
+      <circle cx="48" cy="22" r="1.8" fill="#fff" opacity="0.025"/>
+      <path d="M34 8 l1.5 3 3 1.5-3 1.5-1.5 3-1.5-3-3-1.5 3-1.5z" fill="#fff" opacity="0.03"/>
+      <path d="M58 52 q4-6 8 0-4 6-8 0" fill="none" stroke="#fff" stroke-width="1" opacity="0.025"/>
+      <circle cx="22" cy="58" r="4" fill="none" stroke="#fff" stroke-width="1" opacity="0.025"/>
+      <path d="M62 38 c0 3-2 5-4 5s-4-2-4-5 2-5 4-5 4 2 4 5" fill="#fff" opacity="0.02"/>
+      <path d="M6 42 l8 0" stroke="#fff" stroke-width="1" opacity="0.02"/>
+    </pattern>
+    <filter id="btnShadow" x="-8%" y="-8%" width="116%" height="130%">
+      <feDropShadow dx="0" dy="1" stdDeviation="0.6" flood-color="#000000" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+
+  <rect width="390" height="520" rx="28" fill="#07090b"/>
+  <rect x="14" y="14" width="362" height="492" rx="22" fill="#0d1214"/>
+
+  <rect x="22" y="28" width="280" height="44" rx="12" fill="#161c22"/>
+  <text x="34" y="48" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11" fill="#8aa39a">Full menu — tap a command. ⏳ accepted ≠</text>
+  <text x="34" y="64" font-family="ui-sans-serif,system-ui,sans-serif" font-size="11" fill="#6fe0c4">🟢 LANDED.</text>
+
+  <rect x="14" y="82" width="362" height="360" fill="url(#kbGrad)"/>
+  <rect x="14" y="82" width="362" height="360" fill="url(#doodle)"/>
+
+  <g font-family="ui-sans-serif,system-ui,sans-serif" font-size="11" font-weight="600" fill="#fff" filter="url(#btnShadow)">
+    <g>
+      <rect x="22" y="92" width="82" height="36" rx="10" fill="#2a2f33" opacity="0.92"/><text x="30" y="115">📝 Exam</text>
+      <rect x="109" y="92" width="82" height="36" rx="10" fill="#2a2f33" opacity="0.92"/><text x="117" y="115">📟 Status</text>
+      <rect x="196" y="92" width="82" height="36" rx="10" fill="#2a2f33" opacity="0.92"/><text x="204" y="115">🩺 Diag</text>
+      <rect x="283" y="92" width="82" height="36" rx="10" fill="#2a2f33" opacity="0.92"/><text x="291" y="115">📉 Pipeline</text>
+    </g>
+    <g>
+      <rect x="22" y="134" width="82" height="36" rx="10" fill="#2a2f33" opacity="0.92"/><text x="30" y="157">🚪 Gates</text>
+      <rect x="109" y="134" width="82" height="36" rx="10" fill="#2a2f33" opacity="0.92"/><text x="117" y="157">❓ Why</text>
+      <rect x="196" y="134" width="82" height="36" rx="10" fill="#2a2f33" opacity="0.92"/><text x="204" y="157">💓 Pulse</text>
+      <rect x="283" y="134" width="82" height="36" rx="10" fill="#2a2f33" opacity="0.92"/><text x="291" y="157">🩺 Doctor</text>
+    </g>
+    <g>
+      <rect x="22" y="176" width="82" height="36" rx="10" fill="#2a2f33" opacity="0.92"/><text x="30" y="199">📼 Tape</text>
+      <rect x="109" y="176" width="82" height="36" rx="10" fill="#2a2f33" opacity="0.92"/><text x="117" y="199">🔭 Hunt</text>
+      <rect x="196" y="176" width="82" height="36" rx="10" fill="#2a2f33" opacity="0.92"/><text x="204" y="199">🦅 Titan</text>
+      <rect x="283" y="176" width="82" height="36" rx="10" fill="#2a2f33" opacity="0.92"/><text x="291" y="199">🛫 Land</text>
+    </g>
+    <g>
+      <rect x="22" y="218" width="170" height="36" rx="10" fill="#2a2f33" opacity="0.92"/><text x="72" y="241">💱 Quote</text>
+      <rect x="197" y="218" width="168" height="36" rx="10" fill="#2a2f33" opacity="0.92"/><text x="247" y="241">🏛 Venues</text>
+    </g>
+    <g>
+      <rect x="22" y="260" width="112" height="36" rx="10" fill="#2a2f33" opacity="0.92"/><text x="48" y="283">🧠 Talent</text>
+      <rect x="139" y="260" width="112" height="36" rx="10" fill="#2a2f33" opacity="0.92"/><text x="168" y="283">👀 Now</text>
+      <rect x="256" y="260" width="109" height="36" rx="10" fill="#2a2f33" opacity="0.92"/><text x="290" y="283">🤖 AI</text>
+    </g>
+    <g>
+      <rect x="22" y="302" width="170" height="36" rx="10" fill="#2a2f33" opacity="0.92"/><text x="62" y="325">🩺 Problem</text>
+      <rect x="197" y="302" width="168" height="36" rx="10" fill="#2a2f33" opacity="0.92"/><text x="252" y="325">💰 Money</text>
+    </g>
+    <g>
+      <rect x="22" y="344" width="170" height="36" rx="10" fill="#2a2f33" opacity="0.92"/><text x="68" y="367">⏸ Pause</text>
+      <rect x="197" y="344" width="168" height="36" rx="10" fill="#2a2f33" opacity="0.92"/><text x="256" y="367">😴 Rest</text>
+    </g>
+    <g>
+      <rect x="22" y="386" width="343" height="36" rx="10" fill="#2a2f33" opacity="0.92"/><text x="168" y="409" text-anchor="middle">▶ Resume</text>
+    </g>
+  </g>
+
+  <g font-family="ui-sans-serif,system-ui,sans-serif" font-size="12" font-weight="600">
+    <rect x="22" y="452" width="166" height="38" rx="12" fill="#121820" stroke="#6fe0c4" stroke-width="1" stroke-opacity="0.35"/>
+    <text x="78" y="476" fill="#6fe0c4" text-anchor="middle">🏠 Home</text>
+    <rect x="199" y="452" width="166" height="38" rx="12" fill="#121820" stroke="#6fe0c4" stroke-width="1" stroke-opacity="0.35"/>
+    <text x="282" y="476" fill="#6fe0c4" text-anchor="middle">📋 Menu</text>
+  </g>
+
+  <text x="28" y="508" font-size="12" fill="#6fe0c4" font-family="ui-sans-serif,system-ui,sans-serif">Glance · Telegram desk fixture · dry/HOLD</text>
+</svg>
