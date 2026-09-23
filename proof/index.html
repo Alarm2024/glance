@@ -169,10 +169,20 @@
       </article>
     </section>
 
+    <section id="board">
+      <h2>The board itself</h2>
+      <p>Everything above seals a <strong>decision</strong>. This seals a <strong>file</strong>. It is a static SVG of the Glance board layout — synthetic, like every fixture on this page.</p>
+      <p><a href="../desk-glance.svg" target="_blank" rel="noopener"><img src="../desk-glance.svg" alt="Glance board — synthetic Telegram desk layout, dry/HOLD posture" width="390" height="520" loading="lazy" decoding="async" style="max-width:100%;height:auto;border-radius:12px"></a></p>
+      <p><strong>File hash:</strong><br><span class="hash">a162d898e14004ef1c3c00ca0db7683a1c52343c96b516ea4e7b70a922b74427</span></p>
+      <p class="hash-limit"><strong>This is a weaker claim than the cases above.</strong> Same file in, same bytes out. It proves the image has not been changed since it was published. It proves nothing about any decision, nothing about a board that is running, and nothing about any figure drawn on it.</p>
+      <div class="step"><strong>Reproduce.</strong> <code>curl -sL "https://glance.elghaly.dev/desk-glance.svg" | sha256sum</code></div>
+    </section>
+
     <section id="links">
       <h2>Links</h2>
       <ul>
         <li><a href="/">Glance home</a> — Demo (synthetic) dashboard</li>
+        <li><a href="/desk-glance.svg">desk-glance.svg</a> — the board fixture sealed above</li>
         <li><a href="https://github.com/Alarm2024/glance/blob/main/docs/glossary.md">Glossary</a></li>
         <li><a href="https://github.com/Alarm2024/glance/blob/main/scripts/run_proof.py">run_proof.py</a></li>
         <li><a href="https://github.com/Alarm2024/glance">GitHub</a></li>
