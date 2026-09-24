@@ -304,7 +304,9 @@ def evaluate_gate(case_id: str, case_input: Mapping[str, Any]) -> GateResult:
         evidence = _build_evidence(case_id, checks, "thin_liquidity")
         return _hold(
             case_id,
-            f"Depth ${liquidity_check['liquidity_usd']:,.0f} below floor ${liquidity_check['floor_usd']:,.0f}",
+            f"Depth ${liquidity_check['liquidity_usd']:,.0f} is "
+            f"${liquidity_check['floor_usd'] - liquidity_check['liquidity_usd']:,.0f} "
+            f"below the ${liquidity_check['floor_usd']:,.0f} floor",
             "thin_liquidity",
             evidence,
             "Operator must accept slippage risk or wait for depth before CLEAR.",

@@ -17,6 +17,8 @@ glance-status = { path = "lib/rust/glance-status" }
 
 # Python — editable install (until PyPI publish)
 pip install -e lib/python
+# pip 22 (Ubuntu 22.04's stock pip) cannot do this editable install.
+# Same result without installing: PYTHONPATH=lib/python python3 scripts/posture_selftest.py
 ```
 
 Target registry install after M1 publish:
@@ -76,7 +78,7 @@ git clone https://github.com/Alarm2024/glance && cd glance && python3 scripts/ru
 ```
 
 You should see each `decision: HOLD` line and evidence hashes matching [proof/](proof/index.html).
-Same fixture in, same decision out — hash parity proves the case was not changed after the fact, not that the decision was right.
+Same evidence in, same hash out — the hash covers the checks, thresholds and reason code, so parity proves those were not changed after the fact. It does not cover the rest of the fixture file, and does not prove the decision was right.
 
 | Case | Reason code |
 |------|-------------|

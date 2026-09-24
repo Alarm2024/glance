@@ -16,7 +16,7 @@
       "case_id": "thin-liquidity",
       "fixture": "fixtures/thin-liquidity.json",
       "decision": "HOLD",
-      "reason": "Depth $1,200 below floor $5,000",
+      "reason": "Depth $1,200 is $3,800 below the $5,000 floor",
       "reason_code": "thin_liquidity",
       "evidence_hash": "5b36d6bc6ffa715dd70cfaa8a76ddee22501a423e400dfe1d00f876517708552",
       "human_needed": "Operator must accept slippage risk or wait for depth before CLEAR."
