@@ -84,7 +84,7 @@
       <h2>Reproduce in one command</h2>
       <p>From a fresh clone — no keys, no network, no credentials. Fixtures only. You should see each synthetic case as <strong>HOLD</strong>, with the same evidence hashes as this page.</p>
       <pre class="fixture">git clone https://github.com/Alarm2024/glance &amp;&amp; cd glance &amp;&amp; python3 scripts/run_proof.py</pre>
-      <p class="hash-limit"><strong>What the hash proves:</strong> Same fixture in, same decision out. This proves the case was not changed after the fact. It does not prove the decision was right.</p>
+      <p class="hash-limit"><strong>What the hash proves:</strong> Same evidence in, same hash out. The hash covers the checks, thresholds and reason code, so it proves those were not changed after the fact. It does not cover the rest of the fixture file, and it does not prove the decision was right.</p>
       <div class="step"><strong>Step 1.</strong> Clone the repo. You should see <code>CLEAR LAB — synthetic proof cases</code> header.</div>
       <div class="step"><strong>Step 2.</strong> Runner loads <code>proof/fixtures/*.json</code> — no pip install, no Redis, no RPC.</div>
       <div class="step"><strong>Step 3.</strong> For each case you should see <code>decision: HOLD</code> and an <code>evidence_hash</code> matching the cases below.</div>
@@ -101,7 +101,7 @@
         <p class="observed"><strong>Observed:</strong> HOLD, on feed age. price-oracle stale · 47s. We do not claim it would have filled — we cannot know that. The system does not decide on outcome.</p>
         <p><strong>Reason:</strong> Oracle feed stale (price-oracle) — price reference unreliable</p>
         <p><strong>Evidence hash:</strong><br><span class="hash" data-hash="stale-oracle">703ad4b4c199499aeb1b1e5ed0518297367ad28331807b1f12e0913a1c4ad993</span></p>
-        <p class="hash-limit">Same fixture in, same decision out. This proves the case was not changed after the fact. It does not prove the decision was right.</p>
+        <p class="hash-limit">Same evidence in, same hash out. The hash covers the checks, thresholds and reason code, so it proves those were not changed after the fact. It does not cover the rest of the fixture file, and it does not prove the decision was right.</p>
         <p><strong>Human still needed:</strong> Operator must confirm oracle freshness or switch reference before CLEAR.</p>
         <h3>Input (paste-ready fixture)</h3>
         <pre class="fixture" id="fixture-stale-oracle">Loading…</pre>
@@ -110,10 +110,10 @@
       <article class="case" id="case-thin-liquidity">
         <p class="case__id">Case 2 · thin-liquidity</p>
         <span class="decision decision--hold">HOLD</span>
-        <p class="observed"><strong>Observed:</strong> HOLD, on depth. Liquidity $1,200 below floor $5,000. We do not claim a composed trade would have landed — we cannot know that. The system does not decide on outcome.</p>
-        <p><strong>Reason:</strong> Depth $1,200 below floor $5,000</p>
+        <p class="observed"><strong>Observed:</strong> HOLD, on depth. Liquidity $1,200 is $3,800 below the $5,000 floor. We do not claim a composed trade would have landed — we cannot know that. The system does not decide on outcome.</p>
+        <p><strong>Reason:</strong> Depth $1,200 is $3,800 below the $5,000 floor</p>
         <p><strong>Evidence hash:</strong><br><span class="hash" data-hash="thin-liquidity">5b36d6bc6ffa715dd70cfaa8a76ddee22501a423e400dfe1d00f876517708552</span></p>
-        <p class="hash-limit">Same fixture in, same decision out. This proves the case was not changed after the fact. It does not prove the decision was right.</p>
+        <p class="hash-limit">Same evidence in, same hash out. The hash covers the checks, thresholds and reason code, so it proves those were not changed after the fact. It does not cover the rest of the fixture file, and it does not prove the decision was right.</p>
         <p><strong>Human still needed:</strong> Operator must accept slippage risk or wait for depth before CLEAR.</p>
         <h3>Input (paste-ready fixture)</h3>
         <pre class="fixture" id="fixture-thin-liquidity">Loading…</pre>
@@ -125,7 +125,7 @@
         <p class="observed"><strong>Observed:</strong> HOLD, on REFUSE TO CLASSIFY. Doctor message: “Spread compression +127bps — pattern unseen in allowlists.” We do not claim the spread would have paid — we cannot know that. The system does not decide on outcome.</p>
         <p><strong>Reason:</strong> REFUSE TO CLASSIFY — doctor message unmatched by hygiene or fault allowlists</p>
         <p><strong>Evidence hash:</strong><br><span class="hash" data-hash="refuse-to-classify">008f6948f3fd63b6a8955aab763f204d03dd8bb91cc8c123e3ca2fb34b3af47e</span></p>
-        <p class="hash-limit">Same fixture in, same decision out. This proves the case was not changed after the fact. It does not prove the decision was right.</p>
+        <p class="hash-limit">Same evidence in, same hash out. The hash covers the checks, thresholds and reason code, so it proves those were not changed after the fact. It does not cover the rest of the fixture file, and it does not prove the decision was right.</p>
         <p><strong>Human still needed:</strong> Operator must classify the doctor message, update allowlists, or accept HOLD.</p>
         <p class="ai-note">AI-assisted analysis of public pages.</p>
         <h3>Input (paste-ready fixture)</h3>
@@ -138,7 +138,7 @@
         <p class="observed"><strong>Observed:</strong> HOLD, on false green board. All indicators green · process not observed running. We do not claim the board would have cleared — we cannot know that. The system does not decide on outcome.</p>
         <p><strong>Reason:</strong> Board reports all green while no running process was observed</p>
         <p><strong>Evidence hash:</strong><br><span class="hash" data-hash="all-green">1f4ada1b9487d2af4821accdf82f956c32b69b656fcb1fac0cbeca76dfbcb139</span></p>
-        <p class="hash-limit">Same fixture in, same decision out. This proves the case was not changed after the fact. It does not prove the decision was right.</p>
+        <p class="hash-limit">Same evidence in, same hash out. The hash covers the checks, thresholds and reason code, so it proves those were not changed after the fact. It does not cover the rest of the fixture file, and it does not prove the decision was right.</p>
         <p><strong>Human still needed:</strong> Operator must confirm the process is running before CLEAR.</p>
         <h3>Input (paste-ready fixture)</h3>
         <pre class="fixture" id="fixture-all-green">Loading…</pre>
@@ -150,7 +150,7 @@
         <p class="observed"><strong>Observed:</strong> HOLD, on mostly-green board. No fault on board · queue-depth amber · process not observed running. We do not claim the board would have cleared — we cannot know that. The system does not decide on outcome.</p>
         <p><strong>Reason:</strong> Board reports no fault while no running process was observed</p>
         <p><strong>Evidence hash:</strong><br><span class="hash" data-hash="mostly-green">519e6a04ea1b3f7a8b0051a6b1df13788fdd4a9fba70faa35eeb9eaed6ecb638</span></p>
-        <p class="hash-limit">Same fixture in, same decision out. This proves the case was not changed after the fact. It does not prove the decision was right.</p>
+        <p class="hash-limit">Same evidence in, same hash out. The hash covers the checks, thresholds and reason code, so it proves those were not changed after the fact. It does not cover the rest of the fixture file, and it does not prove the decision was right.</p>
         <p><strong>Human still needed:</strong> Operator must confirm the process is running before CLEAR.</p>
         <h3>Input (paste-ready fixture)</h3>
         <pre class="fixture" id="fixture-mostly-green">Loading…</pre>
@@ -162,7 +162,7 @@
         <p class="observed"><strong>Observed:</strong> Two synthetic indicators report green, one reports a fault, and the sealed runtime observation says no running process was observed.</p>
         <p><strong>Reason:</strong> Board reports a fault — at least one indicator is in a fault state</p>
         <p><strong>Evidence hash:</strong><br><span class="hash" data-hash="fault-board">f228cabb21c22652f91c85b07da079689295edced88d85520824a678ff801392</span></p>
-        <p class="hash-limit">Same fixture in, same decision out. This proves the case was not changed after the fact. It does not prove the decision was right.</p>
+        <p class="hash-limit">Same evidence in, same hash out. The hash covers the checks, thresholds and reason code, so it proves those were not changed after the fact. It does not cover the rest of the fixture file, and it does not prove the decision was right.</p>
         <p><strong>Human still needed:</strong> Operator must resolve the reported fault before CLEAR.</p>
         <h3>Input (paste-ready fixture)</h3>
         <pre class="fixture" id="fixture-fault-board">Loading…</pre>

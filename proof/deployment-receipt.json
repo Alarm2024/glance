@@ -3,11 +3,13 @@
   "assets": [
     {
       "url": "https://glance.elghaly.dev/proof/manifest.json",
-      "expected_sha256": "21469d5664fd80a1c3b3e377e281696c38368c555edc1ca3c6ee5dcc9da71a89"
+      "expected_sha256": "c7ec95ef61426902ecfae590a6ed9cdf85b4eb150bba9f5cf83b25ee890eb99c",
+      "stale_sha256": "c6cb0076afb9db55f0b939565455c8ad11230f7389e33efcd994302313e1a9ed"
     },
     {
       "url": "https://glance.elghaly.dev/proof/index.html",
-      "expected_sha256": "a233f2b5d082d24ed41e88ea7c4f57a658266b7532d20061f69dde1570de0766"
+      "expected_sha256": "fd5c87f728af52f0d239eb9c62b2075bfb35947afd5586b5dae1f0389f26a3b1",
+      "stale_sha256": "6075963173aeb18b8f260afa6bf82798c4513a8126fd93eb00cdfe5277c65558"
     }
   ]
 }

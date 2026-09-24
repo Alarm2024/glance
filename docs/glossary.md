@@ -48,7 +48,7 @@ unclassified doctor messages, or blocking/warn doctor status. Thresholds are fix
 **Evidence hash** — SHA-256 of canonical JSON listing which gates ran, threshold values, and check results.
 Reproducible via `python3 scripts/run_proof.py` — no keys, no network, fixtures only — must match the proof page.
 
-Same fixture in, same decision out. This proves the case was not changed after the fact.
+Same evidence in, same hash out. The hash covers the checks, thresholds and reason code, so it proves those were not changed after the fact. It does not cover the rest of the fixture file.
 It does not prove the decision was right.
 
 Case copy gates live in [`lib/python/glance_status/case_wording.py`](../lib/python/glance_status/case_wording.py).

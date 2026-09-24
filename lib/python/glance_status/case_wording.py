@@ -8,8 +8,10 @@ from pathlib import Path
 from typing import Iterable, Mapping
 
 HASH_PROOF_DISCLAIMER = (
-    "Same fixture in, same decision out. This proves the case was not "
-    "changed after the fact. It does not prove the decision was right."
+    "Same evidence in, same hash out. The hash covers the checks, thresholds "
+    "and reason code, so it proves those were not changed after the fact. It "
+    "does not cover the rest of the fixture file, and it does not prove the "
+    "decision was right."
 )
 
 AI_ASSISTED_FINDING_LABEL = "AI-assisted analysis of public pages."
