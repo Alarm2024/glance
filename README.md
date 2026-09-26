@@ -108,12 +108,14 @@ The hostname is resolved during validation and again when connecting. A hostile 
 
 ## Examples
 
+Each command runs in a subshell from the repo root, so they can be pasted together or run independently.
+
 ```bash
 # Rust CLI
-cd examples/rust-cli && cargo run -- demo
+(cd examples/rust-cli && cargo run -- demo)
 
 # Python CLI
-cd lib/python && pip install -e . && python ../../examples/python-cli/glance_cli.py demo
+(cd lib/python && pip install -e . && python ../../examples/python-cli/glance_cli.py demo)
 ```
 
 ## Demo fixture schema
