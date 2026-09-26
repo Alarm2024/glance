@@ -142,9 +142,9 @@ See [`.github/actions/glance-check/README.md`](.github/actions/glance-check/READ
 ## Tests & CI
 
 ```bash
-cd lib/rust/glance-status && cargo test
-cd lib/python && pip install -e ".[dev]" && python -m pytest -v
-cd examples/rust-cli && cargo run -- demo
+(cd lib/rust/glance-status && cargo test)
+(cd lib/python && pip install -e ".[dev]" && python -m pytest -v)
+(cd examples/rust-cli && cargo run -- demo)
 ```
 
 GitHub Actions runs Rust + Python tests on every pull request. crates.io / PyPI publish is a post-M1 milestone.
