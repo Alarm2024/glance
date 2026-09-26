@@ -33,6 +33,7 @@ jobs:
         run: |
           pip install -e ".[dev]"
           python -m pytest -v
+          python -m pytest -v ../../.github/actions/glance-check/test_check.py
 
   posture:
     name: Posture self-test (dry / eyes-only)

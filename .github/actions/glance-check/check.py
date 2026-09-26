@@ -44,12 +44,13 @@ def _default_paths(repo_root: Path) -> list[Path]:
     return [path for path in candidates if path.is_file()]
 
 
-def _resolve_paths(repo_root: Path) -> list[Path]:
+def _resolve_paths(repo_root: Path) -> tuple[list[Path], list[str]]:
     raw = os.environ.get("GLANCE_CHECK_PATHS", "").strip()
     if not raw:
-        return _default_paths(repo_root)
+        return _default_paths(repo_root), []
 
     paths: list[Path] = []
+    missing: list[str] = []
     for line in raw.splitlines():
         entry = line.strip()
         if not entry:
@@ -60,8 +61,8 @@ def _resolve_paths(repo_root: Path) -> list[Path]:
         if path.is_file():
             paths.append(path)
         else:
-            print(f"glance-check: warning — file not found, skipping: {entry}", file=sys.stderr)
-    return paths
+            missing.append(entry)
+    return paths, missing
 
 
 def _banned_phrases() -> list[str]:
@@ -75,8 +76,14 @@ def main() -> int:
         repo_root = Path(workspace)
     else:
         repo_root = Path(__file__).resolve().parents[3]
-    paths = _resolve_paths(repo_root)
+    paths, missing = _resolve_paths(repo_root)
     banned = _banned_phrases()
+
+    if missing:
+        print("glance-check failed — requested path does not exist:", file=sys.stderr)
+        for entry in missing:
+            print(f"  • {entry}", file=sys.stderr)
+        return 1
 
     if not paths:
         print("glance-check: no files to scan (set paths input or add demo/fixture.json)")
