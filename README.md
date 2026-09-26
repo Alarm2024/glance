@@ -17,8 +17,8 @@ glance-status = { path = "lib/rust/glance-status" }
 
 # Python — editable install (until PyPI publish)
 pip install -e lib/python
-# pip 22 (Ubuntu 22.04's stock pip) cannot do this editable install.
-# Same result without installing: PYTHONPATH=lib/python python3 scripts/posture_selftest.py
+# If editable install is unavailable, run the posture self-test without installing:
+# PYTHONPATH=lib/python python3 scripts/posture_selftest.py
 ```
 
 Target registry install after M1 publish:
