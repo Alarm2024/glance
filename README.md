@@ -117,10 +117,10 @@ The demo (synthetic) includes a **playground**: paste your own status JSON in th
 
 ## Status badge
 
-Embed a shields.io-style SVG badge in your README (requires Netlify or compatible deploy with serverless functions):
+The SVG badge handler is included in [`netlify/functions/badge.mjs`](netlify/functions/badge.mjs), but the GitHub Pages demo does not serve the `/badge` function. Deploy the repo on Netlify or a compatible host with serverless functions, then use that deployment hostname:
 
 ```markdown
-![glance status](https://glance.elghaly.dev/badge?status=ok)
+![glance status](https://YOUR_FUNCTION_HOST/badge?status=ok)
 ```
 
 Supported `status` values: `ok`, `warn`, `blocking`.
