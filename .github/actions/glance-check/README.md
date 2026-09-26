@@ -26,3 +26,4 @@ Composite GitHub Action that runs `assert_no_overclaim()` against status strings
 - JSON files: every string value in the document is checked.
 - Plain-text files: each non-empty line is checked.
 - Fails the job when any string contains a banned phrase.
+- Fails the job when a path listed in `paths` is not a file. An empty `paths` input still skips default candidates that are absent.
