@@ -11,22 +11,32 @@ Open-source honest status for Solana bot operators.
 | Rust | `glance-status` | pre-1.0 · path install ([crates.io](https://crates.io/crates/glance-status) not yet published) |
 | Python | `glance-status` | pre-1.0 · editable install ([PyPI](https://pypi.org/project/glance-status/) not yet published) |
 
-```bash
-# Rust — local path (until crates.io publish)
-glance-status = { path = "lib/rust/glance-status" }
+Rust — in your Cargo.toml (until crates.io publish). `path` is relative to that Cargo.toml, not to this repo; [`examples/rust-cli/Cargo.toml`](examples/rust-cli/Cargo.toml) uses `../../lib/rust/glance-status` from its own directory.
 
-# Python — editable install (until PyPI publish)
+```toml
+[dependencies]
+glance-status = { path = "lib/rust/glance-status" }
+```
+
+Python — editable install (until PyPI publish), from the repo root:
+
+```bash
 pip install -e lib/python
 # Without installing: PYTHONPATH=lib/python python3 scripts/posture_selftest.py
 ```
 
-Target registry install after M1 publish:
+Target registry install after M1 publish (not live yet):
+
+Rust — in your Cargo.toml:
+
+```toml
+[dependencies]
+glance-status = "0.1.0"
+```
+
+Python:
 
 ```bash
-# Rust — Cargo.toml (not live yet)
-glance-status = "0.1.0"
-
-# Python (not live yet)
 pip install glance-status
 ```
 
