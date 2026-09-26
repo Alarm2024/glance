@@ -17,8 +17,7 @@ glance-status = { path = "lib/rust/glance-status" }
 
 # Python — editable install (until PyPI publish)
 pip install -e lib/python
-# pip 22 (Ubuntu 22.04's stock pip) cannot do this editable install.
-# Same result without installing: PYTHONPATH=lib/python python3 scripts/posture_selftest.py
+# Without installing: PYTHONPATH=lib/python python3 scripts/posture_selftest.py
 ```
 
 Target registry install after M1 publish:
@@ -117,10 +116,10 @@ The demo (synthetic) includes a **playground**: paste your own status JSON in th
 
 ## Status badge
 
-Embed a shields.io-style SVG badge in your README (requires Netlify or compatible deploy with serverless functions):
+[`netlify/functions/badge.mjs`](netlify/functions/badge.mjs) returns a shields.io-style SVG. GitHub Pages, which serves glance.elghaly.dev, does not run that function, so `https://glance.elghaly.dev/badge?status=ok` is a 404. The snippet below is a template for a host that runs the function (Netlify applies the `/badge` redirect in [`netlify.toml`](netlify.toml)):
 
 ```markdown
-![glance status](https://glance.elghaly.dev/badge?status=ok)
+![glance status](https://<your-function-host>/badge?status=ok)
 ```
 
 Supported `status` values: `ok`, `warn`, `blocking`.
@@ -142,9 +141,9 @@ See [`.github/actions/glance-check/README.md`](.github/actions/glance-check/READ
 ## Tests & CI
 
 ```bash
-cd lib/rust/glance-status && cargo test
-cd lib/python && pip install -e ".[dev]" && python -m pytest -v
-cd examples/rust-cli && cargo run -- demo
+(cd lib/rust/glance-status && cargo test)
+(cd lib/python && pip install -e ".[dev]" && python -m pytest -v)
+(cd examples/rust-cli && cargo run -- demo)
 ```
 
 GitHub Actions runs Rust + Python tests on every pull request. crates.io / PyPI publish is a post-M1 milestone.
