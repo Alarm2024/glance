@@ -21,6 +21,9 @@ glance-status = { path = "lib/rust/glance-status" }
 Python — editable install (until PyPI publish), from the repo root:
 
 ```bash
+# Ubuntu 22.04's stock pip 22.0.2 fails this editable install ("missing the 'build_editable' hook").
+# Use a venv with a current pip first:
+python3 -m venv .venv && . .venv/bin/activate && python -m pip install -U pip
 pip install -e lib/python
 # Without installing: PYTHONPATH=lib/python python3 scripts/posture_selftest.py
 ```
@@ -86,6 +89,8 @@ No keys, no network, fixtures only. Cases state what was observed and refused �
 git clone https://github.com/Alarm2024/glance && cd glance && python3 scripts/run_proof.py
 ```
 
+This clone checks out `main`, not a pull request branch. To reproduce from a PR branch, add `-b <branch>` to `git clone` (or `git fetch origin <branch> && git checkout <branch>` in an existing clone).
+
 You should see each `decision: HOLD` line and evidence hashes matching [proof/](proof/index.html).
 Same evidence in, same hash out — the hash covers the checks, thresholds and reason code, so parity proves those were not changed after the fact. It does not cover the rest of the fixture file, and does not prove the decision was right.
 
@@ -108,13 +113,16 @@ The hostname is resolved during validation and again when connecting. A hostile 
 
 ## Examples
 
-Each command runs in a subshell from the repo root, so they can be pasted together or run independently.
+Each command runs in a subshell from the repo root, so they can be pasted together or run independently. The venv line is not in a subshell on purpose: the activation has to persist for the `pip install -e` that follows.
 
 ```bash
 # Rust CLI
 (cd examples/rust-cli && cargo run -- demo)
 
 # Python CLI
+# Ubuntu 22.04's stock pip 22.0.2 fails the editable install ("missing the 'build_editable' hook").
+# Use a venv with a current pip first:
+python3 -m venv .venv && . .venv/bin/activate && python -m pip install -U pip
 (cd lib/python && pip install -e . && python ../../examples/python-cli/glance_cli.py demo)
 ```
 
@@ -152,8 +160,13 @@ See [`.github/actions/glance-check/README.md`](.github/actions/glance-check/READ
 
 ## Tests & CI
 
+From the repo root. The venv line is not in a subshell so the activation persists for the `pip install -e` that follows.
+
 ```bash
 (cd lib/rust/glance-status && cargo test)
+# Ubuntu 22.04's stock pip 22.0.2 fails the editable install ("missing the 'build_editable' hook").
+# Use a venv with a current pip first:
+python3 -m venv .venv && . .venv/bin/activate && python -m pip install -U pip
 (cd lib/python && pip install -e ".[dev]" && python -m pytest -v)
 (cd examples/rust-cli && cargo run -- demo)
 ```
