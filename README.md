@@ -11,23 +11,36 @@ Open-source honest status for Solana bot operators.
 | Rust | `glance-status` | pre-1.0 · path install ([crates.io](https://crates.io/crates/glance-status) not yet published) |
 | Python | `glance-status` | pre-1.0 · editable install ([PyPI](https://pypi.org/project/glance-status/) not yet published) |
 
-```bash
-# Rust — local path (until crates.io publish)
-glance-status = { path = "lib/rust/glance-status" }
+Rust — in your Cargo.toml (until crates.io publish). `path` is relative to that Cargo.toml, not to this repo; [`examples/rust-cli/Cargo.toml`](examples/rust-cli/Cargo.toml) uses `../../lib/rust/glance-status` from its own directory.
 
-# Python — editable install (until PyPI publish)
-pip install -e lib/python
-# pip 22 (Ubuntu 22.04's stock pip) cannot do this editable install.
-# Same result without installing: PYTHONPATH=lib/python python3 scripts/posture_selftest.py
+```toml
+[dependencies]
+glance-status = { path = "lib/rust/glance-status" }
 ```
 
-Target registry install after M1 publish:
+Python — editable install (until PyPI publish), from the repo root:
 
 ```bash
-# Rust — Cargo.toml (not live yet)
-glance-status = "0.1.0"
+# Ubuntu 22.04 ships an old pip (22.x). It fails this editable install ("missing the 'build_editable' hook").
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -U pip
+pip install -e lib/python
+# Without installing: PYTHONPATH=lib/python python3 scripts/posture_selftest.py
+```
 
-# Python (not live yet)
+Target registry install after M1 publish (not live yet):
+
+Rust — in your Cargo.toml:
+
+```toml
+[dependencies]
+glance-status = "0.1.0"
+```
+
+Python:
+
+```bash
 pip install glance-status
 ```
 
@@ -77,6 +90,8 @@ No keys, no network, fixtures only. Cases state what was observed and refused �
 git clone https://github.com/Alarm2024/glance && cd glance && python3 scripts/run_proof.py
 ```
 
+The git clone gives you the main branch.
+
 You should see each `decision: HOLD` line and evidence hashes matching [proof/](proof/index.html).
 Same evidence in, same hash out — the hash covers the checks, thresholds and reason code, so parity proves those were not changed after the fact. It does not cover the rest of the fixture file, and does not prove the decision was right.
 
@@ -99,12 +114,18 @@ The hostname is resolved during validation and again when connecting. A hostile 
 
 ## Examples
 
+Each command runs in a subshell from the repo root, so they can be pasted together or run independently. The venv line is not in a subshell on purpose: the activation has to persist for the `pip install -e` that follows.
+
 ```bash
 # Rust CLI
-cd examples/rust-cli && cargo run -- demo
+(cd examples/rust-cli && cargo run -- demo)
 
 # Python CLI
-cd lib/python && pip install -e . && python ../../examples/python-cli/glance_cli.py demo
+# Ubuntu 22.04 ships an old pip (22.x). It fails this editable install ("missing the 'build_editable' hook").
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -U pip
+(cd lib/python && pip install -e . && python ../../examples/python-cli/glance_cli.py demo)
 ```
 
 ## Demo fixture schema
@@ -117,10 +138,10 @@ The demo (synthetic) includes a **playground**: paste your own status JSON in th
 
 ## Status badge
 
-Embed a shields.io-style SVG badge in your README (requires Netlify or compatible deploy with serverless functions):
+[`netlify/functions/badge.mjs`](netlify/functions/badge.mjs) returns a shields.io-style SVG. GitHub Pages, which serves glance.elghaly.dev, does not run that function, so `https://glance.elghaly.dev/badge?status=ok` is a 404. The snippet below is a template for a host that runs the function (Netlify applies the `/badge` redirect in [`netlify.toml`](netlify.toml)):
 
 ```markdown
-![glance status](https://glance.elghaly.dev/badge?status=ok)
+![glance status](https://<your-function-host>/badge?status=ok)
 ```
 
 Supported `status` values: `ok`, `warn`, `blocking`.
@@ -141,10 +162,16 @@ See [`.github/actions/glance-check/README.md`](.github/actions/glance-check/READ
 
 ## Tests & CI
 
+From the repo root. The venv line is not in a subshell so the activation persists for the `pip install -e` that follows.
+
 ```bash
-cd lib/rust/glance-status && cargo test
-cd lib/python && pip install -e ".[dev]" && python -m pytest -v
-cd examples/rust-cli && cargo run -- demo
+(cd lib/rust/glance-status && cargo test)
+# Ubuntu 22.04 ships an old pip (22.x). It fails this editable install ("missing the 'build_editable' hook").
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -U pip
+(cd lib/python && pip install -e ".[dev]" && python -m pytest -v)
+(cd examples/rust-cli && cargo run -- demo)
 ```
 
 GitHub Actions runs Rust + Python tests on every pull request. crates.io / PyPI publish is a post-M1 milestone.
