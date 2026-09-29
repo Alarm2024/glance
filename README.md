@@ -171,6 +171,8 @@ In your own repo, list the status files your pipeline writes. `status.json` belo
       status.json
 ```
 
+Set `paths`. If it is empty and no default file (`demo/fixture.json`, `status.json`) exists, zero files are scanned and the job fails with ``glance: no files to scan - set `paths` `` — the gate fails closed instead of passing silently.
+
 See [`.github/actions/glance-check/README.md`](.github/actions/glance-check/README.md) for inputs and behavior.
 
 ## Tests & CI

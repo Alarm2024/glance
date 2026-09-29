@@ -5,7 +5,7 @@ branding:
   color: green
 inputs:
   paths:
-    description: Newline-separated list of files to scan for status strings (JSON or plain text).
+    description: Newline-separated list of files to scan for status strings (JSON or plain text). Set this; if it is empty and demo/fixture.json and status.json are absent, zero files are scanned and the check fails (exit 1).
     required: false
     default: ''
   banned-phrases:

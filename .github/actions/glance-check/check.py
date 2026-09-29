@@ -86,8 +86,13 @@ def main() -> int:
         return 1
 
     if not paths:
-        print("glance-check: no files to scan (set paths input or add demo/fixture.json)")
-        return 0
+        # Fail closed: a gate that scans nothing must not pass silently.
+        print(
+            "glance: no files to scan - set `paths` "
+            "(zero files scanned; failing closed)",
+            file=sys.stderr,
+        )
+        return 1
 
     failures: list[str] = []
     checked = 0
