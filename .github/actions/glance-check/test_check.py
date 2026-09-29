@@ -1,4 +1,4 @@
-"""Exit codes for glance-check: missing path, clean file, banned phrase."""
+"""Exit codes for glance-check: missing path, clean file, banned phrase, zero files."""
 
 from __future__ import annotations
 
@@ -23,6 +23,7 @@ def glance_check():
 def workspace(tmp_path, monkeypatch):
     monkeypatch.setenv("GITHUB_WORKSPACE", str(tmp_path))
     monkeypatch.delenv("GLANCE_CHECK_BANNED", raising=False)
+    monkeypatch.delenv("GLANCE_CHECK_PATHS", raising=False)
     return tmp_path
 
 
@@ -52,3 +53,22 @@ def test_banned_phrase_exits_1(glance_check, workspace, monkeypatch, capsys):
     monkeypatch.setenv("GLANCE_CHECK_PATHS", "status.json")
     assert glance_check.main() == 1
     assert "guaranteed" in capsys.readouterr().err
+
+
+def test_empty_workspace_no_paths_exits_1(glance_check, workspace, capsys):
+    # G1: no `paths` input and no default candidates -> fail closed.
+    assert glance_check.main() == 1
+    err = capsys.readouterr().err
+    assert "no files to scan" in err
+    assert "`paths`" in err
+
+
+def test_no_paths_with_demo_fixture_exits_0(glance_check, workspace, capsys):
+    # The demo/fixture.json default still works when `paths` is empty.
+    (workspace / "demo").mkdir()
+    (workspace / "demo" / "fixture.json").write_text(
+        '{"doctor": "feed stale for 47s"}\n',
+        encoding="utf-8",
+    )
+    assert glance_check.main() == 0
+    assert "passed" in capsys.readouterr().out

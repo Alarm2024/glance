@@ -30,7 +30,7 @@ Runnable as-is in a clone of this repo (`demo/fixture.json` ships with it):
 
 | Input | Default | Description |
 |-------|---------|-------------|
-| `paths` | *(auto)* | Newline-separated files to scan. When empty, scans `demo/fixture.json` and `status.json` if present. |
+| `paths` | *(empty)* | **Needed.** Newline-separated files to scan. When empty, falls back to `demo/fixture.json` and `status.json` if present; if neither exists, zero files are scanned and the job fails. |
 | `banned-phrases` | `guaranteed,profit,alpha` | Comma-separated banned phrases (case-insensitive). |
 | `python-version` | `3.11` | Python runtime for the checker. |
 
@@ -40,3 +40,4 @@ Runnable as-is in a clone of this repo (`demo/fixture.json` ships with it):
 - Plain-text files: each non-empty line is checked.
 - Fails the job when any string contains a banned phrase.
 - Fails the job when a path listed in `paths` is not a file. An empty `paths` input still skips default candidates that are absent.
+- Fails closed when zero files are scanned: with an empty `paths` input and no `demo/fixture.json` or `status.json`, the job exits 1 with ``glance: no files to scan - set `paths` ``. Set `paths` so the gate always has something to check.
