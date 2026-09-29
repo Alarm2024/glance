@@ -4,13 +4,26 @@ Composite GitHub Action that runs `assert_no_overclaim()` against status strings
 
 ## Usage
 
+Runnable as-is in a clone of this repo (`demo/fixture.json` ships with it):
+
 ```yaml
 - uses: Alarm2024/glance/.github/actions/glance-check@main
   with:
     paths: |
       demo/fixture.json
-      status.json
     banned-phrases: guaranteed,profit,alpha
+```
+
+### Caller-created paths
+
+`status.json` is not in this repo. List it when an earlier step in your job writes it; a listed path that does not exist fails the job with `requested path does not exist: status.json`.
+
+```yaml
+- run: ./your-bot --dump-status > status.json   # your step creates the file
+- uses: Alarm2024/glance/.github/actions/glance-check@main
+  with:
+    paths: |
+      status.json
 ```
 
 ## Inputs

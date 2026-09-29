@@ -21,7 +21,8 @@ glance-status = { path = "lib/rust/glance-status" }
 Python — editable install (until PyPI publish), from the repo root:
 
 ```bash
-# Ubuntu 22.04 ships an old pip (22.x). It fails this editable install ("missing the 'build_editable' hook").
+# Seen failing on stock Ubuntu 22.04 system packages (python3-pip 22.0.2 + python3-setuptools 59.6.0):
+# "missing the 'build_editable' hook". pip 22.0.2 inside a fresh venv worked when tested. Upgrading pip in the venv avoids it either way.
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -U pip
@@ -121,7 +122,8 @@ Each command runs in a subshell from the repo root, so they can be pasted togeth
 (cd examples/rust-cli && cargo run -- demo)
 
 # Python CLI
-# Ubuntu 22.04 ships an old pip (22.x). It fails this editable install ("missing the 'build_editable' hook").
+# Seen failing on stock Ubuntu 22.04 system packages (python3-pip 22.0.2 + python3-setuptools 59.6.0):
+# "missing the 'build_editable' hook". pip 22.0.2 inside a fresh venv worked when tested. Upgrading pip in the venv avoids it either way.
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -U pip
@@ -150,11 +152,22 @@ Supported `status` values: `ok`, `warn`, `blocking`.
 
 Fail CI when status strings contain banned overclaim phrases:
 
+Runnable as-is in a clone of this repo (`demo/fixture.json` ships with it):
+
 ```yaml
 - uses: Alarm2024/glance/.github/actions/glance-check@main
   with:
     paths: |
       demo/fixture.json
+```
+
+In your own repo, list the status files your pipeline writes. `status.json` below is a placeholder for a file **you create** before this step; it is not in this repo. Since #27, any listed path that does not exist fails the job (`requested path does not exist: status.json`):
+
+```yaml
+- run: ./your-bot --dump-status > status.json   # caller-created: your step writes this file
+- uses: Alarm2024/glance/.github/actions/glance-check@main
+  with:
+    paths: |
       status.json
 ```
 
@@ -166,7 +179,8 @@ From the repo root. The venv line is not in a subshell so the activation persist
 
 ```bash
 (cd lib/rust/glance-status && cargo test)
-# Ubuntu 22.04 ships an old pip (22.x). It fails this editable install ("missing the 'build_editable' hook").
+# Seen failing on stock Ubuntu 22.04 system packages (python3-pip 22.0.2 + python3-setuptools 59.6.0):
+# "missing the 'build_editable' hook". pip 22.0.2 inside a fresh venv worked when tested. Upgrading pip in the venv avoids it either way.
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -U pip

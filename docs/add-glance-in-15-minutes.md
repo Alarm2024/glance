@@ -12,9 +12,16 @@ glance-status = { path = "lib/rust/glance-status" }
 
 **Python** (pre-1.0 editable — PyPI publish pending)
 
+From the repo root:
+
 ```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -U pip
 pip install -e lib/python
 ```
+
+If `pip install -e` stops with "missing the 'build_editable' hook", you are likely on the stock Ubuntu 22.04 system pip + setuptools (python3-pip 22.0.2 + python3-setuptools 59.6.0). Upgrading pip inside the venv (`pip install -U pip`, as above) avoids it.
 
 ## 2. Classify doctor messages
 
