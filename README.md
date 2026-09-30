@@ -175,6 +175,10 @@ glance-check scans the files it is given and no others. When `paths` is set, tha
 
 Set `paths`. If it is empty and no default file (`demo/fixture.json`, `status.json`) exists, zero files are scanned and the job fails with ``glance: no files to scan - set `paths` `` — the gate fails closed instead of passing silently. Draft notes for 0.1.0, including that break: [docs/v0.1.0.md](docs/v0.1.0.md).
 
+**What a green result covers:** if `paths` is empty and `demo/fixture.json` is present, the action scans only that fixture (plus `status.json` if it exists), so a green result does not mean the whole repo is clean — it means those files had no banned phrases.
+
+> **Breaking change since G1 (#32, `78d0ccc`):** an empty workspace, or a `paths` input that is empty or whitespace-only with no default file present, now fails closed (exit 1) instead of silently passing. If your workflow relied on the old silent pass, set `paths` to the status files your pipeline writes, as shown above and in the [action README](.github/actions/glance-check/README.md#behavior).
+
 See [`.github/actions/glance-check/README.md`](.github/actions/glance-check/README.md) for inputs and behavior.
 
 ## Tests & CI
