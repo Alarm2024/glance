@@ -171,7 +171,7 @@ In your own repo, list the status files your pipeline writes. `status.json` belo
       status.json
 ```
 
-glance-check scans only the files it is given. When `paths` is set, that list is the whole scan: a green result covers those files and no others. When `paths` is empty or only whitespace, the only files it may scan are `demo/fixture.json` and `status.json`, and only when the file exists.
+glance-check scans the files it is given and no others. When `paths` is set, that list is the whole scan: a green result covers those files and no others. When `paths` is empty or blank, it may scan two default files, `demo/fixture.json` and `status.json`, each one when it exists.
 
 Set `paths`. If it is empty and no default file (`demo/fixture.json`, `status.json`) exists, zero files are scanned and the job fails with ``glance: no files to scan - set `paths` `` — the gate fails closed instead of passing silently. Draft notes for 0.1.0, including that break: [docs/v0.1.0.md](docs/v0.1.0.md).
 
