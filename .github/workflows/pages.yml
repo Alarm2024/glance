@@ -27,6 +27,7 @@ jobs:
         run: |
           mkdir -p _site
           cp index.html app.js themes.js i18n.js glance-card.jpg CNAME .nojekyll _site/
+          cp favicon.svg favicon.ico apple-touch-icon.png robots.txt sitemap.xml _site/
           cp -r css demo proof docs _site/
 
       - uses: actions/configure-pages@v5
