@@ -89,6 +89,12 @@ body {
   background: linear-gradient(135deg, #7ee8d4, #8a7cff);
 }
 
+/* The letter is drawn by CSS so it is not part of the link's visible text:
+   the link is named "Glance home" and its visible text stays "GLANCE". */
+.gmark::before {
+  content: "G";
+}
+
 .gword {
   font-size: 12px;
   letter-spacing: 0.2em;
