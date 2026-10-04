@@ -986,3 +986,12 @@ html[dir="rtl"] .card:hover {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Links inside running text need more than colour to stand out (axe
+   link-in-text-block: the teal sat at 1.4:1 against the body text). */
+main p a:not([class]),
+main li a:not([class]),
+.quickstart-step__hint a:not([class]) {
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
