@@ -12,7 +12,7 @@ Editable from this repository:
 pip install -e lib/python
 ```
 
-After publish (not live yet):
+After publish (not published yet):
 
 ```bash
 pip install glance-status

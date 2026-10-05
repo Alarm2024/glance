@@ -1,6 +1,6 @@
 # demo/fixture.json schema
 
-**Synthetic demo data only** — never live bot payloads. The site banner and top-level
+**Synthetic demo data only** — never payloads from a running bot. The site banner and top-level
 `synthetic` / `label` fields must stay present.
 
 Card render order (matches site): **Online → Posture → Doctor → Feeds → Last signal → Build**
@@ -10,7 +10,7 @@ Card render order (matches site): **Online → Posture → Doctor → Feeds → 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | `synthetic` | boolean | yes | Must be `true` for demo fixtures |
-| `label` | string | yes | Banner text, e.g. `DEMO / SYNTHETIC — not live bot data` |
+| `label` | string | yes | Banner text, e.g. `DEMO / SYNTHETIC — not from a running bot` |
 | `generated_at` | string (ISO-8601) | yes | Fixture generation timestamp |
 | `online` | object | yes | Online card |
 | `posture` | object | yes | Posture card |
@@ -32,7 +32,7 @@ Card render order (matches site): **Online → Posture → Doctor → Feeds → 
 | Field | Type | Description |
 |-------|------|-------------|
 | `mode` | string | Must be dry / eyes-only, e.g. `dry compose`, `dry simulate`, `observe-only` |
-| `detail` | string | Optional detail line — must not imply live send, armed, or auto-send |
+| `detail` | string | Optional detail line — must not imply a real send, armed, or auto-send |
 
 ## `doctor`
 

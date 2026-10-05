@@ -22,7 +22,7 @@
       vocabDoctorTerm: 'Doctor',
       vocabDoctorDef: 'Fault-first classifier for operator messages. Status values: ok, warn, eyes_fault, blocking, unknown. Order: blocking flag → hygiene phrases → fault phrases → unknown.',
       vocabPostureTerm: 'Posture',
-      vocabPostureDef: 'How your tooling composes transactions. Allowed modes: dry compose, dry simulate, observe-only. Must not imply auto-send, live send, or mint.',
+      vocabPostureDef: 'How your tooling composes transactions. Allowed modes: dry compose, dry simulate, observe-only. Must not imply auto-send, a real send, or mint.',
       vocabClearTerm: 'CLEAR',
       vocabClearDef: 'Operator CLEAR only — a human operator must explicitly CLEAR before anything sends. Glance observes and composes dry; it never auto-sends. The refusal is the product.',
       sectionQuickstart: 'Quickstart',
@@ -37,7 +37,7 @@
       qs4Check: 'You should see <code>DEGRADED</code> then <code>OK</code> — two different judgements from two synthetic files.',
       qs5Title: '5 · Match the site demo',
       qs5Hint: 'Scroll to <a href="#demo">Demo</a>, pick a synthetic case tab, or paste the JSON into the playground.',
-      qs5Check: 'You should see the same Summary line and six cards as the case label describes — client-side only, not live bot data.',
+      qs5Check: 'You should see the same Summary line and six cards as the case label describes — client-side only, not data from a running bot.',
       quickstartGuide: 'Full integration guide in the repo →',
       caseHoldOracle: 'HOLD · stale oracle',
       caseHoldQueue: 'HOLD · queue backlog',
@@ -51,7 +51,7 @@
       trustCan4: '<a href="#vocab-posture">Posture</a> stays dry compose / eyes-only (posture self-test)',
       trustCan5: 'Synthetic fixture schema conformance',
       trustCannotTitle: 'Glance cannot verify',
-      trustCannot1: 'Live trade correctness, PnL, or strategy alpha',
+      trustCannot1: 'Correctness of real trades, PnL, or strategy alpha',
       trustCannot2: 'Wallet balances or real RPC endpoints',
       trustCannot3: 'Whether an operator actually CLEARs off-site',
       trustCannot4: 'Anything beyond what your status JSON reports',
@@ -63,9 +63,9 @@
       sectionLicense: 'License',
       sectionContact: 'Contact',
       sectionAsk: 'Ask us',
-      demoHint: 'Synthetic fixtures below — client-side only, not live bot data.',
+      demoHint: 'Synthetic fixtures below — client-side only, not data from a running bot.',
       playgroundToggle: 'Paste your own status JSON',
-      playgroundHint: 'Synthetic fixture below — client-side only, not live bot data.',
+      playgroundHint: 'Synthetic fixture below — client-side only, not data from a running bot.',
       statusJsonLabel: 'Status JSON',
       rustLabel: 'Rust · pre-1.0',
       pythonLabel: 'Python · pre-1.0',
@@ -75,7 +75,7 @@
       footer: 'Glance · MIT · pre-1.0',
       loading: 'Loading demo fixture…',
       loadError: 'Demo fixture could not be loaded.',
-      syntheticFallback: 'DEMO / SYNTHETIC — not live bot data',
+      syntheticFallback: 'DEMO / SYNTHETIC — not from a running bot',
       cardOnline: 'Online',
       cardPosture: 'Posture',
       cardDoctor: 'Doctor',
@@ -86,7 +86,7 @@
       received: 'Received',
       ago: 'ago',
       commit: 'Commit',
-      live: 'live'
+      active: 'active'
     },
     ar: {
       title: 'غلانس',
@@ -128,7 +128,7 @@
       received: 'استُلم',
       ago: 'منذ',
       commit: 'الالتزام',
-      live: 'نشط'
+      active: 'نشط'
     },
     ru: {
       title: 'Glance',
@@ -170,7 +170,7 @@
       received: 'Получено',
       ago: 'назад',
       commit: 'Коммит',
-      live: 'активно'
+      active: 'активно'
     },
     zh: {
       title: 'Glance',
@@ -212,7 +212,7 @@
       received: '收到于',
       ago: '前',
       commit: '提交',
-      live: '正常'
+      active: '正常'
     },
     de: {
       title: 'Glance',
@@ -231,9 +231,9 @@
       sectionLicense: 'Lizenz',
       sectionContact: 'Kontakt',
       sectionAsk: 'Fragen Sie uns',
-      demoHint: 'Synthetische Fixture unten — nur clientseitig, keine Live-Bot-Daten.',
+      demoHint: 'Synthetische Fixture unten — nur clientseitig, keine Daten eines laufenden Bots.',
       playgroundToggle: 'Eigenes Status-JSON einfügen',
-      playgroundHint: 'Synthetische Fixture unten — nur clientseitig, keine Live-Bot-Daten.',
+      playgroundHint: 'Synthetische Fixture unten — nur clientseitig, keine Daten eines laufenden Bots.',
       statusJsonLabel: 'Status-JSON',
       rustLabel: 'Rust · Pre-1.0',
       pythonLabel: 'Python · Pre-1.0',
@@ -243,7 +243,7 @@
       footer: 'Glance · MIT · pre-1.0',
       loading: 'Demo-Fixture wird geladen…',
       loadError: 'Demo-Fixture konnte nicht geladen werden.',
-      syntheticFallback: 'DEMO / SYNTHETISCH — keine Live-Bot-Daten',
+      syntheticFallback: 'DEMO / SYNTHETISCH — nicht von einem laufenden Bot',
       cardOnline: 'Online',
       cardPosture: 'Haltung',
       cardDoctor: 'Diagnose',
@@ -254,7 +254,7 @@
       received: 'Empfangen',
       ago: 'her',
       commit: 'Commit',
-      live: 'live'
+      active: 'aktiv'
     },
     es: {
       title: 'Glance',
@@ -296,7 +296,7 @@
       received: 'Recibido',
       ago: 'hace',
       commit: 'Commit',
-      live: 'activo'
+      active: 'activo'
     }
   };
 

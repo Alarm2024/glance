@@ -40,7 +40,7 @@ def main() -> int:
 
     from glance_status.case_wording import HASH_PROOF_DISCLAIMER
 
-    print("CLEAR LAB — synthetic proof cases (dry HOLD · no live claims)")
+    print("CLEAR LAB — synthetic proof cases (dry HOLD · no claims about real trades)")
     print("No keys · no network · fixtures only")
     print("=" * 64)
 

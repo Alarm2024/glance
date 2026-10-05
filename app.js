@@ -27,7 +27,7 @@
 
   var DEMO_FIXTURE = {
     synthetic: true,
-    label: 'DEMO / SYNTHETIC — not live bot data',
+    label: 'DEMO / SYNTHETIC — not from a running bot',
     generated_at: '2026-09-20T20:00:00Z',
     online: {
       status: 'connected',
@@ -70,7 +70,7 @@
     'hold-stale-oracle': DEMO_FIXTURE,
     'hold-queue': {
       synthetic: true,
-      label: 'DEMO / SYNTHETIC — not live bot data',
+      label: 'DEMO / SYNTHETIC — not from a running bot',
       generated_at: '2026-09-22T18:00:00Z',
       online: { status: 'connected', uptime: '2h 41m', detail: 'Process heartbeat OK (demo fixture)' },
       posture: { mode: 'dry compose', detail: 'Eyes + dry compose · no auto-send' },
@@ -89,7 +89,7 @@
     },
     clear: {
       synthetic: true,
-      label: 'DEMO / SYNTHETIC — not live bot data',
+      label: 'DEMO / SYNTHETIC — not from a running bot',
       generated_at: '2026-09-22T18:00:00Z',
       online: { status: 'connected', uptime: '6h 03m', detail: 'Process heartbeat OK (demo fixture)' },
       posture: { mode: 'dry compose', detail: 'Eyes + dry compose · no auto-send' },
@@ -295,7 +295,7 @@
     if (!container) return;
     clearDemoLoadTimeout();
     if (banner) {
-      banner.textContent = fixture.label || 'DEMO / SYNTHETIC — not live bot data';
+      banner.textContent = fixture.label || 'DEMO / SYNTHETIC — not from a running bot';
       banner.hidden = false;
       banner.setAttribute('data-synthetic', fixture.synthetic === false ? 'false' : 'true');
     }

@@ -1,6 +1,6 @@
 {
   "synthetic": true,
-  "label": "DEMO / SYNTHETIC — not live bot data",
+  "label": "DEMO / SYNTHETIC — not from a running bot",
   "generated_at": "2026-09-22T18:00:00Z",
   "online": {
     "status": "connected",

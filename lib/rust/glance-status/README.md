@@ -12,7 +12,7 @@ From this repository:
 glance-status = { path = "lib/rust/glance-status" }
 ```
 
-After publish (not live yet):
+After publish (not published yet):
 
 ```toml
 glance-status = "0.1.0"
