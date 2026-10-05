@@ -202,4 +202,6 @@ GitHub Actions runs Rust + Python tests on every pull request. crates.io / PyPI 
 
 MIT — see [LICENSE](LICENSE). Free forever · no strategy or alpha included · synthetic demo data only.
 
+Docs and images: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/), © elghaly. Third-party fonts, logos and screenshots of other services keep their own licenses.
+
 Contact: [support@elghaly.dev](mailto:support@elghaly.dev)
