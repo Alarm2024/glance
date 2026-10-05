@@ -30,7 +30,7 @@ pip install -e lib/python
 # Without installing: PYTHONPATH=lib/python python3 scripts/posture_selftest.py
 ```
 
-Target registry install after M1 publish (not live yet):
+Target registry install after M1 publish (not published yet):
 
 Rust — in your Cargo.toml:
 

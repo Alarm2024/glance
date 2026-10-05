@@ -6,13 +6,13 @@
   <meta name="description" content="Glance — honest status for Solana bot operators. Eyes, dry simulate, operator CLEAR only. Synthetic demo. MIT.">
   <meta name="theme-color" content="#0b1214">
   <meta property="og:title" content="Glance — honest status for Solana bots">
-  <meta property="og:description" content="Open-source observability for Solana bot operators. Try the synthetic demo — no live send.">
+  <meta property="og:description" content="Open-source observability for Solana bot operators. Try the synthetic demo — it never sends a transaction.">
   <meta property="og:image" content="https://glance.elghaly.dev/glance-card.jpg?v=packaging1">
   <meta property="og:image:alt" content="Glance status dashboard preview">
   <meta property="og:url" content="https://glance.elghaly.dev/">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Glance — honest status for Solana bots">
-  <meta name="twitter:description" content="Open-source observability for Solana bot operators. Try the synthetic demo — no live send.">
+  <meta name="twitter:description" content="Open-source observability for Solana bot operators. Try the synthetic demo — it never sends a transaction.">
   <meta name="twitter:image" content="https://glance.elghaly.dev/glance-card.jpg?v=packaging1">
   <meta name="twitter:image:alt" content="Glance status dashboard preview">
   <link rel="canonical" href="https://glance.elghaly.dev/">
@@ -109,7 +109,7 @@
         </div>
         <div class="vocab-list__item" id="vocab-posture">
           <dt data-i18n="vocabPostureTerm">Posture</dt>
-          <dd data-i18n="vocabPostureDef">How your tooling composes transactions. Allowed modes: dry compose, dry simulate, observe-only. Must not imply auto-send, live send, or mint.</dd>
+          <dd data-i18n="vocabPostureDef">How your tooling composes transactions. Allowed modes: dry compose, dry simulate, observe-only. Must not imply auto-send, a real send, or mint.</dd>
         </div>
         <div class="vocab-list__item" id="vocab-clear">
           <dt data-i18n="vocabClearTerm">CLEAR</dt>
@@ -147,7 +147,7 @@ python3 examples/python-cli/glance_cli.py summarize demo/fixture-clear.json</cod
         <li class="quickstart-step">
           <p class="quickstart-step__title" data-i18n="qs5Title">5 · Match the site demo</p>
           <p class="quickstart-step__hint" data-i18n-html="qs5Hint">Scroll to <a href="#demo">Demo</a>, pick a synthetic case tab, or paste the JSON into the playground.</p>
-          <p class="quickstart-step__check" data-i18n="qs5Check">You should see the same Summary line and six cards as the case label describes — client-side only, not live bot data.</p>
+          <p class="quickstart-step__check" data-i18n="qs5Check">You should see the same Summary line and six cards as the case label describes — client-side only, not data from a running bot.</p>
         </li>
       </ol>
       <p class="quickstart-more"><a href="https://github.com/Alarm2024/glance/blob/main/docs/add-glance-in-15-minutes.md" target="_blank" rel="noopener" data-i18n="quickstartGuide">Full integration guide in the repo →</a></p>
@@ -155,8 +155,8 @@ python3 examples/python-cli/glance_cli.py summarize demo/fixture-clear.json</cod
 
     <section class="section demo" id="demo">
       <h2 class="section__label" data-i18n="sectionDemo">Demo</h2>
-      <p class="build__text playground__hint" data-i18n="demoHint">Synthetic fixtures below — client-side only, not live bot data.</p>
-      <p id="synthetic-banner" class="synthetic-banner" data-synthetic="true" data-i18n="syntheticFallback">DEMO / SYNTHETIC — not live bot data</p>
+      <p class="build__text playground__hint" data-i18n="demoHint">Synthetic fixtures below — client-side only, not data from a running bot.</p>
+      <p id="synthetic-banner" class="synthetic-banner" data-synthetic="true" data-i18n="syntheticFallback">DEMO / SYNTHETIC — not from a running bot</p>
       <div class="demo-cases" role="tablist" aria-label="Synthetic demo cases">
         <button type="button" class="demo-case on" role="tab" aria-selected="true" data-case="hold-stale-oracle" data-i18n="caseHoldOracle">HOLD · stale oracle</button>
         <button type="button" class="demo-case" role="tab" aria-selected="false" data-case="hold-queue" data-i18n="caseHoldQueue">HOLD · queue backlog</button>
@@ -244,7 +244,7 @@ python3 examples/python-cli/glance_cli.py summarize demo/fixture-clear.json</cod
         <div class="trust-block">
           <h3 class="trust-block__title" data-i18n="trustCannotTitle">Glance cannot verify</h3>
           <ul class="bullets bullets--left">
-            <li data-i18n="trustCannot1">Live trade correctness, PnL, or strategy alpha</li>
+            <li data-i18n="trustCannot1">Correctness of real trades, PnL, or strategy alpha</li>
             <li data-i18n="trustCannot2">Wallet balances or real RPC endpoints</li>
             <li data-i18n="trustCannot3">Whether an operator actually CLEARs off-site</li>
             <li data-i18n="trustCannot4">Anything beyond what your status JSON reports</li>
