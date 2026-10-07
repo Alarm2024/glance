@@ -1,4 +1,4 @@
-"""Exit codes for glance-check: missing path, clean file, banned phrase, zero files."""
+"""Exit codes for glance-check: missing file (2), clean file (0), banned phrase (1), zero files (1)."""
 
 from __future__ import annotations
 
@@ -27,12 +27,33 @@ def workspace(tmp_path, monkeypatch):
     return tmp_path
 
 
-def test_missing_path_exits_1(glance_check, workspace, monkeypatch, capsys):
+def test_missing_explicit_path_exits_2(glance_check, workspace, monkeypatch, capsys):
+    # #28: a missing listed file is its own failure, not a banned phrase.
     monkeypatch.setenv("GLANCE_CHECK_PATHS", "status.json")
-    assert glance_check.main() == 1
+    assert glance_check.main() == glance_check.EXIT_MISSING_FILE == 2
     err = capsys.readouterr().err
-    assert "status.json" in err
+    assert "missing file: status.json" in err
     assert "does not exist" in err
+    assert "banned" not in err
+
+
+def test_mixed_existing_and_missing_paths_exits_2(glance_check, workspace, monkeypatch, capsys):
+    # One listed file exists (and even holds a banned phrase); one does not.
+    # The missing file decides the outcome, names only the missing entry, and
+    # nothing is scanned, so no banned-phrase finding is reported.
+    (workspace / "status.json").write_text('{"doctor": "alpha signal"}\n', encoding="utf-8")
+    monkeypatch.setenv("GLANCE_CHECK_PATHS", "status.json\nreports/missing.json\n")
+    assert glance_check.main() == 2
+    err = capsys.readouterr().err
+    assert "1 of 2 path(s)" in err
+    assert "missing file: reports/missing.json" in err
+    assert "missing file: status.json" not in err
+    assert "banned" not in err
+
+
+def test_banned_phrase_and_missing_file_use_different_exit_codes(glance_check):
+    assert glance_check.EXIT_FINDINGS == 1
+    assert glance_check.EXIT_MISSING_FILE == 2
 
 
 def test_clean_file_exits_0(glance_check, workspace, monkeypatch, capsys):
@@ -72,3 +93,14 @@ def test_no_paths_with_demo_fixture_exits_0(glance_check, workspace, capsys):
     )
     assert glance_check.main() == 0
     assert "passed" in capsys.readouterr().out
+
+
+def test_blank_paths_input_keeps_auto_discovery(glance_check, workspace, monkeypatch, capsys):
+    # Whitespace-only `paths` is "not set": the defaults are discovered, and
+    # absent defaults are skipped rather than reported as missing files.
+    (workspace / "status.json").write_text('{"doctor": "feed stale for 47s"}\n', encoding="utf-8")
+    monkeypatch.setenv("GLANCE_CHECK_PATHS", "  \n  ")
+    assert glance_check.main() == 0
+    captured = capsys.readouterr()
+    assert "passed" in captured.out
+    assert "missing file" not in captured.err

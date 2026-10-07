@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""Scan repo status strings and fail on banned overclaim phrases."""
+"""Scan repo status strings and fail on banned overclaim phrases.
+
+Exit codes:
+  0  every listed file was scanned and no banned phrase was found
+  1  a banned phrase was found, or zero files were scanned (fail closed)
+  2  GLANCE_CHECK_PATHS lists a file that does not exist (nothing is scanned)
+"""
 
 from __future__ import annotations
 
@@ -65,6 +71,10 @@ def _resolve_paths(repo_root: Path) -> tuple[list[Path], list[str]]:
     return paths, missing
 
 
+EXIT_FINDINGS = 1
+EXIT_MISSING_FILE = 2
+
+
 def _banned_phrases() -> list[str]:
     raw = os.environ.get("GLANCE_CHECK_BANNED", "guaranteed,profit,alpha")
     return [part.strip() for part in raw.split(",") if part.strip()]
@@ -80,10 +90,18 @@ def main() -> int:
     banned = _banned_phrases()
 
     if missing:
-        print("glance-check failed — requested path does not exist:", file=sys.stderr)
+        # Not a banned-phrase finding: the gate was pointed at a file that is
+        # not there, so nothing was scanned. Its own message and exit code let
+        # a caller tell the two apart.
+        print(
+            f"glance-check: missing file — {len(missing)} of "
+            f"{len(missing) + len(paths)} path(s) in `paths` do not exist; "
+            "nothing was scanned:",
+            file=sys.stderr,
+        )
         for entry in missing:
-            print(f"  • {entry}", file=sys.stderr)
-        return 1
+            print(f"  • missing file: {entry} (requested path does not exist)", file=sys.stderr)
+        return EXIT_MISSING_FILE
 
     if not paths:
         # Fail closed: a gate that scans nothing must not pass silently.
@@ -92,7 +110,7 @@ def main() -> int:
             "(zero files scanned; failing closed)",
             file=sys.stderr,
         )
-        return 1
+        return EXIT_FINDINGS
 
     failures: list[str] = []
     checked = 0
@@ -114,7 +132,7 @@ def main() -> int:
         print("glance-check failed — banned overclaim phrase(s) found:", file=sys.stderr)
         for line in failures:
             print(f"  • {line}", file=sys.stderr)
-        return 1
+        return EXIT_FINDINGS
 
     print(f"glance-check passed ({checked} string(s) scanned across {len(paths)} file(s))")
     return 0
