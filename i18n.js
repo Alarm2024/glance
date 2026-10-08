@@ -319,8 +319,12 @@
     document.documentElement.lang = currentLang;
     document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
     document.querySelectorAll('.lang-btn').forEach(function (btn) {
-      btn.classList.toggle('on', btn.getAttribute('data-lang') === currentLang);
+      var on = btn.getAttribute('data-lang') === currentLang;
+      btn.classList.toggle('on', on);
+      btn.setAttribute('aria-pressed', on ? 'true' : 'false');
     });
+    var cur = document.getElementById('langCur');
+    if (cur) cur.textContent = currentLang.toUpperCase();
     document.dispatchEvent(new CustomEvent('glance:lang', { detail: { lang: currentLang } }));
   }
 
@@ -334,10 +338,29 @@
   function mount() {
     var host = document.getElementById('langs');
     if (!host) return;
+    var open = document.getElementById('langOpen');
+    function show(yes) {
+      if (!open) return;
+      host.hidden = !yes;
+      open.setAttribute('aria-expanded', yes ? 'true' : 'false');
+      if (yes) (host.querySelector('.lang-btn.on') || host.querySelector('.lang-btn')).focus();
+    }
+    if (open) {
+      open.addEventListener('click', function () {
+        show(host.hidden);
+      });
+      document.addEventListener('click', function (e) {
+        if (!host.hidden && !host.contains(e.target) && !open.contains(e.target)) show(false);
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && !host.hidden) { show(false); open.focus(); }
+      });
+    }
     host.addEventListener('click', function (e) {
       var btn = e.target.closest('[data-lang]');
       if (!btn) return;
       setLang(btn.getAttribute('data-lang'));
+      if (open) { show(false); open.focus(); }
     });
     try { currentLang = localStorage.getItem(KEY) || 'en'; } catch (e) { /* ignore */ }
     if (!STRINGS[currentLang]) currentLang = 'en';

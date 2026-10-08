@@ -109,20 +109,55 @@ body {
   gap: 6px;
 }
 
+/* One "EN ⌄" toggle opens the six language buttons, so the bar fits a
+   320 px screen and every button is a 44 px tap target. */
+.lang-wrap {
+  position: relative;
+}
+
+.lang-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 10px;
+  background: transparent;
+  border: 1px solid var(--gold-dim);
+  border-radius: 999px;
+  color: var(--text);
+  font: 600 12px var(--font-sans);
+  cursor: pointer;
+}
+
 .lang-switch {
-  display: flex;
-  gap: 3px;
-  flex-wrap: wrap;
-  justify-content: flex-end;
+  position: absolute;
+  top: calc(100% + 6px);
+  inset-inline-end: 0;
+  z-index: 60;
+  display: grid;
+  grid-template-columns: repeat(3, 44px);
+  gap: 6px;
+  padding: 8px;
+  background: var(--ink-soft);
+  border: 1px solid var(--gold-dim);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+}
+
+#langs[hidden] {
+  display: none;
 }
 
 .lang-btn {
+  min-width: 44px;
+  min-height: 44px;
   background: transparent;
   border: 1px solid var(--gold-dim);
   color: var(--text-muted);
-  padding: 5px 6px;
-  border-radius: 6px;
-  font-size: 10px;
+  padding: 0;
+  border-radius: 8px;
+  font-size: 12px;
   cursor: pointer;
 }
 
@@ -139,6 +174,7 @@ body {
   display: flex;
   align-items: center;
   gap: 6px;
+  min-height: 44px;
   background: var(--ink-soft);
   color: var(--text);
   border: 1px solid var(--gold-dim);
@@ -951,11 +987,6 @@ html[dir="rtl"] .card:hover {
   .hero__actions .btn {
     width: 100%;
     text-align: center;
-  }
-
-  .lang-btn {
-    padding: 4px 5px;
-    font-size: 9px;
   }
 
   .house {
