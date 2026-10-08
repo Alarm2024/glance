@@ -179,6 +179,8 @@ Set `paths`. If it is empty and no default file (`demo/fixture.json`, `status.js
 
 > **Breaking change since G1 (#32, `78d0ccc`):** an empty workspace, or a `paths` input that is empty or holds nothing but whitespace, with no default file present, now fails closed (exit 1) instead of silently passing. If your workflow relied on the old silent pass, set `paths` to the status files your pipeline writes, as shown above and in the [action README](.github/actions/glance-check/README.md#behavior).
 
+> **Exit code change (#44):** a file listed in `paths` that does not exist now fails with exit **2** and `missing file: <path> (requested path does not exist)`; it used to exit **1**. Banned phrases and zero scanned files still exit 1. If a caller matches exactly on exit 1, also accept 2, or treat any non-zero exit as a failure.
+
 See [`.github/actions/glance-check/README.md`](.github/actions/glance-check/README.md) for inputs and behavior.
 
 ## Tests & CI
