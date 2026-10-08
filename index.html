@@ -25,7 +25,7 @@
       }
     })();
   </script>
-  <link rel="stylesheet" href="css/style.css?v=a11y3">
+  <link rel="stylesheet" href="css/style.css?v=lang44">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -38,7 +38,9 @@
     .hero__title,.section__label,.card__name,.public-good__line,.footer p{font-family:var(--font-serif)}
     .topbar{display:flex;align-items:center;gap:8px}
     .header-right{margin-left:auto;display:flex;align-items:center;gap:6px;flex-wrap:nowrap}
-    .lang-switch{display:flex;gap:3px;flex-wrap:nowrap}
+    .lang-wrap{position:relative}
+    .lang-switch{display:grid;grid-template-columns:repeat(3,44px);gap:6px}
+    #langs[hidden]{display:none}
   </style>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="glance">
@@ -54,13 +56,16 @@
       <span class="gword">GLANCE</span>
     </a>
     <div class="header-right">
-      <div class="lang-switch" id="langs" role="group" aria-label="Language">
-        <button class="lang-btn on" data-lang="en" type="button">EN</button>
-        <button class="lang-btn" data-lang="ar" type="button">AR</button>
-        <button class="lang-btn" data-lang="ru" type="button">RU</button>
-        <button class="lang-btn" data-lang="zh" type="button">ZH</button>
-        <button class="lang-btn" data-lang="de" type="button">DE</button>
-        <button class="lang-btn" data-lang="es" type="button">ES</button>
+      <div class="lang-wrap">
+        <button class="lang-toggle" id="langOpen" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="langs" aria-label="Language"><span id="langCur">EN</span><span class="lang-caret" aria-hidden="true">⌄</span></button>
+        <div class="lang-switch" id="langs" role="group" aria-label="Language" hidden>
+          <button class="lang-btn on" data-lang="en" type="button">EN</button>
+          <button class="lang-btn" data-lang="ar" type="button">AR</button>
+          <button class="lang-btn" data-lang="ru" type="button">RU</button>
+          <button class="lang-btn" data-lang="zh" type="button">ZH</button>
+          <button class="lang-btn" data-lang="de" type="button">DE</button>
+          <button class="lang-btn" data-lang="es" type="button">ES</button>
+        </div>
       </div>
     </div>
   </div>
@@ -281,7 +286,7 @@ python3 examples/python-cli/glance_cli.py summarize demo/fixture-clear.json</cod
   </footer>
 
   <script src="themes.js?v=packaging1"></script>
-  <script src="i18n.js?v=packaging1"></script>
+  <script src="i18n.js?v=lang44"></script>
   <script src="app.js?v=packaging1"></script>
 <script src="/page-menu.js" defer></script>
 </body>
